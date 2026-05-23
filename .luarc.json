@@ -1,0 +1,13 @@
+{
+  "runtime.version": "LuaJIT",
+  "diagnostics.globals": ["love",
+        "lldebugger"],
+  "workspace.checkThirdParty": "Apply",
+  "workspace.userThirdParty": ["~/.local/share/LuaAddons"],
+    "workspace.library": [
+        "/tmp/.mount_nvimmhknnK/usr/share/nvim/runtime",
+        "/home/rafael/.local/share/LuaAddons/love2d/library",
+        "${3rd}/luv/library",
+        "${3rd}/love2d/library"
+    ]
+}

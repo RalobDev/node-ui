@@ -1,0 +1,27 @@
+# Sistema
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Neovim
+Session.vim
+.nvim.lua
+
+# Lua / LÖVE outputs
+*.love
+*.zip
+
+# Logs
+*.log
+
+# Temporários
+tmp/
+temp/
+.cache/
+
+# Export/build
+build/
+dist/
+exports/
