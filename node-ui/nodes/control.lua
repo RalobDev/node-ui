@@ -14,6 +14,7 @@ local Class = require(ROOT .. ".class") --- @type Class
 --- @field protected _layout_width number
 --- @field protected _layout_height number
 --- @field private _children NodeUI.Control[]
+--- @field private _internal_children NodeUI.Control[]
 --- @field private _deferred_methods string[]
 --- @field private _mouse_focus boolean
 --- @field private _mouse_focus_mode boolean
@@ -49,6 +50,7 @@ function Control:new(x, y, width, height, settings)
 	obj._layout_height = height
 
 	obj._children = {}
+	obj._internal_children = {}
 	obj._deferred_methods = {}
 	obj._mouse_focus = false
 	obj._update_layout = true
@@ -72,7 +74,7 @@ function Control:update(dt)
 
 	self:_onUpdate(dt)
 
-	for _, child in ipairs(self._children) do
+	for _, child in ipairs(self:_getAllChildren()) do
 		child:update(dt)
 	end
 end
@@ -87,7 +89,7 @@ function Control:draw()
 
 	self:_onDraw()
 
-	for _, child in ipairs(self._children) do
+	for _, child in ipairs(self:_getAllChildren()) do
 		child:draw()
 	end
 
@@ -120,6 +122,7 @@ function Control:removeChild(child)
 		if other_child == child then
 			table.remove(self._children, i)
 			child._parent = nil
+			break
 		end
 	end
 
@@ -271,9 +274,10 @@ function Control:_findMouseFocus(x, y)
 		return self
 	end
 
+	local children = self:_getAllChildren()
 	if mode == "pass" then
-		for i = #self._children, 1, -1 do
-			local child = self._children[i]
+		for i = #children, 1, -1 do
+			local child = children[i]
 			local focused = child:_findMouseFocus(x, y)
 
 			if focused then
@@ -292,7 +296,7 @@ end
 function Control:_clearMouseFocus()
 	self._mouse_focus = false
 
-	for _, child in ipairs(self._children) do
+	for _, child in ipairs(self:_getAllChildren()) do
 		child:_clearMouseFocus()
 	end
 end
@@ -373,7 +377,7 @@ function Control:_updateLayout()
 
 	self:_onLayoutUpdated()
 
-	for _, child in ipairs(self._children) do
+	for _, child in ipairs(self:_getAllChildren()) do
 		child:_deferreMethod("_updateLayout")
 	end
 end
@@ -382,11 +386,35 @@ end
 
 --#region Protected Methods
 
+--- Adiciona um nó filho interno.
 --- @protected
---- @nodiscard
---- @return number x, number y, number width, number height
-function Control:_getBaseTransform()
-	return self._x, self._y, self._width, self._height
+--- @generic T : NodeUI.Control
+--- @param child T
+--- @return T child
+function Control:_addInternalChild(child)
+	--- @cast child NodeUI.Control
+
+	child._parent = self
+	self._internal_children[#self._internal_children + 1] = child
+
+	child:_deferreMethod("_updateLayout")
+
+	return child
+end
+
+--- Remove determinado nó filho interno.
+--- @protected
+--- @param child NodeUI.Control
+function Control:_removeInternalChild(child)
+	for i, other_child in ipairs(self._internal_children) do
+		if other_child == child then
+			table.remove(self._internal_children, i)
+			child._parent = nil
+			break
+		end
+	end
+
+	return child
 end
 
 --#endregion
@@ -532,6 +560,35 @@ end
 --- @return boolean
 function Control:hasMouseFocus()
 	return self._mouse_focus
+end
+
+--#endregion
+
+--#region Protected Getters
+
+--- @protected
+--- @nodiscard
+--- @return number x, number y, number width, number height
+function Control:_getBaseTransform()
+	return self._x, self._y, self._width, self._height
+end
+
+--- Retorna todos os filhos incluindo os internos.
+--- @protected
+--- @nodiscard
+--- @return NodeUI.Control[]
+function Control:_getAllChildren()
+	local children = {}
+
+	for _, child in ipairs(self._internal_children) do
+		children[#children + 1] = child
+	end
+
+	for _, child in ipairs(self._children) do
+		children[#children + 1] = child
+	end
+
+	return children
 end
 
 --#endregion
