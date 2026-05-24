@@ -161,7 +161,7 @@ function Control:mousepressed(x, y, button, istouch, presses)
 	self:_clearMouseFocus()
 
 	if focused then
-		focused._mouse_focus = true
+		focused:_setMouseFocus(true)
 		focused:_onMousepressed(x, y, button, istouch, presses)
 	end
 end
@@ -186,7 +186,7 @@ function Control:mousereleased(x, y, button, istouch, presses)
 	self:_clearMouseFocus()
 
 	if focused then
-		focused._mouse_focus = true
+		focused:_setMouseFocus(true)
 	end
 end
 
@@ -202,7 +202,7 @@ function Control:mousemoved(x, y, dx, dy, istouch)
 	self._mouse_focused_control = focused
 
 	if focused then
-		focused._mouse_focus = true
+		focused:_setMouseFocus(true)
 		focused:_onMousemoved(x, y, dx, dy, istouch)
 	end
 end
@@ -571,6 +571,21 @@ end
 
 --#endregion
 
+--#region Private Setters
+
+--- @private
+--- @param enabled boolean
+function Control:_setMouseFocus(enabled)
+	local previous_focus = self._mouse_focus
+	self._mouse_focus = enabled
+
+	if enabled ~= previous_focus then
+		self:_onMouseFocusChanged(enabled)
+	end
+end
+
+--#endregion
+
 --#region Callbacks
 
 --- @protected
@@ -618,6 +633,11 @@ function Control:_onAddedChild(child) end
 function Control:_onRemovedChild(child) end
 
 function Control:_onLayoutUpdated() end
+
+--- @protected
+--- @param focused boolean
+--- @diagnostic disable-next-line: unused-local
+function Control:_onMouseFocusChanged(focused) end
 
 --#endregion
 
