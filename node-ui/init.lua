@@ -7,6 +7,7 @@ local ROOT = ...
 --- @field Container NodeUI.Container
 --- @field VContainer NodeUI.VContainer
 --- @field HContainer NodeUI.HContainer
+--- @field ButtonBase NodeUI.ButtonBase
 local NodeUI = {}
 
 NodeUI.Control = require(ROOT .. ".nodes.control")
@@ -15,5 +16,6 @@ NodeUI.Label = require(ROOT .. ".nodes.label")
 NodeUI.Container = require(ROOT .. ".nodes.container")
 NodeUI.VContainer = require(ROOT .. ".nodes.v_container")
 NodeUI.HContainer = require(ROOT .. ".nodes.h_container")
+NodeUI.ButtonBase = require(ROOT .. ".nodes.button_base")
 
 return NodeUI

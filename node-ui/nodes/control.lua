@@ -527,6 +527,13 @@ function Control:getChildren()
 	return children
 end
 
+--- Retorna se possui ou não o foco do mouse.
+--- @nodiscard
+--- @return boolean
+function Control:hasMouseFocus()
+	return self._mouse_focus
+end
+
 --#endregion
 
 --#region Callbacks
