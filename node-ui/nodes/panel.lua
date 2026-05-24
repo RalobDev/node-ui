@@ -14,7 +14,7 @@ local Panel = Control:extend()
 --- @param y number
 --- @param w number
 --- @param h number
---- @param r NodeUI.RectangleCorners
+--- @param r NodeUI.Control.RectangleCorners
 --- @param segments number?
 local function roundedRectangle(mode, x, y, w, h, r, segments)
 	segments = segments or 8
@@ -161,7 +161,7 @@ end
 --#region Callbacks
 
 function Panel:_onDraw()
-	local expand_margin = self._settings.expand_margin --- @type NodeUI.Rectangle
+	local expand_margin = self._settings.expand_margin
 
 	local rect_x = self:getX() - expand_margin.left
 	local rect_y = self:getY() - expand_margin.top

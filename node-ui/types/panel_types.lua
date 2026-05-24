@@ -1,0 +1,15 @@
+--- @class NodeUI.Panel.Settings: NodeUI.Control.Settings
+--- @field color number[]
+--- @field edge_color number[]
+--- @field edge_width number
+--- @field corner_radius NodeUI.Control.RectangleCorners
+--- @field corner_segments number
+--- @field expand_margin NodeUI.Control.Rectangle
+
+--- @class NodeUI.Panel.SettingsParameter: NodeUI.Control.SettingsParameter
+--- @field color? number[]
+--- @field edge_color? number[]
+--- @field edge_width? number
+--- @field corner_radius? NodeUI.Control.RectangleCorners
+--- @field corner_segments? number
+--- @field expand_margin? NodeUI.Control.Rectangle

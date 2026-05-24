@@ -1,22 +1,14 @@
--- =====================================
---              General
--- =====================================
-
---- @class NodeUI.Rectangle
+--- @class NodeUI.Control.Rectangle
 --- @field left number
 --- @field right number
 --- @field top number
 --- @field bottom number
 
---- @class NodeUI.RectangleCorners
+--- @class NodeUI.Control.RectangleCorners
 --- @field top_left number
 --- @field top_right number
 --- @field bottom_left number
 --- @field bottom_right number
-
--- =====================================
---              Control
--- =====================================
 
 --- @class NodeUI.Control.DebugSettings
 --- @field line_width? number
@@ -54,23 +46,3 @@
 --- | "stop" Recebe o evento e impede que outros recebam
 --- | "pass" Recebe o evento e permite que filhos/outros processem
 --- | "ignore" Ignora eventos de mouse
-
--- =====================================
---                Panel
--- =====================================
-
---- @class NodeUI.Panel.Settings: NodeUI.Control.Settings
---- @field color number[]
---- @field edge_color number[]
---- @field edge_width number
---- @field corner_radius NodeUI.RectangleCorners
---- @field corner_segments number
---- @field expand_margin NodeUI.Rectangle
-
---- @class NodeUI.Panel.SettingsParameter: NodeUI.Control.SettingsParameter
---- @field color? number[]
---- @field edge_color? number[]
---- @field edge_width? number
---- @field corner_radius? NodeUI.RectangleCorners
---- @field corner_segments? number
---- @field expand_margin? NodeUI.Rectangle
