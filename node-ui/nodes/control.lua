@@ -1,8 +1,10 @@
-local ROOT = (...):match("^(.*)%.")
+local ROOT = (...):match("^(.*)%.%w+%.%w+$")
 
 local Class = require(ROOT .. ".class") --- @type Class
 
 --- @class NodeUI.Control: Class
+--- @field private _settings NodeUI.Control.Settings
+--- @field private _parent? NodeUI.Control
 --- @field private _x number
 --- @field private _y number
 --- @field private _width number
@@ -11,30 +13,27 @@ local Class = require(ROOT .. ".class") --- @type Class
 --- @field private _layout_y number
 --- @field private _layout_width number
 --- @field private _layout_height number
---- @field private _layout_mode NodeUI.Control.LayoutMode
 --- @field private _children NodeUI.Control[]
---- @field private _parent? NodeUI.Control
 --- @field private _deferred_methods string[]
 --- @field private _mouse_focus boolean
---- @field private _mouse_focus_mode NodeUI.Control.MouseFocusMode
+--- @field private _mouse_focus_mode boolean
 --- @field private _mouse_focused_control? NodeUI.Control
 --- @field private _mouse_pressed_control? NodeUI.Control
 local Control = Class:extend()
 
 --#region Public Methods
 
---- Cria um novo Control.
+--- Cria um novo `Control`.
 --- @nodiscard
 --- @param x number
 --- @param y number
 --- @param width number
 --- @param height number
---- @param settings? NodeUI.Control.Settings
+--- @param settings? NodeUI.Control.SettingsParameter
 --- @return NodeUI.Control Control
 function Control:new(x, y, width, height, settings)
 	local obj = Class.new(self) --- @cast obj NodeUI.Control
 
-	settings = settings or {}
 	width = math.abs(width)
 	height = math.abs(height)
 
@@ -48,11 +47,11 @@ function Control:new(x, y, width, height, settings)
 	obj._layout_width = width
 	obj._layout_height = height
 
-	obj._layout_mode = settings.layout_mode or "top_left"
 	obj._children = {}
 	obj._deferred_methods = {}
 	obj._mouse_focus = false
-	obj._mouse_focus_mode = settings.mouse_focus_mode or "pass"
+
+	obj:setSettings(settings or {})
 
 	return obj
 end
@@ -69,28 +68,29 @@ function Control:update(dt)
 		self._deferred_methods = {}
 	end
 
+	self:_onUpdate(dt)
+
 	for _, child in ipairs(self._children) do
 		child:update(dt)
 	end
 end
 
---- Desenha a depuração.
-function Control:debug()
-	local default_color = { love.graphics.getColor() }
-	local color = self._mouse_focus and { 1, 1, 0, 1 } or { 1, 1, 1, 1 }
-	love.graphics.setColor(color)
+function Control:draw()
+	local clip_enabled = false
+	if self._settings.clip_children then
+		clip_enabled = true
 
-	love.graphics.rectangle("line", self._x, self._y, self._width, self._height)
+		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
+	end
 
-	love.graphics.setColor(default_color)
-end
-
---- Desenha recursivamente a depuração dos filhos.
-function Control:recursiveDebug()
-	self:debug()
+	self:_onDraw()
 
 	for _, child in ipairs(self._children) do
-		child:recursiveDebug()
+		child:draw()
+	end
+
+	if clip_enabled then
+		love.graphics.setScissor()
 	end
 end
 
@@ -115,6 +115,7 @@ function Control:removeChild(child)
 	for i, other_child in ipairs(self._children) do
 		if other_child == child then
 			table.remove(self._children, i)
+			child._parent = nil
 		end
 	end
 
@@ -129,10 +130,27 @@ function Control:removeChildAt(index)
 
 	if index > 0 and index <= #self._children then
 		child = self._children[index]
-		table.remove(self._children[index])
+		table.remove(self._children, index)
+		child._parent = nil
 	end
 
 	return child
+end
+
+--- Atualiza a configuração atual sem sobrescrever valores não alterado.
+--- @param settings NodeUI.Control.SettingsParameter
+function Control:updateSettings(settings)
+	local updated_settings = {}
+
+	for k, v in pairs(self._settings) do
+		if type(settings[k]) ~= "nil" then
+			updated_settings[k] = settings[k]
+		else
+			updated_settings[k] = v
+		end
+	end
+
+	self:setSettings(updated_settings)
 end
 
 --#endregion
@@ -232,7 +250,9 @@ end
 --- @param y number
 --- @return NodeUI.Control?
 function Control:_findMouseFocus(x, y)
-	if self._mouse_focus_mode == "ignore" then
+	local mode = self._settings.mouse_focus_mode
+
+	if mode == "ignore" then
 		return nil
 	end
 
@@ -240,11 +260,11 @@ function Control:_findMouseFocus(x, y)
 		return nil
 	end
 
-	if self._mouse_focus_mode == "stop" then
+	if mode == "stop" then
 		return self
 	end
 
-	if self._mouse_focus_mode == "pass" then
+	if mode == "pass" then
 		for i = #self._children, 1, -1 do
 			local child = self._children[i]
 			local focused = child:_findMouseFocus(x, y)
@@ -275,70 +295,70 @@ end
 function Control:_updateLayout()
 	local parent = self._parent
 
-	self._x = self._layout_x
-	self._y = self._layout_y
-	self._width = self._layout_width
-	self._height = self._layout_height
+	self._layout_x = self._x
+	self._layout_y = self._y
+	self._layout_width = self._width
+	self._layout_height = self._height
 
 	if parent then
-		local mode = self._layout_mode
+		local mode = self._settings.layout_mode
 
 		if mode == "top_left" then
-			self._x = parent._x
-			self._y = parent._y
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y
 		elseif mode == "top_right" then
-			self._x = parent._x + parent._width - self._width
-			self._y = parent._y
+			self._layout_x = parent._layout_x + parent._layout_width - self._width
+			self._layout_y = parent._layout_y
 		elseif mode == "bottom_left" then
-			self._x = parent._x
-			self._y = parent._y + parent._height - self._height
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y + parent._layout_height - self._height
 		elseif mode == "bottom_right" then
-			self._x = parent._x + parent._width - self._width
-			self._y = parent._y + parent._height - self._height
+			self._layout_x = parent._layout_x + parent._layout_width - self._width
+			self._layout_y = parent._layout_y + parent._layout_height - self._height
 		elseif mode == "center" then
-			self._x = parent._x + parent._width / 2 - self._width / 2
-			self._y = parent._y + parent._height / 2 - self._height / 2
+			self._layout_x = parent._layout_x + parent._layout_width / 2 - self._width / 2
+			self._layout_y = parent._layout_y + parent._layout_height / 2 - self._height / 2
 		elseif mode == "center_left" then
-			self._x = parent._x
-			self._y = parent._y + parent._height / 2 - self._height / 2
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y + parent._layout_height / 2 - self._height / 2
 		elseif mode == "center_right" then
-			self._x = parent._x + parent._width - self._width
-			self._y = parent._y + parent._height / 2 - self._height / 2
+			self._layout_x = parent._layout_x + parent._layout_width - self._width
+			self._layout_y = parent._layout_y + parent._layout_height / 2 - self._height / 2
 		elseif mode == "center_top" then
-			self._x = parent._x + parent._width / 2 - self._width / 2
-			self._y = parent._y
+			self._layout_x = parent._layout_x + parent._layout_width / 2 - self._width / 2
+			self._layout_y = parent._layout_y
 		elseif mode == "center_bottom" then
-			self._x = parent._x + parent._width / 2 - self._width / 2
-			self._y = parent._y + parent._height - self._height
+			self._layout_x = parent._layout_x + parent._layout_width / 2 - self._width / 2
+			self._layout_y = parent._layout_y + parent._layout_height - self._height
 		elseif mode == "full_rect" then
-			self._x = parent._x
-			self._y = parent._y
-			self._width = parent._width
-			self._height = parent._height
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y
+			self._layout_width = parent._layout_width
+			self._layout_height = parent._layout_height
 		elseif mode == "left_wide" then
-			self._x = parent._x
-			self._y = parent._y
-			self._height = parent._height
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y
+			self._layout_height = parent._layout_height
 		elseif mode == "right_wide" then
-			self._x = parent._x + parent._width - self._width
-			self._y = parent._y
-			self._height = parent._height
+			self._layout_x = parent._layout_x + parent._layout_width - self._width
+			self._layout_y = parent._layout_y
+			self._layout_height = parent._layout_height
 		elseif mode == "top_wide" then
-			self._x = parent._x
-			self._y = parent._y
-			self._width = parent._width
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y
+			self._layout_width = parent._layout_width
 		elseif mode == "bottom_wide" then
-			self._x = parent._x
-			self._y = parent._y + parent._height - self._height
-			self._width = parent._width
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y + parent._layout_height - self._height
+			self._layout_width = parent._layout_width
 		elseif mode == "h_center_wide" then
-			self._x = parent._x
-			self._y = parent._y + parent._height / 2 - self._height / 2
-			self._width = parent._width
+			self._layout_x = parent._layout_x
+			self._layout_y = parent._layout_y + parent._layout_height / 2 - self._height / 2
+			self._layout_width = parent._layout_width
 		elseif mode == "v_center_wide" then
-			self._x = parent._x + parent._width / 2 - self._width / 2
-			self._y = parent._y
-			self._height = parent._height
+			self._layout_x = parent._layout_x + parent._layout_width / 2 - self._width / 2
+			self._layout_y = parent._layout_y
+			self._layout_height = parent._layout_height
 		end
 	end
 
@@ -354,14 +374,14 @@ end
 --- Define a posição horizontal.
 --- @param x number
 function Control:setX(x)
-	self._layout_x = x
+	self._x = x
 	self:_deferreMethod("_updateLayout")
 end
 
 --- Define a posição vertical.
 --- @param y number
 function Control:setY(y)
-	self._layout_y = y
+	self._y = y
 	self:_deferreMethod("_updateLayout")
 end
 
@@ -376,14 +396,14 @@ end
 --- Define o comprimento.
 --- @param width number
 function Control:setWidth(width)
-	self._layout_width = width >= 0 and width or 0
+	self._width = width >= 0 and width or 0
 	self:_deferreMethod("_updateLayout")
 end
 
 --- Define a altura.
 --- @param height number
 function Control:setHeight(height)
-	self._layout_height = height >= 0 and height or 0
+	self._height = height >= 0 and height or 0
 	self:_deferreMethod("_updateLayout")
 end
 
@@ -395,13 +415,17 @@ function Control:setDimensions(width, height)
 	self:setHeight(height)
 end
 
---- Define o `LayoutMode`.
---- @param layout_mode NodeUI.Control.LayoutMode
-function Control:setLayoutMode(layout_mode)
-	local previous_mode = self._layout_mode
-	self._layout_mode = layout_mode
+--- Sobreescreve a configuração atual.
+--- @param settings NodeUI.Control.SettingsParameter
+function Control:setSettings(settings)
+	settings.layout_mode = settings.layout_mode or "top_left"
+	settings.mouse_focus_mode = settings.mouse_focus_mode or "pass"
+	settings.clip_children = settings.clip_children or false
 
-	if layout_mode ~= previous_mode then
+	--- @diagnostic disable-next-line: assign-type-mismatch
+	self._settings = settings
+
+	if settings.layout_mode then
 		self:_deferreMethod("_updateLayout")
 	end
 end
@@ -452,16 +476,28 @@ function Control:getDimensions()
 	return self:getWidth(), self:getHeight()
 end
 
---- Retorna o `LayoutMode`.
---- @nodiscard
---- @return NodeUI.Control.LayoutMode
-function Control:getLayoutMode()
-	return self._layout_mode
+--- Retorna uma cópia das configurações.
+--- @return NodeUI.Control.Settings
+function Control:getSettings()
+	local settings = {}
+
+	for k, v in pairs(self._settings) do
+		settings[k] = v
+	end
+
+	return settings
 end
 
 --#endregion
 
 --#region Callbacks
+
+--- @protected
+--- @diagnostic disable-next-line: unused-local
+function Control:_onUpdate(dt) end
+
+--- @protected
+function Control:_onDraw() end
 
 --- @protected
 --- @param x number
@@ -489,6 +525,37 @@ function Control:_onMousereleased(x, y, button, istouch, presses) end
 --- @param istouch boolean
 --- @diagnostic disable-next-line: unused-local
 function Control:_onMousemoved(x, y, dx, dy, istouch) end
+
+--#endregion
+
+--#region Debug Methods
+
+--- Desenha a depuração.
+--- @param settings? NodeUI.Control.DebugSettings
+function Control:debug(settings)
+	settings = settings or {}
+
+	love.graphics.push("all")
+
+	local color = self._mouse_focus and { 1, 1, 0, 1 } or { 0, 1, 0, 1 }
+	local width = settings.line_width or love.graphics.getLineWidth()
+	love.graphics.setColor(color)
+	love.graphics.setLineWidth(width)
+
+	love.graphics.rectangle("line", self._layout_x, self._layout_y, self._layout_width, self._layout_height)
+
+	love.graphics.pop()
+end
+
+--- Desenha recursivamente a depuração dos filhos.
+--- @param settings? NodeUI.Control.DebugSettings
+function Control:recursiveDebug(settings)
+	self:debug(settings)
+
+	for _, child in ipairs(self._children) do
+		child:recursiveDebug(settings)
+	end
+end
 
 --#endregion
 
