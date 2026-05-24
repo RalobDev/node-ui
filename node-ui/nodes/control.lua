@@ -245,7 +245,10 @@ end
 --- @private
 --- @return boolean
 function Control:_isPointInside(x, y)
-	return x >= self._x and y >= self._y and x <= self._x + self._width and y <= self._y + self._height
+	return x >= self._layout_x
+		and y >= self._layout_y
+		and x <= self._layout_x + self._layout_width
+		and y <= self._layout_y + self._layout_height
 end
 
 --- Encontra o foco do mouse na árvore de nós.
