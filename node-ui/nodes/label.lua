@@ -62,17 +62,19 @@ end
 
 --#region Callbacks
 
+--- @protected
 function Label:_onDraw()
 	local settings = self._settings
 	local font = self._settings.font
 
-	local limit = 0
-	local lines = {}
+	local limit
+	local lines
 
 	if settings.wrap_text then
 		limit, lines = font:getWrap(self.text, self:getWidth())
 	else
 		limit = font:getWidth(self.text)
+		lines = { self.text }
 	end
 	limit = math.max(limit, self:getWidth())
 

@@ -17,11 +17,17 @@
 --- @field layout_mode NodeUI.Control.LayoutMode
 --- @field mouse_focus_mode NodeUI.Control.MouseFocusMode
 --- @field clip_children boolean
+--- @field h_container_sizing NodeUI.Control.ContainerSizing
+--- @field v_container_sizing NodeUI.Control.ContainerSizing
+--- @field container_expand boolean
 
 --- @class NodeUI.Control.SettingsParameter
 --- @field layout_mode? NodeUI.Control.LayoutMode
 --- @field mouse_focus_mode? NodeUI.Control.MouseFocusMode
 --- @field clip_children? boolean
+--- @field h_container_sizing? NodeUI.Control.ContainerSizing
+--- @field v_container_sizing? NodeUI.Control.ContainerSizing
+--- @field container_expand? boolean
 
 --- @alias NodeUI.Control.LayoutMode
 --- | "absolute"
@@ -46,3 +52,9 @@
 --- | "stop" Recebe o evento e impede que outros recebam
 --- | "pass" Recebe o evento e permite que filhos/outros processem
 --- | "ignore" Ignora eventos de mouse
+
+--- @alias NodeUI.Control.ContainerSizing
+--- | "fill"
+--- | "shrink_begin"
+--- | "shrink_end"
+--- | "shrink_center"

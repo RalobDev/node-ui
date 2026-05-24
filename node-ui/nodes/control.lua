@@ -9,16 +9,17 @@ local Class = require(ROOT .. ".class") --- @type Class
 --- @field private _y number
 --- @field private _width number
 --- @field private _height number
---- @field private _layout_x number
---- @field private _layout_y number
---- @field private _layout_width number
---- @field private _layout_height number
+--- @field protected _layout_x number
+--- @field protected _layout_y number
+--- @field protected _layout_width number
+--- @field protected _layout_height number
 --- @field private _children NodeUI.Control[]
 --- @field private _deferred_methods string[]
 --- @field private _mouse_focus boolean
 --- @field private _mouse_focus_mode boolean
 --- @field private _mouse_focused_control? NodeUI.Control
 --- @field private _mouse_pressed_control? NodeUI.Control
+--- @field protected _update_layout boolean
 local Control = Class:extend()
 
 --#region Public Methods
@@ -50,6 +51,7 @@ function Control:new(x, y, width, height, settings)
 	obj._children = {}
 	obj._deferred_methods = {}
 	obj._mouse_focus = false
+	obj._update_layout = true
 
 	obj:setSettings(settings or {})
 
@@ -105,6 +107,8 @@ function Control:addChild(child)
 	self._children[#self._children + 1] = child
 
 	child:_deferreMethod("_updateLayout")
+
+	self:_onAddedChild(child)
 
 	return child
 end
@@ -295,12 +299,14 @@ end
 function Control:_updateLayout()
 	local parent = self._parent
 
-	self._layout_x = self._x
-	self._layout_y = self._y
-	self._layout_width = self._width
-	self._layout_height = self._height
+	if self._update_layout then
+		self._layout_x = self._x
+		self._layout_y = self._y
+		self._layout_width = self._width
+		self._layout_height = self._height
+	end
 
-	if parent then
+	if parent and self._update_layout then
 		local mode = self._settings.layout_mode
 
 		if mode == "top_left" then
@@ -362,9 +368,22 @@ function Control:_updateLayout()
 		end
 	end
 
+	self:_onLayoutUpdated()
+
 	for _, child in ipairs(self._children) do
 		child:_deferreMethod("_updateLayout")
 	end
+end
+
+--#endregion
+
+--#region Protected Methods
+
+--- @protected
+--- @nodiscard
+--- @return number x, number y, number width, number height
+function Control:_getBaseTransform()
+	return self._x, self._y, self._width, self._height
 end
 
 --#endregion
@@ -421,6 +440,9 @@ function Control:setSettings(settings)
 	settings.layout_mode = settings.layout_mode or "top_left"
 	settings.mouse_focus_mode = settings.mouse_focus_mode or "pass"
 	settings.clip_children = settings.clip_children or false
+	settings.h_container_sizing = settings.h_container_sizing or "fill"
+	settings.v_container_sizing = settings.v_container_sizing or "fill"
+	settings.container_expand = settings.container_expand or false
 
 	--- @diagnostic disable-next-line: assign-type-mismatch
 	self._settings = settings
@@ -477,6 +499,7 @@ function Control:getDimensions()
 end
 
 --- Retorna uma cópia das configurações.
+--- @nodiscard
 --- @return NodeUI.Control.Settings
 function Control:getSettings()
 	local settings = {}
@@ -486,6 +509,19 @@ function Control:getSettings()
 	end
 
 	return settings
+end
+
+--- Retorna uma cópia da tabela de filhos.
+--- @nodiscard
+--- @return NodeUI.Control[]
+function Control:getChildren()
+	local children = {}
+
+	for _, child in ipairs(self._children) do
+		children[#children + 1] = child
+	end
+
+	return children
 end
 
 --#endregion
@@ -525,6 +561,18 @@ function Control:_onMousereleased(x, y, button, istouch, presses) end
 --- @param istouch boolean
 --- @diagnostic disable-next-line: unused-local
 function Control:_onMousemoved(x, y, dx, dy, istouch) end
+
+--- @protected
+--- @param child NodeUI.Control
+--- @diagnostic disable-next-line: unused-local
+function Control:_onAddedChild(child) end
+
+--- @protected
+--- @param child NodeUI.Control
+--- @diagnostic disable-next-line: unused-local
+function Control:_onRemovedChild(child) end
+
+function Control:_onLayoutUpdated() end
 
 --#endregion
 

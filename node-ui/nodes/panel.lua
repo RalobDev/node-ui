@@ -160,6 +160,7 @@ end
 
 --#region Callbacks
 
+--- @protected
 function Panel:_onDraw()
 	local expand_margin = self._settings.expand_margin
 
