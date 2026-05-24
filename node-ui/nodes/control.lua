@@ -144,22 +144,6 @@ function Control:removeChildAt(index)
 	return child
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.Control.SettingsParameter
-function Control:updateSettings(settings)
-	local updated_settings = {}
-
-	for k, v in pairs(self._settings) do
-		if type(settings[k]) ~= "nil" then
-			updated_settings[k] = settings[k]
-		else
-			updated_settings[k] = v
-		end
-	end
-
-	self:setSettings(updated_settings)
-end
-
 --#endregion
 
 --#region Input Methods
