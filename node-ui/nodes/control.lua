@@ -278,7 +278,7 @@ end
 --- Limpa o mouse_focus da árvore de nós.
 --- @private
 function Control:_clearMouseFocus()
-	self._mouse_focus = false
+	self:_setMouseFocus(false)
 
 	for _, child in ipairs(self:_getAllChildren()) do
 		child:_clearMouseFocus()
