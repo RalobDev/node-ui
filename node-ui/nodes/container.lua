@@ -22,12 +22,6 @@ function Container:new(x, y, width, height, settings)
 	return obj
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.Container.SettingsParameter
-function Container:updateSettings(settings)
-	Control.updateSettings(self, settings)
-end
-
 --#endregion
 
 --#region Protected Methods
@@ -191,7 +185,7 @@ end
 
 --#region Getters
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @return NodeUI.Container.Settings
 function Container:getSettings()
 	return Control.getSettings(self) --- @type NodeUI.Container.Settings

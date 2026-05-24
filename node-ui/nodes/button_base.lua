@@ -30,12 +30,6 @@ function ButtonBase:new(x, y, width, height, settings)
 	return obj
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.ButtonBase.SettingsParameter
-function ButtonBase:updateSettings(settings)
-	Control.updateSettings(self, settings)
-end
-
 --#endregion
 
 --#region Setters
@@ -44,6 +38,8 @@ end
 --- @param settings NodeUI.ButtonBase.SettingsParameter
 function ButtonBase:setSettings(settings)
 	settings.release_on_lost_focus = settings.release_on_lost_focus or false
+	settings.pressed_callback = settings.pressed_callback or function() end
+	settings.released_callback = settings.released_callback or function() end
 
 	Control.setSettings(self, settings)
 end
@@ -52,7 +48,7 @@ end
 
 --#region Getters
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @return NodeUI.ButtonBase.Settings
 function ButtonBase:getSettings()
 	return Control.getSettings(self) --- @type NodeUI.ButtonBase.Settings
@@ -82,7 +78,7 @@ function ButtonBase:_onMousepressed(x, y, button, istouch, presses)
 	self._mouse_buffer_x = x
 	self._mouse_buffer_y = y
 	self._mouse_buffer_istouch = istouch
-	print("pressed")
+	self._settings.pressed_callback()
 end
 
 --- @param x number
@@ -96,9 +92,8 @@ function ButtonBase:_onMousereleased(x, y, button, istouch, presses)
 		self._ignore_release = false
 		return
 	end
-
 	self._pressed = false
-	print("released")
+	self._settings.released_callback()
 end
 
 --#endregion

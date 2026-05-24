@@ -26,12 +26,6 @@ function Label:new(x, y, width, height, text, settings)
 	return obj
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.Label.SettingsParameter
-function Label:updateSettings(settings)
-	Control.updateSettings(self, settings)
-end
-
 --#endregion
 
 --#region Setters
@@ -52,7 +46,7 @@ end
 
 --#region Getters
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @return NodeUI.Label.Settings
 function Label:getSettings()
 	return Control.getSettings(self) --- @type NodeUI.Label.Settings

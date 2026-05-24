@@ -21,12 +21,6 @@ function HContainer:new(x, y, width, height, settings)
 	return obj
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.HContainer.SettingsParameter
-function HContainer:updateSettings(settings)
-	Container.updateSettings(self, settings)
-end
-
 --#endregion
 
 --#region Protected Methods
@@ -49,7 +43,7 @@ end
 
 --#region Getters
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @return NodeUI.HContainer.Settings
 function HContainer:getSettings()
 	return Container.getSettings(self) --- @type NodeUI.HContainer.Settings

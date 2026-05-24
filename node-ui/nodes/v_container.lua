@@ -21,12 +21,6 @@ function VContainer:new(x, y, width, height, settings)
 	return obj
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.VContainer.SettingsParameter
-function VContainer:updateSettings(settings)
-	Container.updateSettings(self, settings)
-end
-
 --#endregion
 
 --#region Protected Methods
@@ -49,7 +43,7 @@ end
 
 --#region Getters
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @return NodeUI.VContainer.Settings
 function VContainer:getSettings()
 	return Container.getSettings(self) --- @type NodeUI.VContainer.Settings

@@ -529,17 +529,11 @@ function Control:getDimensions()
 	return self:getWidth(), self:getHeight()
 end
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @nodiscard
 --- @return NodeUI.Control.Settings
 function Control:getSettings()
-	local settings = {}
-
-	for k, v in pairs(self._settings) do
-		settings[k] = v
-	end
-
-	return settings
+	return self._settings
 end
 
 --- Retorna uma cópia da tabela de filhos.

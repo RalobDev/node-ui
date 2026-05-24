@@ -86,12 +86,6 @@ function Panel:new(x, y, width, height, settings)
 	return obj
 end
 
---- Atualiza a configuração atual sem sobrescrever valores não alterado.
---- @param settings NodeUI.Panel.SettingsParameter
-function Panel:updateSettings(settings)
-	Control.updateSettings(self, settings)
-end
-
 --#endregion
 
 --#region Private Methods
@@ -125,7 +119,7 @@ end
 --- Sobreescreve a configuração atual.
 --- @param settings NodeUI.Panel.SettingsParameter
 function Panel:setSettings(settings)
-	settings.color = settings.color or { 0.5, 0.5, 0.5, 1 }
+	settings.color = settings.color or { 0.2, 0.2, 0.2, 1 }
 	settings.edge_color = settings.edge_color or { 1, 1, 1, 0 }
 	settings.edge_width = settings.edge_width or 1
 
@@ -150,7 +144,7 @@ end
 
 --#region Getters
 
---- Retorna uma cópia das configurações.
+--- Retorna as configurações.
 --- @return NodeUI.Panel.Settings
 function Panel:getSettings()
 	return Control.getSettings(self) --- @type NodeUI.Panel.Settings
