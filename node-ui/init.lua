@@ -2,6 +2,8 @@ local ROOT = ...
 
 --- @class NodeUI
 --- @field Control NodeUI.Control
+--- @field Container NodeUI.Container
+--- @field AspectRatioContainer NodeUI.AspectRatioContainer
 local NodeUI = {}
 
 --- Armazena todos os **`Control`** que estão na raiz do **`NodeUI`**.
@@ -99,13 +101,6 @@ requireNodes() -- Carrega todos os nós do módulo.
 
 
 --#region Public
-
---- Retorna a quantidade de **`Control`** na raiz da UI.
---- @nodiscard
---- @return number
-function NodeUI.getRootChildCount()
-    return #root_controls
-end
 
 --- Desenha a depuração de todos os **`Control`** na raiz da UI.
 function NodeUI.drawDebug()
@@ -238,6 +233,7 @@ end
 --- Define a dimensão base dos **`Control`** na raiz da UI.
 --- @param width number Novo comprimento.
 --- @param height number Nova altura.
+--- @see NodeUI.Control
 function NodeUI.setBaseDimensions(width, height)
     base_width, base_height = width, height
     callRootControlMethod("_queueUpdateLayout")
@@ -247,6 +243,13 @@ end
 
 
 --#region Getter
+
+--- Retorna a quantidade de **`Control`** na raiz da UI.
+--- @nodiscard
+--- @return number
+function NodeUI.getRootChildCount()
+    return #root_controls
+end
 
 --- Retorna a posição horizontal base dos **`Control`** na raiz da UI.
 --- @nodiscard

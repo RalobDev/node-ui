@@ -32,6 +32,15 @@
 --- | "WHEEL_MOVED"
 --- | "MOUSE_FOCUS_CHANGED"
 
+--- @alias NodeUI.Control.AlignmentMode
+--- | "BEGIN"
+--- | "CENTER"
+--- | "END"
+
+--- @alias NodeUI.Control.Axis
+--- | "HORIZONTAL"
+--- | "VERTICAL"
+
 --- Representa a conexão de um sinal no **`Control`**.
 --- @class NodeUI.Control.SignalConnection
 --- @field method string Método chamado ao sinal ser emitido.

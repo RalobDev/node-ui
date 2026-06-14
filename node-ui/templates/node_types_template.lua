@@ -1,3 +1,0 @@
---- @alias NodeUI.NodeTemplate.Signals
---- | NodeUI.Control.Signals
--- Other signals...

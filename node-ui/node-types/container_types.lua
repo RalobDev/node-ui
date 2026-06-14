@@ -1,0 +1,2 @@
+--- @alias NodeUI.Container.Signals
+--- | NodeUI.Control.Signals

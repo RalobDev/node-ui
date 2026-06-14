@@ -10,14 +10,14 @@ local Class = require(ROOT .. ".class") --- @type Class
 --- @field private _children NodeUI.Control[] Filhos do **`Control`**.
 --- @field private _x number Posição horizontal.
 --- @field private _y number Posição vertical.
---- @field private _layout_x number Posição horizontal no layout.
---- @field private _layout_y number Posição vertical no layout.
+--- @field protected _layout_x number Posição horizontal no layout.
+--- @field protected _layout_y number Posição vertical no layout.
 --- @field private _minimum_width number Comprimento mínimo customizado em pixels.
 --- @field private _minimum_height number Altura mínima customizada em pixels.
 --- @field private _width number Comprimento em pixels.
 --- @field private _height number Altura em pixels.
---- @field private _layout_width number Comprimento em pixels no layout.
---- @field private _layout_height number Altura em pixels no layout.
+--- @field protected _layout_width number Comprimento em pixels no layout.
+--- @field protected _layout_height number Altura em pixels no layout.
 --- @field private _layout NodeUI.Control.Layout Maneira como a posição e dimensão do **`Control`** se comportam.
 --- @field private _visible boolean Visibilidade do **`Control`**.
 --- @field private _mouse_focused boolean Se **`Control`** tem o foco do mouse.
@@ -27,7 +27,8 @@ local Class = require(ROOT .. ".class") --- @type Class
 --- @field private _signal_connections table<string, NodeUI.Control.SignalConnection[]>
 --- @field private _is_internal_child boolean Se `true`, significa que o **`Control`** é um filho interno de outro.
 --- @field clip_content boolean Se `true`, clipa todo o desenho à área do **`Control`**.
-local Control = Class:extend()
+--- @field protected _graphics_push_method function Chamada antes de desenhar o **`Control`**.
+local Control = Class:extend("Control")
 
 
 --#region Public
@@ -199,6 +200,8 @@ function Control:_update(dt)
 		self:_updateLayout()
 	end
 
+	self:_onUpdate(dt)
+
 	-- Atualiza os filhos.
 	for _, child in ipairs(self._children) do
 		child:_update(dt)
@@ -212,14 +215,23 @@ function Control:_draw()
 		return
 	end
 
+	love.graphics.push("all")
+
+	if type(self._graphics_push_method) == "function" then
+		self._graphics_push_method()
+	end
+
 	-- Desenha o Control.
 	self:_onDraw()
+
+	love.graphics.pop()
 
 	-- Aplica o recorte de tela para área do Control.
 	local previous_clip_x, previous_clip_y, previous_clip_w, previous_clip_h = love.graphics.getScissor()
 	if self.clip_content then
 		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 	end
+
 
 	-- Chama o desenho dos filhos do Control.
 	for _, child in ipairs(self._children) do
@@ -554,22 +566,6 @@ function Control:_queueUpdateLayout()
 	self._queued_for_update_layout = true
 end
 
---- Atualiza a posição e dimensões do **`Control`** de acordo com suas âncoras e offsets.
---- @protected
-function Control:_updateLayout()
-	if not self._visible then
-		return
-	end
-
-	-- Atualiza o layout do Control.
-	self:_onUpdateLayout()
-
-	-- Marca os filhos para atualizarem seu layout.
-	for _, child in ipairs(self._children) do
-		child:_queueUpdateLayout()
-	end
-end
-
 --- Emite o `signal`, chamando todos os seus métodos.
 --- @protected
 --- @param signal NodeUI.Control.Signals
@@ -597,6 +593,38 @@ end
 
 --#region Private
 
+--- Atualiza a posição e dimensões do **`Control`** de acordo com suas âncoras e offsets.
+--- @private
+function Control:_updateLayout()
+	if not self._visible then
+		return
+	end
+
+	if self:is("Container") then
+		--- @diagnostic disable-next-line: undefined-field
+		self:_queueUpdateChildrenLayout()
+	end
+
+	-- Quando o Control é filho de um Container ele não pode atualizar seu próprio layout.
+	local parent = self._parent
+	if parent and parent:is("Container") then
+		--- @cast parent NodeUI.Container
+
+		--- @diagnostic disable-next-line: invisible
+		parent:_queueUpdateChildrenLayout()
+
+		return
+	end
+
+	-- Atualiza o layout do Control.
+	self:_onUpdateLayout()
+
+	-- Marca os filhos para atualizarem seu layout.
+	for _, child in ipairs(self._children) do
+		child:_queueUpdateLayout()
+	end
+end
+
 --- Desenha a depuração do **`Control`**.
 --- @private
 function Control:_drawDebug()
@@ -608,7 +636,15 @@ function Control:_drawDebug()
 	local default_color = { love.graphics.getColor() }
 	love.graphics.setColor(self._mouse_focused and { 1, 1, 0 } or { 0, 1, 0 })
 
+	love.graphics.push("all")
+
+	if type(self._graphics_push_method) == "function" then
+		self._graphics_push_method()
+	end
+
 	self:_onDrawDebug()
+
+	love.graphics.pop()
 
 	love.graphics.setColor(default_color)
 
@@ -708,6 +744,13 @@ end
 
 
 --#region Protected Callback
+
+--- Chamado durante a atualização do **`Control`**.
+--- @protected
+--- @param dt number
+function Control:_onUpdate(dt)
+	assert(dt)
+end
 
 --- Chamado durante o desenho do **`Control`**.
 --- @protected
