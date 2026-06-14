@@ -1,0 +1,40 @@
+--- @alias NodeUI.Control.Layout
+--- | "TOP_LEFT"
+--- | "TOP_RIGHT"
+--- | "BOTTOM_LEFT"
+--- | "BOTTOM_RIGHT"
+--- | "CENTER_LEFT"
+--- | "CENTER_RIGHT"
+--- | "CENTER_TOP"
+--- | "CENTER_BOTTOM"
+--- | "CENTER"
+--- | "LEFT_WIDE"
+--- | "RIGHT_WIDE"
+--- | "TOP_WIDE"
+--- | "BOTTOM_WIDE"
+--- | "VCENTER_WIDE"
+--- | "HCENTER_WIDE"
+--- | "HEXPAND"
+--- | "VEXPAND"
+--- | "EXPAND"
+--- | "FULL_RECT"
+--- | "CUSTOM"
+
+--- @alias NodeUI.Control.MouseFilter
+--- | "STOP"
+--- | "PASS"
+--- | "IGNORE"
+
+--- @alias NodeUI.Control.Signals
+--- | "MOUSE_PRESSED"
+--- | "MOUSE_RELEASED"
+--- | "MOUSE_MOVED"
+--- | "WHEEL_MOVED"
+--- | "MOUSE_FOCUS_CHANGED"
+
+--- Representa a conexão de um sinal no **`Control`**.
+--- @class NodeUI.Control.SignalConnection
+--- @field method function Método chamado ao sinal ser emitido.
+--- Objeto dono do método da conexão. Caso seja passado um `owner` na conexão, ele será passado como primeiro
+--- parâmetro do método.
+--- @field owner? table
