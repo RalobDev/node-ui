@@ -34,7 +34,7 @@
 
 --- Representa a conexão de um sinal no **`Control`**.
 --- @class NodeUI.Control.SignalConnection
---- @field method function Método chamado ao sinal ser emitido.
+--- @field method string Método chamado ao sinal ser emitido.
 --- Objeto dono do método da conexão. Caso seja passado um `owner` na conexão, ele será passado como primeiro
 --- parâmetro do método.
 --- @field owner? table

@@ -5,21 +5,36 @@ local Control = require(ROOT .. ".control") --- @type NodeUI.Control
 --- @class NodeTemplate: NodeUI.Control
 local NodeTemplate = Control:extend()
 
+--#region Public
+
+--- Cria um novo **`NodeTemplate`**.
+--- @param x number Posição horizontal
+--- @param y number Posição vertical
+--- @param width number Comprimento em pixels
+--- @param height number Altura em pixels
+--- @return NodeUI.Control Control
+function NodeTemplate:new(x, y, width, height)
+    local obj = Control.new(self, x, y, width, height) --- @cast obj NodeTemplate
+
+    return obj
+end
+
+--#endregion
+
 
 --#region Override
 
 --- Cria uma conexão em determinado sinal do **`Control`**.
 --- @param signal NodeUI.NodeTemplate.Signals
---- @param method function Método chamado ao sinal ser emitido.
---- @param owner? table Objeto dono do método da conexão que será passado como primeiro parâmetro do método.
---- @return function method Método da conexão.
+--- @param owner table Objeto dono do método da conexão que será passado como primeiro parâmetro do método.
+--- @param method string Método chamado ao sinal ser emitido.
 function NodeTemplate:connect(signal, method, owner)
-    return Control:connect(signal, method, owner)
+    return Control.connect(self, signal, owner, method)
 end
 
 --- Desconecta o `method` do `signal`.
 --- @param signal NodeUI.NodeTemplate.Signals
---- @param method function Método chamado ao sinal ser emitido.
+--- @param method string Método chamado ao sinal ser emitido.
 function NodeTemplate:disconnect(signal, method)
     Control.disconnect(self, signal, method)
 end

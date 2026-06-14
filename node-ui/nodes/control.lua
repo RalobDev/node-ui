@@ -60,10 +60,10 @@ function Control:new(x, y, width, height)
 	obj._is_internal_child = false
 	obj.clip_content = false
 
-	obj:connect("MOUSE_PRESSED", obj._onMousepressed, obj)
-	obj:connect("MOUSE_RELEASED", obj._onMousereleased, obj)
-	obj:connect("MOUSE_MOVED", obj._onMousemoved, obj)
-	obj:connect("WHEEL_MOVED", obj._onWheelMoved, obj)
+	obj:connect("MOUSE_PRESSED", obj, "_onMousepressed")
+	obj:connect("MOUSE_RELEASED", obj, "_onMousereleased")
+	obj:connect("MOUSE_MOVED", obj, "_onMousemoved")
+	obj:connect("WHEEL_MOVED", obj, "_onWheelMoved")
 
 	obj:_queueUpdateLayout()
 
@@ -144,29 +144,32 @@ end
 
 --- Cria uma conexão em determinado sinal do **`Control`**.
 --- @param signal NodeUI.Control.Signals
---- @param method function Método chamado ao sinal ser emitido.
---- @param owner? table Objeto dono do método da conexão que será passado como primeiro parâmetro do método.
---- @return function method Método da conexão.
-function Control:connect(signal, method, owner)
+--- @param owner table Objeto dono do método da conexão que será passado como primeiro parâmetro do método.
+--- @param method string Método chamado ao sinal ser emitido.
+function Control:connect(signal, owner, method)
 	local connection = { --- @type NodeUI.Control.SignalConnection
 		method = method,
 		owner = owner,
 	}
 
-	local connections = self._signal_connections[signal]
+	local _signal_connections = self._signal_connections
+	if type(_signal_connections) == "nil" then
+		_signal_connections = {}
+		self._signal_connections = _signal_connections
+	end
+
+	local connections = _signal_connections[signal]
 	if type(connections) == "nil" then
 		connections = {}
-		self._signal_connections[signal] = connections
+		_signal_connections[signal] = connections
 	end
 
 	connections[#connections + 1] = connection
-
-	return method
 end
 
 --- Desconecta o `method` do `signal`.
 --- @param signal NodeUI.Control.Signals
---- @param method function Método chamado ao sinal ser emitido.
+--- @param method string Método chamado ao sinal ser emitido.
 function Control:disconnect(signal, method)
 	local connections = self._signal_connections[signal]
 	if type(connections) ~= "table" then
@@ -577,11 +580,15 @@ function Control:_emit(signal, ...)
 	end
 
 	for _, connection in ipairs(connections) do
-		if connection.owner then
-			connection.method(connection.owner, ...)
-		else
-			connection.method(...)
+		local method_function = connection.owner[connection.method]
+
+		if type(method_function) ~= "function" then
+			goto continue
 		end
+
+		method_function(connection.owner, ...)
+
+		::continue::
 	end
 end
 
