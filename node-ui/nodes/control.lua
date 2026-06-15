@@ -1,62 +1,84 @@
-local ROOT = (...):match("^(.*)%.%w+%.%w+$")
+local ROOT = (...):match("^(.*)%.%w+%.%w+$") --- @type string
 
-local Class = require(ROOT .. ".class") --- @type Class
+local Class = require(ROOT .. ".class")      --- @type Class
 
+--- # NodeUI.Control
+---
+--- O **Control** é a classe base de todos os elementos da interface do **`NodeUI`**. Ela fornece funcionalidades fundamentais
+--- como hierarquia de nós, sistema de layout, renderização, processamento de eventos de entrada e gerenciamento de sinais.
+---
+--- ### Descrição
+---
+--- O **Control** representa um elemento visual da interface e serve como base para todos os controles da biblioteca. Cada controle pode
+--- possuir um pai e múltiplos filhos, formando uma árvore de UI organizada hierarquicamente.
+---
+--- A classe implementa o sistema de layout do **NodeUI**, permitindo posicionar e dimensionar controles em relação ao seu pai ou à área base da
+--- interface. Além disso, gerencia visibilidade, foco do mouse, renderização, atualização, clipping de conteúdo e propagação de eventos de entrada.
+---
+--- O **Control** também disponibiliza um sistema de sinais para comunicação entre objetos e uma série de callbacks protegidos que podem
+--- ser sobrescritos por classes derivadas para implementar comportamentos personalizados. Dessa forma, ele fornece toda a infraestrutura necessária
+--- para a criação de componentes visuais e contêineres mais complexos.
 --- @class NodeUI.Control: Class
---- @field private _node_ui NodeUI Referência ao módulo **`NodeUI`**.
---- @field private _queued_for_deletion boolean Marca se está na fila para ser deletado.
---- @field private _queued_for_update_layout boolean Marca se está na fila para atualizar seu layout.
---- @field private _parent? NodeUI.Control **`Control`** pai.
---- @field private _children NodeUI.Control[] Filhos do **`Control`**.
---- @field private _x number Posição horizontal.
---- @field private _y number Posição vertical.
---- @field protected _layout_x number Posição horizontal no layout.
---- @field protected _layout_y number Posição vertical no layout.
---- @field private _minimum_width number Comprimento mínimo customizado em pixels.
---- @field private _minimum_height number Altura mínima customizada em pixels.
---- @field private _width number Comprimento em pixels.
---- @field private _height number Altura em pixels.
---- @field protected _layout_width number Comprimento em pixels no layout.
---- @field protected _layout_height number Altura em pixels no layout.
---- @field private _layout NodeUI.Control.Layout Maneira como a posição e dimensão do **`Control`** se comportam.
---- @field private _visible boolean Visibilidade do **`Control`**.
---- @field private _mouse_focused boolean Se **`Control`** tem o foco do mouse.
+--- @field private _node_ui NodeUI
+--- @field private _queued_for_deletion boolean
+--- @field private _queued_for_update_layout boolean
+--- @field private _parent? NodeUI.Control
+--- @field private _children NodeUI.Control[]
+--- @field private _minimum_width number
+--- @field private _minimum_height number
+--- @field private _x number
+--- @field private _y number
+--- @field private _width number
+--- @field private _height number
+--- @field protected _layout_x number
+--- @field protected _layout_y number
+--- @field protected _layout_width number
+--- @field protected _layout_height number
+--- @field private _layout NodeUI.Control.Layout
+--- @field private _visible boolean
+--- @field private _mouse_focused boolean
 --- @field private _mouse_filter NodeUI.Control.MouseFilter
---- @field private _mouse_focused_control? NodeUI.Control **`Control`** que o mouse está focado.
---- @field private _mouse_pressed_control? NodeUI.Control **`Control`** que recebeu o pressionar do mouse.
+--- @field private _mouse_focused_control? NodeUI.Control
+--- @field private _mouse_pressed_control? NodeUI.Control
 --- @field private _signal_connections table<string, NodeUI.Control.SignalConnection[]>
---- @field private _is_internal_child boolean Se `true`, significa que o **`Control`** é um filho interno de outro.
---- @field clip_content boolean Se `true`, clipa todo o desenho à área do **`Control`**.
---- @field protected _graphics_push_method function Chamada antes de desenhar o **`Control`**.
+--- @field private _is_internal_child boolean
+--- @field protected _graphics_push_method function
+--- @field clip_content boolean Se `true`, clipa o desenho dos filhos à área do **Control**.
 local Control = Class:extend("Control")
 
 
 --#region Public
 
 --- Cria um novo **`Control`**.
---- @param x number Posição horizontal
---- @param y number Posição vertical
---- @param width number Comprimento em pixels
---- @param height number Altura em pixels
---- @return NodeUI.Control Control
+--- @param x number 			   Posição horizontal.
+--- @param y number 			   Posição vertical.
+--- @param width number 		   Comprimento em pixels.
+--- @param height number 		   Altura em pixels.
+--- @return NodeUI.Control Control Novo Control.
 function Control:new(x, y, width, height)
 	local obj = Class.new(self) --- @cast obj NodeUI.Control
 
 	obj._children = {}
-	obj._x = x
-	obj._y = y
-	obj._layout_x = x
-	obj._layout_y = y
-	obj._width = width
-	obj._height = height
-	obj._layout_width = width
-	obj._layout_height = height
+
 	obj._minimum_width = 0
 	obj._minimum_height = 0
+
+	obj._x = x
+	obj._y = y
+	obj._width = width
+	obj._height = height
+
+	obj._layout_x = x
+	obj._layout_y = y
+	obj._layout_width = width
+	obj._layout_height = height
+
 	obj._layout = "TOP_LEFT"
 	obj._visible = true
+
 	obj._mouse_focused = false
 	obj._mouse_filter = "PASS"
+
 	obj._signal_connections = {}
 	obj._is_internal_child = false
 	obj.clip_content = false
@@ -77,12 +99,12 @@ function Control:new(x, y, width, height)
 end
 
 --- Marca para deletar o **`Control`** no próximo `love.update()`.
---- <br><br>
+---
 --- Os nós não são coletados pelo coletor de lixo do **Lua** ao ser definido com `nil`, pois
 --- o próprio módulo **`NodeUI`** armazena uma referência deles. Assim é necessário chamar
 --- `queueFree` quando quiser remover um nó da biblioteca.
---- <br><br>
---- **NOTE:** Ao ser deletado o nó e seus filhos são removidos da raiz do **`NodeUI`**, mas quaisquer
+---
+--- Ao ser deletado o nó e seus filhos são removidos da raiz do **NodeUI**, mas quaisquer
 --- referências fora do módulo continuarão existindo.
 function Control:queueFree()
 	self._queued_freed = true
@@ -90,28 +112,17 @@ end
 
 --- Retorna se o **`Control`** está na fila de deleção.
 --- @nodiscard
---- @return boolean
+--- @return boolean deletion Se `true`, o **Control** está na fila de deleção.
 function Control:isQueuedForDeletion()
 	return self._queued_freed
 end
 
 --- Adiciona um filho ao **`Control`**. O filho adicionado é retornado, simplificando a criação e
 --- referência de filhos.
---- <br><br>
---- **Exemplo 1:**
---- ```lua
---- local child = control:addChild(NodeUI.Control:new())
---- ```
---- <br><br>
---- **Exemplo 2:**
---- ```lua
---- local child = NodeUI.Control:new()
---- control:addChild(child)
---- ```
 --- @generic T: NodeUI.Control
---- @param child T **`Control`** filho.
+--- @param child T 				**Control** filho.
 --- @param is_internal? boolean Se `true`, o filho é marcado como interno do **`Control`**.
---- @return T child
+--- @return T child 			Filho que foi adicionado.
 function Control:addChild(child, is_internal)
 	--- @cast child NodeUI.Control
 
@@ -124,7 +135,7 @@ function Control:addChild(child, is_internal)
 end
 
 --- Remove o `child` do **`Control`**.
---- @param child NodeUI.Control
+--- @param child NodeUI.Control Filho a ser removido.
 function Control:removeChild(child)
 	for i = #self._children, 1, -1 do
 		local other_child = self._children[i]
@@ -138,15 +149,15 @@ end
 
 --- Retorna se o **`Control`** está visível ou não.
 --- @nodiscard
---- @return boolean visible
+--- @return boolean visible Visibilidade do **Control**.
 function Control:isVisible()
 	return self._visible
 end
 
 --- Cria uma conexão em determinado sinal do **`Control`**.
---- @param signal NodeUI.Control.Signals
---- @param owner table Objeto dono do método da conexão que será passado como primeiro parâmetro do método.
---- @param method string Método chamado ao sinal ser emitido.
+--- @param signal NodeUI.Control.Signals Nome do sinal.
+--- @param owner table                   Objeto dono do método.
+--- @param method string                 Nome do método chamado ao sinal ser emitido.
 function Control:connect(signal, owner, method)
 	local connection = { --- @type NodeUI.Control.SignalConnection
 		method = method,
@@ -168,9 +179,9 @@ function Control:connect(signal, owner, method)
 	connections[#connections + 1] = connection
 end
 
---- Desconecta o `method` do `signal`.
---- @param signal NodeUI.Control.Signals
---- @param method string Método chamado ao sinal ser emitido.
+--- Remove a conexão de um sinal do **`Control`**.
+--- @param signal NodeUI.Control.Signals Nome do sinal.
+--- @param method string             	 Nome do método chamado ao sinal ser emitido.
 function Control:disconnect(signal, method)
 	local connections = self._signal_connections[signal]
 	if type(connections) ~= "table" then
@@ -192,7 +203,7 @@ end
 
 --- Atualiza o **`Control`**.
 --- @private
---- @param dt number
+--- @param dt number Tempo decorrido desde a última atualização.
 function Control:_update(dt)
 	-- Atualiza o layout se estiver marcado para isto.
 	if self._queued_for_update_layout then
@@ -246,9 +257,9 @@ end
 
 --- Lida com o pressionar de teclas.
 --- @private
---- @param key love.KeyConstant
---- @param scancode love.Scancode
---- @param isrepeat boolean
+--- @param key love.KeyConstant   Caractere da tecla pressionada.
+--- @param scancode love.Scancode O scancode que representa a tecla pressionada.
+--- @param isrepeat boolean       Se este evento de pressionamento de tecla é uma repetição.
 function Control:_keypressed(key, scancode, isrepeat)
 	assert(key, scancode, isrepeat)
 	-- !PASS
@@ -256,20 +267,20 @@ end
 
 --- Lida com o soltar de teclas.
 --- @private
---- @param key love.KeyConstant
---- @param scancode love.Scancode
+--- @param key love.KeyConstant   Caractere da tecla pressionada.
+--- @param scancode love.Scancode O scancode que representa a tecla pressionada.
 function Control:_keyreleased(key, scancode)
 	assert(key, scancode)
 	-- !PASS
 end
 
---- Lida com o pressionar do mouse.
+--- Lida com o pressionar de um botão do mouse.
 --- @private
---- @param x number
---- @param y number
---- @param button number
---- @param istouch boolean
---- @param presses number
+--- @param x number        Posição x do mouse, em pixels.
+--- @param y number        Posição y do mouse, em pixels.
+--- @param button number   O index do botão que foi pressionado.
+--- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
+--- @param presses number  O número de pressionamentos.
 function Control:_mousepressed(x, y, button, istouch, presses)
 	local focused = self:_updateMouseFocus(x, y)
 
@@ -279,13 +290,13 @@ function Control:_mousepressed(x, y, button, istouch, presses)
 	end
 end
 
---- Lida com o soltar do mouse.
+--- Lida com o soltar de um botão do mouse.
 --- @private
---- @param x number
---- @param y number
---- @param button number
---- @param istouch boolean
---- @param presses number
+--- @param x number        Posição x do mouse, em pixels.
+--- @param y number        Posição y do mouse, em pixels.
+--- @param button number   O index do botão que foi solto.
+--- @param istouch boolean `true` se o soltar do botão do mouse é originado de uma touchscreen.
+--- @param presses number  O número de pressionamentos.
 function Control:_mousereleased(x, y, button, istouch, presses)
 	local pressed_control = self._mouse_pressed_control
 
@@ -299,11 +310,11 @@ end
 
 --- Lida com o movimento do mouse.
 --- @private
---- @param x number
---- @param y number
---- @param dx number
---- @param dy number
---- @param istouch boolean
+--- @param x number        Posição x do mouse, em pixels.
+--- @param y number        Posição y do mouse, em pixels.
+--- @param dx number       Quanto se moveu ao longo do eixo-x.
+--- @param dy number       Quanto se moveu ao longo do eixo-y.
+--- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
 function Control:_mousemoved(x, y, dx, dy, istouch)
 	local focused = self:_updateMouseFocus(x, y)
 
@@ -314,8 +325,8 @@ end
 
 --- Lida com o movimento da roda do mouse.
 --- @private
---- @param x number
---- @param y number
+--- @param x number Quanto se moveu ao longo do eixo-x.
+--- @param y number Quanto se moveu ao longo do eixo-y.
 function Control:_wheelmoved(x, y)
 	local focused = self:_updateMouseFocus(love.mouse.getPosition())
 
@@ -330,22 +341,22 @@ end
 --#region Setter
 
 --- Define a posição horizontal do **`Control`**
---- @param value number Nova posição horizontal.
+--- @param value number Nova posição x.
 function Control:setX(value)
 	self._x = value
 	self:_queueUpdateLayout()
 end
 
 --- Define a posição vertical do **`Control`**
---- @param value number Nova posição vertical.
+--- @param value number Nova posição y.
 function Control:setY(value)
 	self._y = value
 	self:_queueUpdateLayout()
 end
 
 --- Define a posição do **`Control`**
---- @param x number Nova posição horizontal.
---- @param y number Nova posição vertical.
+--- @param x number Nova posição x.
+--- @param y number Nova posição y.
 function Control:setPosition(x, y)
 	self:setX(x)
 	self:setY(y)
@@ -368,7 +379,7 @@ function Control:setMinimumHeight(value)
 end
 
 --- Define a dimensão mínima do **`Control`**.
---- @param width number Novo comprimento mínimo.
+--- @param width number  Novo comprimento mínimo.
 --- @param height number Nova altura mínima.
 function Control:setMinimumDimensions(width, height)
 	self:setMinimumWidth(width)
@@ -390,7 +401,7 @@ function Control:setHeight(value)
 end
 
 --- Define a dimensão do **`Control`**.
---- @param width number Novo comprimento.
+--- @param width number  Novo comprimento.
 --- @param height number Nova altura.
 function Control:setDimensions(width, height)
 	self:setWidth(width)
@@ -398,14 +409,14 @@ function Control:setDimensions(width, height)
 end
 
 --- Define o layout do **`Control`**.
---- @param layout NodeUI.Control.Layout
+--- @param layout NodeUI.Control.Layout Novo layout.
 function Control:setLayout(layout)
 	self._layout = layout
 	self:_queueUpdateLayout()
 end
 
 --- Define a visibilidade do **`Control`**. Por padrão ativa a visibilidade.
---- @param enabled? boolean
+--- @param enabled? boolean Se `true`, ativa a visibilidade.
 function Control:setVisible(enabled)
 	enabled = type(enabled) == "nil" and true or enabled
 	--- @cast enabled boolean
@@ -418,7 +429,7 @@ function Control:setVisible(enabled)
 end
 
 --- Define o filtro de mouse do **`Control`**.
---- @param filter NodeUI.Control.MouseFilter
+--- @param filter NodeUI.Control.MouseFilter Filtro do mouse.
 function Control:setMouseFilter(filter)
 	self._mouse_filter = filter
 	self:_updateMouseFocus(love.mouse.getPosition())
@@ -431,7 +442,7 @@ end
 
 --- Define o foco do mouse do **`Control`**.
 --- @private
---- @param enabled boolean
+--- @param enabled boolean Se `true`, ativa o foco do mouse.
 function Control:_setMouseFocus(enabled)
 	local previous_focus = self._mouse_focused
 	self._mouse_focused = enabled
@@ -448,7 +459,7 @@ end
 
 --- Retorna o parente do **`Control`** ou `nil` caso ela não tenha um.
 --- @nodiscard
---- @return NodeUI.Control? parent
+--- @return NodeUI.Control? parent Parente do **Control**.
 function Control:getParent()
 	return self._parent
 end
@@ -456,7 +467,7 @@ end
 --- Retorna uma tabela com todos os filhos do **`Control`**.
 --- @nodiscard
 --- @param include_internal? boolean Se `true`, retorna os filhos internos também.
---- @return NodeUI.Control[] children
+--- @return NodeUI.Control[] children Filhos do **Control**.
 function Control:getChildren(include_internal)
 	local children = {} --- @type NodeUI.Control[]
 
@@ -474,79 +485,82 @@ function Control:getChildren(include_internal)
 	return children
 end
 
---- Retorna a posição horizontal do **`Control`**.
+--- Retorna a posição x do **`Control`**.
 --- @nodiscard
---- @return number x
+--- @return number x Posição x.
 function Control:getX()
 	return self._layout_x
 end
 
---- Retorna a posição vertical do **`Control`**.
+--- Retorna a posição y do **`Control`**.
 --- @nodiscard
---- @return number y
+--- @return number y Posição y.
 function Control:getY()
 	return self._layout_y
 end
 
 --- Retorna a posição do **`Control`**.
 --- @nodiscard
---- @return number x, number y
+--- @return number x Posição x.
+--- @return number y Posição y.
 function Control:getPosition()
 	return self:getX(), self:getY()
 end
 
 --- Retorna o comprimento mínimo do **`Control`**.
 --- @nodiscard
---- @return number width
+--- @return number width Comprimento mínimo do **Control**.
 function Control:getMinimumWidth()
 	return self._minimum_width
 end
 
 --- Retorna a altura mínima do **`Control`**.
 --- @nodiscard
---- @return number height
+--- @return number height Altura mínima do **Control**.
 function Control:getMinimumHeight()
 	return self._minimum_height
 end
 
 --- Retorna a dimensão mínima do **`Control`**.
 --- @nodiscard
---- @return number width, number height
+--- @return number width  Comprimento mínimo do **Control**.
+--- @return number height Altura mínima do **Control**.
 function Control:getMinimumDimensions()
 	return self:getMinimumWidth(), self:getMinimumHeight()
 end
 
 --- Retorna o comprimento do **`Control`**.
 --- @nodiscard
---- @return number width
+--- @return number width Comprimento do **Control**.
 function Control:getWidth()
 	return self._layout_width
 end
 
 --- Retorna a altura do **`Control`**.
 --- @nodiscard
---- @return number height
+--- @return number height Altura do **Control**.
 function Control:getHeight()
 	return self._layout_height
 end
 
 --- Retorna a dimensão do **`Control`**.
 --- @nodiscard
---- @return number width, number height
+--- @return number width  Comprimento do **Control**.
+--- @return number height Altura do **Control**.
 function Control:getDimensions()
 	return self:getWidth(), self:getHeight()
 end
 
 --- Retorna o layout do **`Control`**.
 --- @nodiscard
---- @return NodeUI.Control.Layout layout
+--- @return NodeUI.Control.Layout layout Layout do **Control**.
 function Control:getLayout()
 	return self._layout
 end
 
 --- Retorna o filtro de mouse do **`Control`**.
 --- @nodiscard
---- @return NodeUI.Control.MouseFilter mouse_filter
+--- @return NodeUI.Control.MouseFilter mouse_filter Filtro do mouse.
 function Control:getMouseFilter()
 	return self._mouse_filter
 end
@@ -556,7 +570,7 @@ end
 
 --#region Protected
 
---- Marca para atualizar o layout do **`Control`** no próximo `love.update()`.
+--- Marca para atualizar o layout do **Control** no próximo `love.update()`.
 --- @protected
 function Control:_queueUpdateLayout()
 	if self._queued_for_update_layout then
@@ -568,7 +582,7 @@ end
 
 --- Emite o `signal`, chamando todos os seus métodos.
 --- @protected
---- @param signal NodeUI.Control.Signals
+--- @param signal NodeUI.Control.Signals Nome do sinal.
 function Control:_emit(signal, ...)
 	local connections = self._signal_connections[signal]
 	if type(connections) == "nil" then
@@ -593,7 +607,7 @@ end
 
 --#region Private
 
---- Atualiza a posição e dimensões do **`Control`** de acordo com suas âncoras e offsets.
+--- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
 --- @private
 function Control:_updateLayout()
 	if not self._visible then
@@ -625,7 +639,7 @@ function Control:_updateLayout()
 	end
 end
 
---- Desenha a depuração do **`Control`**.
+--- Desenha a depuração do **Control**.
 --- @private
 function Control:_drawDebug()
 	if not self._visible then
@@ -666,9 +680,9 @@ end
 
 --- Encontra o foco do mouse na árvore de nós. Caso não exista retorna `nil`.
 --- @private
---- @param x number
---- @param y number
---- @return NodeUI.Control?
+--- @param x number        		    Posição x do mouse.
+--- @param y number                 Posição y do mouse.
+--- @return NodeUI.Control? focused **Control** com o foco do mouse.
 function Control:_findMouseFocus(x, y)
 	if not self:isVisible() then
 		return nil
@@ -709,7 +723,7 @@ function Control:_findMouseFocus(x, y)
 end
 
 --- Limpa o foco do mouse da árvore de nós.
---- @param exclude? NodeUI.Control **`Control`** que será excluido da limpeza.
+--- @param exclude? NodeUI.Control **Control** que será excluido da limpeza.
 --- @private
 function Control:_clearMouseFocus(exclude)
 	if self ~= exclude then
@@ -721,11 +735,11 @@ function Control:_clearMouseFocus(exclude)
 	end
 end
 
---- Atualiza o foco do mouse na árvore de nós. Se existir, retorna o **`Control`** com o foco do mouse.
+--- Atualiza o foco do mouse na árvore de nós. Se existir, retorna o **Control** com o foco do mouse.
 --- @private
---- @param x number Posição horizontal do mouse.
---- @param y number Posição vertical do mouse.
---- @return NodeUI.Control? focused
+--- @param x number 				Posição horizontal do mouse.
+--- @param y number                 Posição vertical do mouse.
+--- @return NodeUI.Control? focused **Control** com o foco do mouse.
 function Control:_updateMouseFocus(x, y)
 	local focused = self:_findMouseFocus(x, y)
 
@@ -745,20 +759,20 @@ end
 
 --#region Protected Callback
 
---- Chamado durante a atualização do **`Control`**.
+--- Chamado durante a atualização do **Control**.
 --- @protected
---- @param dt number
+--- @param dt number Tempo decorrido desde a última atualização.
 function Control:_onUpdate(dt)
 	assert(dt)
 end
 
---- Chamado durante o desenho do **`Control`**.
+--- Chamado durante o desenho do **Control**.
 --- @protected
 function Control:_onDraw() end
 
---- Chamado durante a depuração do **`Control`**.
---- <br><br>
---- Este método deve ser sobreescrito em cada classe de **`Control`**, pois
+--- Chamado durante a depuração do **Control**.
+---
+--- Este método deve ser sobreescrito em cada classe de **Control**, pois
 --- é responsável por desenhar a depuração dela.
 --- @protected
 function Control:_onDrawDebug()
@@ -767,42 +781,42 @@ end
 
 --- Chamado quando um botão do mouse é pressionado.
 --- @protected
---- @param x number
---- @param y number
---- @param button number
---- @param istouch boolean
---- @param presses number
+--- @param x number        Posição x do mouse, em pixels.
+--- @param y number        Posição y do mouse, em pixels.
+--- @param button number   O index do botão que foi pressionado.
+--- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
+--- @param presses number  O número de pressionamentos.
 --- @diagnostic disable-next-line: unused-local
 function Control:_onMousepressed(x, y, button, istouch, presses) end
 
 --- Chamado quando um botão do mouse é solto.
 --- @protected
---- @param x number
---- @param y number
---- @param button number
---- @param istouch boolean
---- @param presses number
+--- @param x number        Posição x do mouse, em pixels.
+--- @param y number        Posição y do mouse, em pixels.
+--- @param button number   O index do botão que foi solto.
+--- @param istouch boolean `true` se o soltar do botão do mouse é originado de uma touchscreen.
+--- @param presses number  O número de pressionamentos.
 --- @diagnostic disable-next-line: unused-local
 function Control:_onMousereleased(x, y, button, istouch, presses) end
 
---- Chamado quando a roda do mouse é movida.
---- @private
---- @param x number
---- @param y number
---- @diagnostic disable-next-line: unused-local
-function Control:_onWheelMoved(x, y) end
-
 --- Chamado quando o mouse é movido.
 --- @protected
---- @param x number
---- @param y number
---- @param dx number
---- @param dy number
---- @param istouch boolean
+--- @param x number        Posição x do mouse, em pixels.
+--- @param y number        Posição y do mouse, em pixels.
+--- @param dx number       Quanto se moveu ao longo do eixo-x.
+--- @param dy number       Quanto se moveu ao longo do eixo-y.
+--- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
 --- @diagnostic disable-next-line: unused-local
 function Control:_onMousemoved(x, y, dx, dy, istouch) end
 
---- Chamado durante a atualização do layout do **`Control`**.
+--- Chamado quando a roda do mouse é movida.
+--- @private
+--- @param x number Quanto se moveu ao longo do eixo-x.
+--- @param y number Quanto se moveu ao longo do eixo-y.
+--- @diagnostic disable-next-line: unused-local
+function Control:_onWheelMoved(x, y) end
+
+--- Chamado durante a atualização do layout do **Control**.
 --- @protected
 function Control:_onUpdateLayout()
 	local base_width = self._parent and self._parent:getWidth() or self._node_ui:getBaseWidth()
@@ -951,7 +965,7 @@ function Control:_onUpdateLayout()
 	self._layout_height = layout_height
 end
 
---- Chamado quando o foco do mouse do **`Control`** muda.
+--- Chamado quando o foco do mouse do **Control** muda.
 --- @protected
 --- @param focused boolean Se está focado pelo mouse.
 --- @diagnostic disable-next-line: unused-local

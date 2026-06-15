@@ -1,3 +1,7 @@
+--- Representa os modos de layout disponíveis para posicionamento de um Control.
+---
+--- O layout define como o Control é posicionado e redimensionado dentro do
+--- retângulo base do pai (ou da raiz quando não há pai).
 --- @alias NodeUI.Control.Layout
 --- | "TOP_LEFT"
 --- | "TOP_RIGHT"
@@ -20,30 +24,32 @@
 --- | "FULL_RECT"
 --- | "CUSTOM"
 
+--- Define como eventos de mouse são propagados entre Controls.
 --- @alias NodeUI.Control.MouseFilter
---- | "STOP"
---- | "PASS"
---- | "IGNORE"
+--- | "STOP"   Consome o evento e impede propagação.
+--- | "PASS"   Permite propagação após processar o evento.
+--- | "IGNORE" Ignora o evento completamente.
 
+--- Lista de sinais emitidos por um Control.
 --- @alias NodeUI.Control.Signals
---- | "MOUSE_PRESSED"
---- | "MOUSE_RELEASED"
---- | "MOUSE_MOVED"
---- | "WHEEL_MOVED"
---- | "MOUSE_FOCUS_CHANGED"
+--- | "MOUSE_PRESSED"       Quando um botão do mouse é pressionado.
+--- | "MOUSE_RELEASED"      Quando um botão do mouse é solto.
+--- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control.
+--- | "WHEEL_MOVED"         Quando o scroll do mouse é usado.
+--- | "MOUSE_FOCUS_CHANGED" Quando o foco de mouse entra ou sai.
 
+--- Modo de alinhamento de algum elemento.
 --- @alias NodeUI.Control.AlignmentMode
---- | "BEGIN"
---- | "CENTER"
---- | "END"
+--- | "BEGIN"  Alinhado ao início.
+--- | "CENTER" Alinhado ao meio.
+--- | "END"    Alinhado ao fim.
 
+--- Eixo horizontal ou vertical.
 --- @alias NodeUI.Control.Axis
 --- | "HORIZONTAL"
 --- | "VERTICAL"
 
 --- Representa a conexão de um sinal no **`Control`**.
 --- @class NodeUI.Control.SignalConnection
---- @field method string Método chamado ao sinal ser emitido.
---- Objeto dono do método da conexão. Caso seja passado um `owner` na conexão, ele será passado como primeiro
---- parâmetro do método.
---- @field owner? table
+--- @field method string Nome do método chamado quando o sinal é emitido.
+--- @field owner table   Objeto dono do método.
