@@ -149,10 +149,23 @@ function Control:isVisible()
 end
 
 --- Cria uma conexão em determinado sinal do **Control**.
+---
+--- O `owner` é a tabela que possui o `method`, que deve ser uma `string`. Caso não seja passado um `owner`, o `method`
+--- deve ser uma `function`.
+---
+--- Quando é passado um `owner` o método é chamado desta forma: `owner.method(owner, ...)` para respeitar o padrão `self`.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param owner table                   Objeto dono do método.
---- @param method string                 Nome do método chamado ao sinal ser emitido.
-function Control:connect(signal, owner, method)
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                  Objeto dono do método.
+function Control:connect(signal, method, owner)
+	if owner and type(method) ~= "string" then
+		-- Quando um owner é passado o método deve ser obrigatoriamente uma string.
+		return
+	elseif not owner and type(method) ~= "function" then
+		-- Quando um owner não é passado o método deve ser obrigatoriamente uma função.
+		return
+	end
+
 	local connection = { --- @type NodeUI.Control.SignalConnection
 		method = method,
 		owner = owner,
@@ -175,15 +188,20 @@ end
 
 --- Remove a conexão de um sinal do **Control**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string             	 Nome do método chamado ao sinal ser emitido.
-function Control:disconnect(signal, method)
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                  Objeto dono do método.
+function Control:disconnect(signal, method, owner)
 	local connections = self._signal_connections[signal]
 	if type(connections) ~= "table" then
 		return
 	end
 
+	if type(method) == "function" then
+		owner = nil
+	end
+
 	for i, connection in ipairs(connections) do
-		if connection.method == method then
+		if connection.method == method and connection.owner == owner then
 			table.remove(connections, i)
 			return
 		end
@@ -236,7 +254,6 @@ function Control:_draw()
 	if self.clip_content then
 		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 	end
-
 
 	-- Chama o desenho dos filhos do Control.
 	for _, child in ipairs(self._children) do
@@ -584,13 +601,17 @@ function Control:_emit(signal, ...)
 	end
 
 	for _, connection in ipairs(connections) do
-		local method_function = connection.owner[connection.method]
+		local method_function = connection.owner and connection.owner[connection.method] or connection.method
 
 		if type(method_function) ~= "function" then
 			goto continue
 		end
 
-		method_function(connection.owner, ...)
+		if connection.owner then
+			method_function(connection.owner, ...)
+		else
+			method_function(...)
+		end
 
 		::continue::
 	end

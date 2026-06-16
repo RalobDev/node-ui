@@ -37,17 +37,18 @@ end
 
 --- Cria uma conexão em determinado sinal do **`Control`**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param owner table                   Objeto dono do método.
---- @param method string                 Nome do método chamado ao sinal ser emitido.
-function Container:connect(signal, owner, method)
-    Control.connect(self, signal, owner, method)
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner? table                  Objeto dono do método.
+function Container:connect(signal, method, owner)
+    Control.connect(self, signal, method, owner)
 end
 
 --- Desconecta o `method` do `signal`.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string             	 Nome do método chamado ao sinal ser emitido.
-function Container:disconnect(signal, method)
-    Control.disconnect(self, signal, method)
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                  Objeto dono do método.
+function Container:disconnect(signal, method, owner)
+    Control.disconnect(self, signal, method, owner)
 end
 
 --#endregion

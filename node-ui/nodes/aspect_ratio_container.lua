@@ -46,17 +46,18 @@ end
 
 --- Cria uma conexão em determinado sinal do **`Control`**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param owner table                   Objeto dono do método.
---- @param method string                 Nome do método chamado ao sinal ser emitido.
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner? table                  Objeto dono do método.
 function AspectRatioContainer:connect(signal, method, owner)
-    return Container.connect(self, signal, owner, method)
+    return Container.connect(self, signal, method, owner)
 end
 
 --- Remove a conexão de um sinal do **`Control`**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string             	 Nome do método chamado ao sinal ser emitido.
-function AspectRatioContainer:disconnect(signal, method)
-    Container.disconnect(self, signal, method)
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                  Objeto dono do método.
+function AspectRatioContainer:disconnect(signal, method, owner)
+    Container.disconnect(self, signal, method, owner)
 end
 
 --#endregion

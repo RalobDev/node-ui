@@ -32,11 +32,11 @@
 
 --- Lista de sinais emitidos por um Control.
 --- @alias NodeUI.Control.Signals
---- | "MOUSE_PRESSED"       Quando um botão do mouse é pressionado.
---- | "MOUSE_RELEASED"      Quando um botão do mouse é solto.
---- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control.
---- | "WHEEL_MOVED"         Quando o scroll do mouse é usado.
---- | "MOUSE_FOCUS_CHANGED" Quando o foco de mouse entra ou sai.
+--- | "MOUSE_PRESSED"       Quando um botão do mouse é pressionado. -> fun(x: number, y: number, button: number, istouch: bool, presses: int)
+--- | "MOUSE_RELEASED"      Quando um botão do mouse é solto. -> fun(x: number, y: number, button: number, istouch: bool, presses: int)
+--- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control. -> fun(x: number, y: number, dx: number, dy: number, istouch: bool)
+--- | "WHEEL_MOVED"         Quando o scroll do mouse é usado. -> fun(x: number, y: number)
+--- | "MOUSE_FOCUS_CHANGED" Quando o foco de mouse entra ou sai. -> fun(focused: bool)
 
 --- Modo de alinhamento de algum elemento.
 --- @alias NodeUI.Control.AlignmentMode
@@ -51,5 +51,5 @@
 
 --- Representa a conexão de um sinal no **`Control`**.
 --- @class NodeUI.Control.SignalConnection
---- @field method string Nome do método chamado quando o sinal é emitido.
---- @field owner table   Objeto dono do método.
+--- @field method string|function Nome do método chamado quando o sinal é emitido.
+--- @field owner? table           Objeto dono do método.
