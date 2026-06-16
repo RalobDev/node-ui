@@ -2,22 +2,16 @@ local ROOT = (...):match("^(.*)%.%w+%.%w+$") --- @type string
 
 local Class = require(ROOT .. ".class")      --- @type Class
 
---- # NodeUI.Control
----
 --- O **Control** é a classe base de todos os elementos da interface do **`NodeUI`**. Ela fornece funcionalidades fundamentais
 --- como hierarquia de nós, sistema de layout, renderização, processamento de eventos de entrada e gerenciamento de sinais.
 ---
---- ### Descrição
+--- ## Descrição
 ---
---- O **Control** representa um elemento visual da interface e serve como base para todos os controles da biblioteca. Cada controle pode
---- possuir um pai e múltiplos filhos, formando uma árvore de UI organizada hierarquicamente.
+--- O **Control** representa um elemento visual da interface e serve como base para todos os controles da biblioteca.
+--- Cada controle pode possuir um pai e múltiplos filhos, formando uma árvore de UI organizada hierarquicamente.
 ---
---- A classe implementa o sistema de layout do **NodeUI**, permitindo posicionar e dimensionar controles em relação ao seu pai ou à área base da
---- interface. Além disso, gerencia visibilidade, foco do mouse, renderização, atualização, clipping de conteúdo e propagação de eventos de entrada.
----
---- O **Control** também disponibiliza um sistema de sinais para comunicação entre objetos e uma série de callbacks protegidos que podem
---- ser sobrescritos por classes derivadas para implementar comportamentos personalizados. Dessa forma, ele fornece toda a infraestrutura necessária
---- para a criação de componentes visuais e contêineres mais complexos.
+--- A classe permite posicionar e dimensionar controles em relação ao seu pai ou à área base da interface. Além disso,
+--- gerencia visibilidade, foco do mouse, renderização, atualização, clipping de conteúdo e propagação de eventos de entrada.
 --- @class NodeUI.Control: Class
 --- @field private _node_ui NodeUI
 --- @field private _queued_for_deletion boolean
@@ -49,7 +43,7 @@ local Control = Class:extend("Control")
 
 --#region Public
 
---- Cria um novo **`Control`**.
+--- Cria um novo **Control**.
 --- @param x number 			   Posição horizontal.
 --- @param y number 			   Posição vertical.
 --- @param width number 		   Comprimento em pixels.
@@ -98,7 +92,7 @@ function Control:new(x, y, width, height)
 	return obj
 end
 
---- Marca para deletar o **`Control`** no próximo `love.update()`.
+--- Marca para deletar o **Control** no próximo `love.update()`.
 ---
 --- Os nós não são coletados pelo coletor de lixo do **Lua** ao ser definido com `nil`, pois
 --- o próprio módulo **`NodeUI`** armazena uma referência deles. Assim é necessário chamar
@@ -110,19 +104,19 @@ function Control:queueFree()
 	self._queued_freed = true
 end
 
---- Retorna se o **`Control`** está na fila de deleção.
+--- Retorna se o **Control** está na fila de deleção.
 --- @nodiscard
 --- @return boolean deletion Se `true`, o **Control** está na fila de deleção.
 function Control:isQueuedForDeletion()
 	return self._queued_freed
 end
 
---- Adiciona um filho ao **`Control`**. O filho adicionado é retornado, simplificando a criação e
+--- Adiciona um filho ao **Control**. O filho adicionado é retornado, simplificando a criação e
 --- referência de filhos.
---- @generic T: NodeUI.Control
---- @param child T 				**Control** filho.
---- @param is_internal? boolean Se `true`, o filho é marcado como interno do **`Control`**.
---- @return T child 			Filho que foi adicionado.
+--- @generic control: NodeUI.Control
+--- @param child control 		**Control** filho.
+--- @param is_internal? boolean Se `true`, o filho é marcado como interno do **Control**.
+--- @return control child 		Filho que foi adicionado.
 function Control:addChild(child, is_internal)
 	--- @cast child NodeUI.Control
 
@@ -134,7 +128,7 @@ function Control:addChild(child, is_internal)
 	return child
 end
 
---- Remove o `child` do **`Control`**.
+--- Remove o `child` do **Control**.
 --- @param child NodeUI.Control Filho a ser removido.
 function Control:removeChild(child)
 	for i = #self._children, 1, -1 do
@@ -147,14 +141,14 @@ function Control:removeChild(child)
 	end
 end
 
---- Retorna se o **`Control`** está visível ou não.
+--- Retorna se o **Control** está visível ou não.
 --- @nodiscard
 --- @return boolean visible Visibilidade do **Control**.
 function Control:isVisible()
 	return self._visible
 end
 
---- Cria uma conexão em determinado sinal do **`Control`**.
+--- Cria uma conexão em determinado sinal do **Control**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
 --- @param owner table                   Objeto dono do método.
 --- @param method string                 Nome do método chamado ao sinal ser emitido.
@@ -179,7 +173,7 @@ function Control:connect(signal, owner, method)
 	connections[#connections + 1] = connection
 end
 
---- Remove a conexão de um sinal do **`Control`**.
+--- Remove a conexão de um sinal do **Control**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
 --- @param method string             	 Nome do método chamado ao sinal ser emitido.
 function Control:disconnect(signal, method)
@@ -201,7 +195,7 @@ end
 
 --#region Engine Callback
 
---- Atualiza o **`Control`**.
+--- Atualiza o **Control**.
 --- @private
 --- @param dt number Tempo decorrido desde a última atualização.
 function Control:_update(dt)
@@ -219,7 +213,7 @@ function Control:_update(dt)
 	end
 end
 
---- Desenha o **`Control`**.
+--- Desenha o **Control**.
 --- @private
 function Control:_draw()
 	if not self._visible then
@@ -340,21 +334,21 @@ end
 
 --#region Setter
 
---- Define a posição horizontal do **`Control`**
+--- Define a posição horizontal do **Control**
 --- @param value number Nova posição x.
 function Control:setX(value)
 	self._x = value
 	self:_queueUpdateLayout()
 end
 
---- Define a posição vertical do **`Control`**
+--- Define a posição vertical do **Control**
 --- @param value number Nova posição y.
 function Control:setY(value)
 	self._y = value
 	self:_queueUpdateLayout()
 end
 
---- Define a posição do **`Control`**
+--- Define a posição do **Control**
 --- @param x number Nova posição x.
 --- @param y number Nova posição y.
 function Control:setPosition(x, y)
@@ -362,7 +356,7 @@ function Control:setPosition(x, y)
 	self:setY(y)
 end
 
---- Define o comprimento mínimo do **`Control`**.
+--- Define o comprimento mínimo do **Control**.
 --- @param value number Novo comprimento mínimo.
 function Control:setMinimumWidth(value)
 	self._minimum_width = math.max(0, value)
@@ -370,7 +364,7 @@ function Control:setMinimumWidth(value)
 	self:_queueUpdateLayout()
 end
 
---- Define a altura mínima do **`Control`**.
+--- Define a altura mínima do **Control**.
 --- @param value number Nova altura mínima.
 function Control:setMinimumHeight(value)
 	self._minimum_height = math.max(0, value)
@@ -378,7 +372,7 @@ function Control:setMinimumHeight(value)
 	self:_queueUpdateLayout()
 end
 
---- Define a dimensão mínima do **`Control`**.
+--- Define a dimensão mínima do **Control**.
 --- @param width number  Novo comprimento mínimo.
 --- @param height number Nova altura mínima.
 function Control:setMinimumDimensions(width, height)
@@ -386,21 +380,21 @@ function Control:setMinimumDimensions(width, height)
 	self:setMinimumHeight(height)
 end
 
---- Define o comprimento do **`Control`**.
+--- Define o comprimento do **Control**.
 --- @param value number Novo comprimento.
 function Control:setWidth(value)
 	self._width = math.max(value, self._minimum_width)
 	self:_queueUpdateLayout()
 end
 
---- Define a altura do **`Control`**.
+--- Define a altura do **Control**.
 --- @param value number Novo comprimento.
 function Control:setHeight(value)
 	self._height = math.max(value, self._minimum_height)
 	self:_queueUpdateLayout()
 end
 
---- Define a dimensão do **`Control`**.
+--- Define a dimensão do **Control**.
 --- @param width number  Novo comprimento.
 --- @param height number Nova altura.
 function Control:setDimensions(width, height)
@@ -408,14 +402,14 @@ function Control:setDimensions(width, height)
 	self:setHeight(height)
 end
 
---- Define o layout do **`Control`**.
+--- Define o layout do **Control**.
 --- @param layout NodeUI.Control.Layout Novo layout.
 function Control:setLayout(layout)
 	self._layout = layout
 	self:_queueUpdateLayout()
 end
 
---- Define a visibilidade do **`Control`**. Por padrão ativa a visibilidade.
+--- Define a visibilidade do **Control**. Por padrão ativa a visibilidade.
 --- @param enabled? boolean Se `true`, ativa a visibilidade.
 function Control:setVisible(enabled)
 	enabled = type(enabled) == "nil" and true or enabled
@@ -428,7 +422,7 @@ function Control:setVisible(enabled)
 	self._visible = enabled
 end
 
---- Define o filtro de mouse do **`Control`**.
+--- Define o filtro de mouse do **Control**.
 --- @param filter NodeUI.Control.MouseFilter Filtro do mouse.
 function Control:setMouseFilter(filter)
 	self._mouse_filter = filter
@@ -440,7 +434,7 @@ end
 
 --#region Private Setter
 
---- Define o foco do mouse do **`Control`**.
+--- Define o foco do mouse do **Control**.
 --- @private
 --- @param enabled boolean Se `true`, ativa o foco do mouse.
 function Control:_setMouseFocus(enabled)
@@ -457,14 +451,14 @@ end
 
 --#region Getter
 
---- Retorna o parente do **`Control`** ou `nil` caso ela não tenha um.
+--- Retorna o parente do **Control** ou `nil` caso ela não tenha um.
 --- @nodiscard
 --- @return NodeUI.Control? parent Parente do **Control**.
 function Control:getParent()
 	return self._parent
 end
 
---- Retorna uma tabela com todos os filhos do **`Control`**.
+--- Retorna uma tabela com todos os filhos do **Control**.
 --- @nodiscard
 --- @param include_internal? boolean Se `true`, retorna os filhos internos também.
 --- @return NodeUI.Control[] children Filhos do **Control**.
@@ -485,21 +479,21 @@ function Control:getChildren(include_internal)
 	return children
 end
 
---- Retorna a posição x do **`Control`**.
+--- Retorna a posição x do **Control**.
 --- @nodiscard
 --- @return number x Posição x.
 function Control:getX()
 	return self._layout_x
 end
 
---- Retorna a posição y do **`Control`**.
+--- Retorna a posição y do **Control**.
 --- @nodiscard
 --- @return number y Posição y.
 function Control:getY()
 	return self._layout_y
 end
 
---- Retorna a posição do **`Control`**.
+--- Retorna a posição do **Control**.
 --- @nodiscard
 --- @return number x Posição x.
 --- @return number y Posição y.
@@ -507,21 +501,21 @@ function Control:getPosition()
 	return self:getX(), self:getY()
 end
 
---- Retorna o comprimento mínimo do **`Control`**.
+--- Retorna o comprimento mínimo do **Control**.
 --- @nodiscard
 --- @return number width Comprimento mínimo do **Control**.
 function Control:getMinimumWidth()
 	return self._minimum_width
 end
 
---- Retorna a altura mínima do **`Control`**.
+--- Retorna a altura mínima do **Control**.
 --- @nodiscard
 --- @return number height Altura mínima do **Control**.
 function Control:getMinimumHeight()
 	return self._minimum_height
 end
 
---- Retorna a dimensão mínima do **`Control`**.
+--- Retorna a dimensão mínima do **Control**.
 --- @nodiscard
 --- @return number width  Comprimento mínimo do **Control**.
 --- @return number height Altura mínima do **Control**.
@@ -529,21 +523,21 @@ function Control:getMinimumDimensions()
 	return self:getMinimumWidth(), self:getMinimumHeight()
 end
 
---- Retorna o comprimento do **`Control`**.
+--- Retorna o comprimento do **Control**.
 --- @nodiscard
 --- @return number width Comprimento do **Control**.
 function Control:getWidth()
 	return self._layout_width
 end
 
---- Retorna a altura do **`Control`**.
+--- Retorna a altura do **Control**.
 --- @nodiscard
 --- @return number height Altura do **Control**.
 function Control:getHeight()
 	return self._layout_height
 end
 
---- Retorna a dimensão do **`Control`**.
+--- Retorna a dimensão do **Control**.
 --- @nodiscard
 --- @return number width  Comprimento do **Control**.
 --- @return number height Altura do **Control**.
@@ -551,14 +545,14 @@ function Control:getDimensions()
 	return self:getWidth(), self:getHeight()
 end
 
---- Retorna o layout do **`Control`**.
+--- Retorna o layout do **Control**.
 --- @nodiscard
 --- @return NodeUI.Control.Layout layout Layout do **Control**.
 function Control:getLayout()
 	return self._layout
 end
 
---- Retorna o filtro de mouse do **`Control`**.
+--- Retorna o filtro de mouse do **Control**.
 --- @nodiscard
 --- @return NodeUI.Control.MouseFilter mouse_filter Filtro do mouse.
 function Control:getMouseFilter()

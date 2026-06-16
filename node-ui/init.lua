@@ -1,7 +1,5 @@
 local ROOT = ... --- @type string
 
---- # NodeUI
----
 --- O **NodeUI** é o módulo principal da biblioteca, responsável por gerenciar os controles da interface, processar eventos de entrada e
 --- coordenar a atualização e renderização da UI.
 ---

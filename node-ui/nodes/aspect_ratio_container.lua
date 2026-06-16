@@ -2,12 +2,10 @@ local ROOT = (...):match("^(.*)%.")
 
 local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 
---- # NodeUI.AspectRatioContainer
----
 --- **AspectRatioContainer** é um tipo de **`Container`** que ajusta seus filhos mantendo uma proporção de
 --- aspecto (aspect ratio), aplicando diferentes modos de escala como `FIT` e `COVER`, além de controle de alinhamento.
 ---
---- ### Descrição
+--- ## Descrição
 ---
 --- O **AspectRatioContainer** estende **`Container`** adicionando um sistema de
 --- escala baseado em proporção. Ele calcula automaticamente um fator de

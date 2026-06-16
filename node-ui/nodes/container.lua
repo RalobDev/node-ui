@@ -2,12 +2,10 @@ local ROOT = (...):match("^(.*)%.")         --- @type string
 
 local Control = require(ROOT .. ".control") --- @type NodeUI.Control
 
---- # NodeUI.Container
----
 --- **Container** é um tipo de **`Control`** responsável por agrupar outros nós e gerenciar
 --- o layout e atualização dos seus filhos dentro da hierarquia do **`NodeUI`**.
 ---
---- ### Descrição
+--- ## Descrição
 ---
 --- O **Container** estende **Control** adicionando suporte a organização de filhos e
 --- controle de layout.
