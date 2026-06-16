@@ -77,10 +77,10 @@ function Control:new(x, y, width, height)
 	obj._is_internal_child = false
 	obj.clip_content = false
 
-	obj:connect("MOUSE_PRESSED", obj, "_onMousepressed")
-	obj:connect("MOUSE_RELEASED", obj, "_onMousereleased")
-	obj:connect("MOUSE_MOVED", obj, "_onMousemoved")
-	obj:connect("WHEEL_MOVED", obj, "_onWheelMoved")
+	obj:connect("MOUSE_PRESSED", "_onMousepressed", obj)
+	obj:connect("MOUSE_RELEASED", "_onMousereleased", obj)
+	obj:connect("MOUSE_MOVED", "_onMousemoved", obj)
+	obj:connect("WHEEL_MOVED", "_onWheelMoved", obj)
 
 	obj:_queueUpdateLayout()
 
