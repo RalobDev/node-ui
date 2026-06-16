@@ -19,7 +19,7 @@ gerencia visibilidade, foco do mouse, renderização, atualização, clipping de
 | Nome | Descrição | Retornos |
 | ---- | --------- | -------- |
 [addChild](node_ui_control_add_child.md) | Adiciona um filho ao **Control**. O filho adicionado é retornado, simplificando a criação e referência de filhos. | `control`
-[connect](node_ui_control_connect.md) | Cria uma conexão em determinado sinal do **Control**. | `nil`
+[connect](node_ui_control_connect.md) | Cria uma conexão em determinado sinal do **Control**.   O `owner` é a tabela que possui o `method`, que deve ser uma `string`. Caso não seja passado um `owner`, o `method` deve ser uma `function`.   Quando é passado um `owner` o método é chamado desta forma: `owner.method(owner, ...)` para respeitar o padrão `self`. | `nil`
 [disconnect](node_ui_control_disconnect.md) | Remove a conexão de um sinal do **Control**. | `nil`
 [getChildren](node_ui_control_get_children.md) | Retorna uma tabela com todos os filhos do **Control**. | `NodeUI.Control[]`
 [getDimensions](node_ui_control_get_dimensions.md) | Retorna a dimensão do **Control**. | `number`, `number`
@@ -102,15 +102,15 @@ Lista de sinais emitidos por um Control.
 
 
 - `MOUSE_PRESSED`
-Quando um botão do mouse é pressionado.
+Quando um botão do mouse é pressionado. -> fun(x: number, y: number, button: number, istouch: bool, presses: int)
 - `MOUSE_RELEASED`
-Quando um botão do mouse é solto.
+Quando um botão do mouse é solto. -> fun(x: number, y: number, button: number, istouch: bool, presses: int)
 - `MOUSE_MOVED`
-Quando o mouse se move sobre o Control.
+Quando o mouse se move sobre o Control. -> fun(x: number, y: number, dx: number, dy: number, istouch: bool)
 - `WHEEL_MOVED`
-Quando o scroll do mouse é usado.
+Quando o scroll do mouse é usado. -> fun(x: number, y: number)
 - `MOUSE_FOCUS_CHANGED`
-Quando o foco de mouse entra ou sai.
+Quando o foco de mouse entra ou sai. -> fun(focused: bool)
 
 ---
 ### AlignmentMode

@@ -183,6 +183,9 @@ def create_api_index(classes: dict[str, CodeClass]) -> None:
     md_path: Path = Path("docs/api/class_reference.md")
     content_lines: list[str] = []
 
+    content_lines.append(f"[<kbd>Voltar</kbd>](../../README.md)")
+    content_lines.append("")
+
     content_lines.append("# Referência de Classes")
     content_lines.append("")
 
