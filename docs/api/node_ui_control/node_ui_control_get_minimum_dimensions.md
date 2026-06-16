@@ -15,7 +15,7 @@ width, height = NodeUI.Control:getMinimumDimensions()
 Nada.
 
 ## Retornos
-- `number` **width**
+- `number` **width** <br>
 Comprimento mínimo do **Control**.
-- `number` **height**
+- `number` **height** <br>
 Altura mínima do **Control**.

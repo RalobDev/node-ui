@@ -15,5 +15,5 @@ deletion = NodeUI.Control:isQueuedForDeletion()
 Nada.
 
 ## Retornos
-- `boolean` **deletion**
+- `boolean` **deletion** <br>
 Se `true`, o **Control** está na fila de deleção.

@@ -161,7 +161,7 @@ def create_function_api(code_class: CodeClass, class_path: Path, classes: dict[s
             content_lines.append("Nada.")
         else:
             for parameter in function.parameters:
-                content_lines.append(f"- **`{parameter.type}` {parameter.name}**")
+                content_lines.append(f"- **`{parameter.type}` {parameter.name}** <br>")
                 content_lines.append(f"{parameter.brief}")
         content_lines.append("")
 
@@ -171,7 +171,7 @@ def create_function_api(code_class: CodeClass, class_path: Path, classes: dict[s
             content_lines.append("Nenhum.")
         else:
             for _return in function.returns:
-                content_lines.append(f"- `{_return.type}` **{_return.name}**")
+                content_lines.append(f"- `{_return.type}` **{_return.name}** <br>")
                 content_lines.append(f"{_return.brief}")
         content_lines.append("")
 

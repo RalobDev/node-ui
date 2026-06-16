@@ -15,7 +15,7 @@ width, height = NodeUI:getBaseDimensions()
 Nada.
 
 ## Retornos
-- `number` **width**
+- `number` **width** <br>
 Comprimento base.
-- `number` **height**
+- `number` **height** <br>
 Altura base.

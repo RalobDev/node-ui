@@ -12,9 +12,9 @@ NodeUI.Container:disconnect(signal, method)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Signals` signal**
+- **`NodeUI.Control.Signals` signal** <br>
 Nome do sinal.
-- **`string` method**
+- **`string` method** <br>
 Nome do método chamado ao sinal ser emitido.
 
 ## Retornos

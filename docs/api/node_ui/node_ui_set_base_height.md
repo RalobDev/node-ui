@@ -12,7 +12,7 @@ NodeUI:setBaseHeight(value)
 ```
 
 ## Argumentos
-- **`number` value**
+- **`number` value** <br>
 Nova altura.
 
 ## Retornos

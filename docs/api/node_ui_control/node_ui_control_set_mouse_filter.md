@@ -12,7 +12,7 @@ NodeUI.Control:setMouseFilter(filter)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.MouseFilter` filter**
+- **`NodeUI.Control.MouseFilter` filter** <br>
 Filtro do mouse.
 
 ## Retornos

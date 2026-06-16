@@ -15,7 +15,7 @@ x, y = NodeUI:getBasePosition()
 Nada.
 
 ## Retornos
-- `number` **x**
+- `number` **x** <br>
 Posição base x.
-- `number` **y**
+- `number` **y** <br>
 Posição base y.

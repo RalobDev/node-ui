@@ -12,7 +12,7 @@ NodeUI:setBaseWidth(value)
 ```
 
 ## Argumentos
-- **`number` value**
+- **`number` value** <br>
 Novo comprimento.
 
 ## Retornos

@@ -15,5 +15,5 @@ stretch_mode = NodeUI.AspectRatioContainer:getStretchMode()
 Nada.
 
 ## Retornos
-- `NodeUI.AspectRatioContainer.StretchMode` **stretch_mode**
+- `NodeUI.AspectRatioContainer.StretchMode` **stretch_mode** <br>
 Modo de escalonamento.

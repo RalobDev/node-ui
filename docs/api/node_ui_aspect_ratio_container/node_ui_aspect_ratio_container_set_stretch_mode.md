@@ -12,7 +12,7 @@ NodeUI.AspectRatioContainer:setStretchMode(stretch_mode)
 ```
 
 ## Argumentos
-- **`NodeUI.AspectRatioContainer.StretchMode` stretch_mode**
+- **`NodeUI.AspectRatioContainer.StretchMode` stretch_mode** <br>
 Modo de escalonamento.
 
 ## Retornos

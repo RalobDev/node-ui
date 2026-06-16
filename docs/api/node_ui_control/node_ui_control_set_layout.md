@@ -12,7 +12,7 @@ NodeUI.Control:setLayout(layout)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Layout` layout**
+- **`NodeUI.Control.Layout` layout** <br>
 Novo layout.
 
 ## Retornos

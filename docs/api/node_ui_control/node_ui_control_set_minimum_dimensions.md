@@ -12,9 +12,9 @@ NodeUI.Control:setMinimumDimensions(width, height)
 ```
 
 ## Argumentos
-- **`number` width**
+- **`number` width** <br>
 Novo comprimento mínimo.
-- **`number` height**
+- **`number` height** <br>
 Nova altura mínima.
 
 ## Retornos

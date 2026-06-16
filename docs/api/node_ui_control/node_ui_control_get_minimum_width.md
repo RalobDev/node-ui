@@ -15,5 +15,5 @@ width = NodeUI.Control:getMinimumWidth()
 Nada.
 
 ## Retornos
-- `number` **width**
+- `number` **width** <br>
 Comprimento mínimo do **Control**.

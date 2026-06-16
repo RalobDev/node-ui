@@ -12,7 +12,7 @@ NodeUI.Control:setVisible(enabled?)
 ```
 
 ## Argumentos
-- **`boolean` enabled?**
+- **`boolean` enabled?** <br>
 Se `true`, ativa a visibilidade.
 
 ## Retornos

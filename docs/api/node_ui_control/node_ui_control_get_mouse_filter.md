@@ -15,5 +15,5 @@ mouse_filter = NodeUI.Control:getMouseFilter()
 Nada.
 
 ## Retornos
-- `NodeUI.Control.MouseFilter` **mouse_filter**
+- `NodeUI.Control.MouseFilter` **mouse_filter** <br>
 Filtro do mouse.

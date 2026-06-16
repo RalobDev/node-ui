@@ -15,7 +15,7 @@ x, y = NodeUI.Control:getPosition()
 Nada.
 
 ## Retornos
-- `number` **x**
+- `number` **x** <br>
 Posição x.
-- `number` **y**
+- `number` **y** <br>
 Posição y.

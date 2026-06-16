@@ -12,9 +12,9 @@ children = NodeUI.Control:getChildren(include_internal?)
 ```
 
 ## Argumentos
-- **`boolean` include_internal?**
+- **`boolean` include_internal?** <br>
 Se `true`, retorna os filhos internos também.
 
 ## Retornos
-- `NodeUI.Control[]` **children**
+- `NodeUI.Control[]` **children** <br>
 Filhos do **Control**.

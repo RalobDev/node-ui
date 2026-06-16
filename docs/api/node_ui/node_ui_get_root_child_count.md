@@ -15,5 +15,5 @@ count = NodeUI:getRootChildCount()
 Nada.
 
 ## Retornos
-- `number` **count**
+- `number` **count** <br>
 Quantidade de filhos.

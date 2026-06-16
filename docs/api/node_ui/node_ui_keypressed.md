@@ -12,11 +12,11 @@ NodeUI:keypressed(key, scancode, isrepeat)
 ```
 
 ## Argumentos
-- **`love.KeyConstant` key**
+- **`love.KeyConstant` key** <br>
 Caractere da tecla pressionada.
-- **`love.Scancode` scancode**
+- **`love.Scancode` scancode** <br>
 O scancode que representa a tecla pressionada.
-- **`boolean` isrepeat**
+- **`boolean` isrepeat** <br>
 Se este evento de pressionamento de tecla é uma repetição.
 
 ## Retornos

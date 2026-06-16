@@ -12,7 +12,7 @@ NodeUI:setBaseX(value)
 ```
 
 ## Argumentos
-- **`number` value**
+- **`number` value** <br>
 Nova posição x.
 
 ## Retornos

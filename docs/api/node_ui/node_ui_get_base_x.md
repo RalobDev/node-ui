@@ -15,5 +15,5 @@ x = NodeUI:getBaseX()
 Nada.
 
 ## Retornos
-- `number` **x**
+- `number` **x** <br>
 Posição base x.

@@ -12,7 +12,7 @@ NodeUI.Control:setY(value)
 ```
 
 ## Argumentos
-- **`number` value**
+- **`number` value** <br>
 Nova posição y.
 
 ## Retornos

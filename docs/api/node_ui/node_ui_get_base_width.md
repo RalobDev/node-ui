@@ -15,5 +15,5 @@ width = NodeUI:getBaseWidth()
 Nada.
 
 ## Retornos
-- `number` **width**
+- `number` **width** <br>
 Comprimento base.

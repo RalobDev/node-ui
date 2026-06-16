@@ -12,7 +12,7 @@ NodeUI.Control:removeChild(child)
 ```
 
 ## Argumentos
-- **[`NodeUI.Control`](../node_ui_control/node_ui_control.md) child**
+- **[`NodeUI.Control`](../node_ui_control/node_ui_control.md) child** <br>
 Filho a ser removido.
 
 ## Retornos

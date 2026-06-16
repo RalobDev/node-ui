@@ -15,5 +15,5 @@ height = NodeUI.Control:getHeight()
 Nada.
 
 ## Retornos
-- `number` **height**
+- `number` **height** <br>
 Altura do **Control**.

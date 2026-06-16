@@ -15,5 +15,5 @@ x = NodeUI.Control:getX()
 Nada.
 
 ## Retornos
-- `number` **x**
+- `number` **x** <br>
 Posição x.

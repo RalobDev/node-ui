@@ -12,7 +12,7 @@ NodeUI.Control:setMinimumWidth(value)
 ```
 
 ## Argumentos
-- **`number` value**
+- **`number` value** <br>
 Novo comprimento mínimo.
 
 ## Retornos

@@ -15,5 +15,5 @@ width = NodeUI.Control:getWidth()
 Nada.
 
 ## Retornos
-- `number` **width**
+- `number` **width** <br>
 Comprimento do **Control**.

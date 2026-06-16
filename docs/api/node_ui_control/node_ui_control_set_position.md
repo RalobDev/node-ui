@@ -12,9 +12,9 @@ NodeUI.Control:setPosition(x, y)
 ```
 
 ## Argumentos
-- **`number` x**
+- **`number` x** <br>
 Nova posição x.
-- **`number` y**
+- **`number` y** <br>
 Nova posição y.
 
 ## Retornos

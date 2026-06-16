@@ -15,5 +15,5 @@ layout = NodeUI.Control:getLayout()
 Nada.
 
 ## Retornos
-- `NodeUI.Control.Layout` **layout**
+- `NodeUI.Control.Layout` **layout** <br>
 Layout do **Control**.

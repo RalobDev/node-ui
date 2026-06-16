@@ -12,9 +12,9 @@ NodeUI.AspectRatioContainer:setAlignmentMode(axis, alignment_mode)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Axis` axis**
+- **`NodeUI.Control.Axis` axis** <br>
 Eixo do alinhamento.
-- **`NodeUI.Control.AlignmentMode` alignment_mode**
+- **`NodeUI.Control.AlignmentMode` alignment_mode** <br>
 Modo de alinhamento.
 
 ## Retornos

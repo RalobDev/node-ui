@@ -12,15 +12,15 @@ NodeUI:mousepressed(x, y, button, istouch, presses)
 ```
 
 ## Argumentos
-- **`number` x**
+- **`number` x** <br>
 Posição x do mouse, em pixels.
-- **`number` y**
+- **`number` y** <br>
 Posição y do mouse, em pixels.
-- **`number` button**
+- **`number` button** <br>
 O index do botão que foi pressionado.
-- **`boolean` istouch**
+- **`boolean` istouch** <br>
 `true` se o pressionar do botão do mouse é originado de uma touchscreen.
-- **`number` presses**
+- **`number` presses** <br>
 O número de pressionamentos.
 
 ## Retornos

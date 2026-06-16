@@ -13,11 +13,11 @@ child = NodeUI.Control:addChild(child, is_internal?)
 ```
 
 ## Argumentos
-- **`control` child**
+- **`control` child** <br>
 **Control** filho.
-- **`boolean` is_internal?**
+- **`boolean` is_internal?** <br>
 Se `true`, o filho é marcado como interno do **Control**.
 
 ## Retornos
-- `control` **child**
+- `control` **child** <br>
 Filho que foi adicionado.

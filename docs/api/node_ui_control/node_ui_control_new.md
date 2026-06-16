@@ -12,15 +12,15 @@ Control = NodeUI.Control:new(x, y, width, height)
 ```
 
 ## Argumentos
-- **`number` x**
+- **`number` x** <br>
 Posição horizontal.
-- **`number` y**
+- **`number` y** <br>
 Posição vertical.
-- **`number` width**
+- **`number` width** <br>
 Comprimento em pixels.
-- **`number` height**
+- **`number` height** <br>
 Altura em pixels.
 
 ## Retornos
-- [`NodeUI.Control`](../node_ui_control/node_ui_control.md) **Control**
+- [`NodeUI.Control`](../node_ui_control/node_ui_control.md) **Control** <br>
 Novo Control.

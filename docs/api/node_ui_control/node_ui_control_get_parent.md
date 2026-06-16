@@ -15,5 +15,5 @@ parent = NodeUI.Control:getParent()
 Nada.
 
 ## Retornos
-- `NodeUI.Control?` **parent**
+- `NodeUI.Control?` **parent** <br>
 Parente do **Control**.

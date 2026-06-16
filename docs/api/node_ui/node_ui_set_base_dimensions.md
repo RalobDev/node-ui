@@ -12,9 +12,9 @@ NodeUI:setBaseDimensions(width, height)
 ```
 
 ## Argumentos
-- **`number` width**
+- **`number` width** <br>
 Novo comprimento.
-- **`number` height**
+- **`number` height** <br>
 Nova altura.
 
 ## Retornos

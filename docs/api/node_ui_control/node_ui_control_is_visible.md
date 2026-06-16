@@ -15,5 +15,5 @@ visible = NodeUI.Control:isVisible()
 Nada.
 
 ## Retornos
-- `boolean` **visible**
+- `boolean` **visible** <br>
 Visibilidade do **Control**.

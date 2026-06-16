@@ -15,7 +15,7 @@ width, height = NodeUI.Control:getDimensions()
 Nada.
 
 ## Retornos
-- `number` **width**
+- `number` **width** <br>
 Comprimento do **Control**.
-- `number` **height**
+- `number` **height** <br>
 Altura do **Control**.

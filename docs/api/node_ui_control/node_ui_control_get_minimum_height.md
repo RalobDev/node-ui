@@ -15,5 +15,5 @@ height = NodeUI.Control:getMinimumHeight()
 Nada.
 
 ## Retornos
-- `number` **height**
+- `number` **height** <br>
 Altura mínima do **Control**.

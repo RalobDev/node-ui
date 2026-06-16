@@ -12,9 +12,9 @@ NodeUI:wheelmoved(x, y)
 ```
 
 ## Argumentos
-- **`number` x**
+- **`number` x** <br>
 Quanto se moveu ao longo do eixo-x.
-- **`number` y**
+- **`number` y** <br>
 Quanto se moveu ao longo do eixo-y.
 
 ## Retornos

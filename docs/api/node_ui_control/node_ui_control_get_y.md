@@ -15,5 +15,5 @@ y = NodeUI.Control:getY()
 Nada.
 
 ## Retornos
-- `number` **y**
+- `number` **y** <br>
 Posição y.

@@ -12,7 +12,7 @@ NodeUI:update(dt)
 ```
 
 ## Argumentos
-- **`number` dt**
+- **`number` dt** <br>
 Tempo decorrido desde a última atualização.
 
 ## Retornos

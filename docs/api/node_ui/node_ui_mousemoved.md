@@ -12,15 +12,15 @@ NodeUI:mousemoved(x, y, dx, dy, istouch)
 ```
 
 ## Argumentos
-- **`number` x**
+- **`number` x** <br>
 Posição x do mouse, em pixels.
-- **`number` y**
+- **`number` y** <br>
 Posição y do mouse, em pixels.
-- **`number` dx**
+- **`number` dx** <br>
 Quanto se moveu ao longo do eixo-x.
-- **`number` dy**
+- **`number` dy** <br>
 Quanto se moveu ao longo do eixo-y.
-- **`boolean` istouch**
+- **`boolean` istouch** <br>
 `true` se o movimento do mouse é originado de uma touchscreen.
 
 ## Retornos

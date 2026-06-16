@@ -12,7 +12,7 @@ NodeUI.Control:setWidth(value)
 ```
 
 ## Argumentos
-- **`number` value**
+- **`number` value** <br>
 Novo comprimento.
 
 ## Retornos

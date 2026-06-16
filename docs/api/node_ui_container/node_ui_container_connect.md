@@ -12,11 +12,11 @@ NodeUI.Container:connect(signal, owner, method)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Signals` signal**
+- **`NodeUI.Control.Signals` signal** <br>
 Nome do sinal.
-- **`table` owner**
+- **`table` owner** <br>
 Objeto dono do método.
-- **`string` method**
+- **`string` method** <br>
 Nome do método chamado ao sinal ser emitido.
 
 ## Retornos

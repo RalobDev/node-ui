@@ -12,9 +12,9 @@ NodeUI:keyreleased(key, scancode)
 ```
 
 ## Argumentos
-- **`love.KeyConstant` key**
+- **`love.KeyConstant` key** <br>
 Caractere da tecla pressionada.
-- **`love.Scancode` scancode**
+- **`love.Scancode` scancode** <br>
 O scancode que representa a tecla pressionada.
 
 ## Retornos
