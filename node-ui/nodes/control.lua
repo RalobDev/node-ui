@@ -367,7 +367,7 @@ end
 --- Por padrão ativa o recorte de conteúdo.
 --- @param enabled? boolean
 function Control:setClipContent(enabled)
-	if enabled == "nil" then
+	if enabled == nil then
 		enabled = true
 	end
 	--- @cast enabled boolean
