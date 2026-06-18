@@ -11,6 +11,7 @@ local ROOT = ... --- @type string
 --- @class NodeUI
 --- @field AspectRatioContainer NodeUI.AspectRatioContainer Referência ao **NodeUI.AspectRatioContainer**.
 --- @field BoxContainer NodeUI.BoxContainer                 Referência ao **NodeUI.BoxContainer**.
+--- @field CenterContainer NodeUI.CenterContainer           Referência ao **NodeUI.CenterContainer**.
 --- @field Container NodeUI.Container                       Referência ao **NodeUI.Container**.
 --- @field Control NodeUI.Control                           Referência ao **NodeUI.Control**.
 local NodeUI = {}
