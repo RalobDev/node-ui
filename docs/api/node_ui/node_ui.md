@@ -20,16 +20,19 @@ desenhar e gerenciar o ciclo de vida dos controles.
 [drawDebug](node_ui_draw_debug.md) | Desenha a depuração de todos os [Control](../node_ui_control/node_ui_control.md) na raiz. | `nil`
 [getBaseDimensions](node_ui_get_base_dimensions.md) | Retorna a dimensão base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`, `number`
 [getBaseHeight](node_ui_get_base_height.md) | Retorna a altura base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`
+[getBaseMousePosition](node_ui_get_base_mouse_position.md) | Retorna a posição base do mouse. | `number`, `number`
+[getBaseMouseX](node_ui_get_base_mouse_x.md) | Retorna a posição x base do mouse. | `number`
+[getBaseMouseY](node_ui_get_base_mouse_y.md) | Retorna a posição y base do mouse. | `number`
 [getBasePosition](node_ui_get_base_position.md) | Retorna a posição base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`, `number`
 [getBaseWidth](node_ui_get_base_width.md) | Retorna o comprimento base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`
 [getBaseX](node_ui_get_base_x.md) | Retorna a posição horizontal base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`
 [getBaseY](node_ui_get_base_y.md) | Retorna a posição vertical base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`
+[getControlMouseFocus](node_ui_get_control_mouse_focus.md) | Retorna o [Control](../node_ui_control/node_ui_control.md) que possui o foco do mouse. Se nenhum possuir, retorna `nil`. | `NodeUI.Control?`
 [getRootChildCount](node_ui_get_root_child_count.md) | Retorna a quantidade de [Control](../node_ui_control/node_ui_control.md) na raiz. | `number`
-[keypressed](node_ui_keypressed.md) | Lida com o pressionar de teclas. | `nil`
-[keyreleased](node_ui_keyreleased.md) | Lida com o soltar de teclas. | `nil`
 [mousemoved](node_ui_mousemoved.md) | Lida com o movimento do mouse. | `nil`
 [mousepressed](node_ui_mousepressed.md) | Lida com o pressionar de um botão do mouse. | `nil`
 [mousereleased](node_ui_mousereleased.md) | Lida com o soltar de um botão do mouse. | `nil`
+[sendBaseMousePosition](node_ui_send_base_mouse_position.md) | Envia para o **NodeUI** qual deve ser a posição do mouse usada pelos nós. | `nil`
 [setBaseDimensions](node_ui_set_base_dimensions.md) | Define a dimensão base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `nil`
 [setBaseHeight](node_ui_set_base_height.md) | Define a altura base dos [Control](../node_ui_control/node_ui_control.md) na raiz. | `nil`
 [setBasePosition](node_ui_set_base_position.md) | Define a posição base dos [Control](../node_ui_control/node_ui_control.md). | `nil`

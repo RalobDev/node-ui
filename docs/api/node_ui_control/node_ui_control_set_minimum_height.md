@@ -8,11 +8,11 @@ Define a altura mínima do **Control**.
 ## Sinopse
 
 ```lua
-NodeUI.Control:setMinimumHeight(value)
+NodeUI.Control:setMinimumHeight(height)
 ```
 
 ## Argumentos
-- **`number` value** <br>
+- **`number` height** <br>
 Nova altura mínima.
 
 ## Retornos

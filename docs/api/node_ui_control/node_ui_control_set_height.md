@@ -8,12 +8,12 @@ Define a altura do **Control**.
 ## Sinopse
 
 ```lua
-NodeUI.Control:setHeight(value)
+NodeUI.Control:setHeight(height)
 ```
 
 ## Argumentos
-- **`number` value** <br>
-Novo comprimento.
+- **`number` height** <br>
+Nova altura.
 
 ## Retornos
 Nenhum.

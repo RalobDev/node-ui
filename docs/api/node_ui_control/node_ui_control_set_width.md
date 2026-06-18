@@ -8,11 +8,11 @@ Define o comprimento do **Control**.
 ## Sinopse
 
 ```lua
-NodeUI.Control:setWidth(value)
+NodeUI.Control:setWidth(width)
 ```
 
 ## Argumentos
-- **`number` value** <br>
+- **`number` width** <br>
 Novo comprimento.
 
 ## Retornos

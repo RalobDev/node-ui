@@ -202,6 +202,7 @@ def create_class_types_api(code_class: CodeClass, content_lines: list[str]) -> N
         return
 
     content_lines.append("## Tipos")
+    title_line_number = len(content_lines) - 1
 
     is_parsing_type: bool = False
     pending: list[str] = []
@@ -253,6 +254,8 @@ def create_class_types_api(code_class: CodeClass, content_lines: list[str]) -> N
         content_lines.extend(pending)
         content_lines.append("")
         content_lines.append("---")
+    else:
+        content_lines.pop(title_line_number)
 
 def to_snake(name: str) -> str:
     # troca ponto por underscore primeiro

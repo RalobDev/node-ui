@@ -9,33 +9,39 @@ local ROOT = ... --- @type string
 --- os elementos da UI e fornece a área base utilizada como referência para o sistema de layout. Além disso, é responsável por atualizar,
 --- desenhar e gerenciar o ciclo de vida dos controles.
 --- @class NodeUI
---- @field Control NodeUI.Control                           Referência ao **NodeUI.Control**.
---- @field Container NodeUI.Container                       Referência ao **NodeUI.Container**.
 --- @field AspectRatioContainer NodeUI.AspectRatioContainer Referência ao **NodeUI.AspectRatioContainer**.
+--- @field BoxContainer NodeUI.BoxContainer                 Referência ao **NodeUI.BoxContainer**.
+--- @field Container NodeUI.Container                       Referência ao **NodeUI.Container**.
+--- @field Control NodeUI.Control                           Referência ao **NodeUI.Control**.
 local NodeUI = {}
 
-local root_controls = {}                      --- @type NodeUI.Control[] -- Armazena todos os Controls que estão na raiz.
-local base_x = 0                              -- Posição horizonal base para os Controls que estão na raiz.
-local base_y = 0                              -- Posição vertical base para os Controls que estão na raiz.
-local base_width = love.graphics.getWidth()   -- Comprimento base para os Controls que estão na raiz.
-local base_height = love.graphics.getHeight() -- Altura base para os Control que estão na raiz.
-
+local root_controls = {} --- @type NodeUI.Control[]
+local base_x = 0
+local base_y = 0
+local base_width = love.graphics.getWidth()
+local base_height = love.graphics.getHeight()
+local base_mouse_x = 0
+local base_mouse_y = 0
+local base_mouse_position_sended = false
+local base_mouse_position_sended_loops = 0
+local control_mouse_focus   --- @type NodeUI.Control|nil
+local control_mouse_pressed --- @type NodeUI.Control|nil
 
 --#region Local
 
 --- Converte um caminho para nome de classe.
 --- @param path string Caminho a ser transformado em nome de classe.
 local function toClassName(path)
-    -- pega só o nome do arquivo
+    -- Pega só o nome do arquivo.
     local filename = path:match("([^/]+)%.lua$")
     if not filename then return nil end
 
-    -- converte snake_case → PascalCase
+    -- Converte snake_case → PascalCase.
     local class_name = filename:gsub("_(%l)", function(letter)
         return letter:upper()
     end)
 
-    -- capitaliza primeira letra
+    -- Capitaliza primeira letra.
     class_name = class_name:gsub("^%l", string.upper)
 
     return class_name
@@ -44,10 +50,10 @@ end
 --- Converte um caminho para caminho de módulo.
 --- @param path string Caminho a ser transformado em nome de módulo.
 local function toModulePath(path)
-    -- remove extensão .lua
+    -- Remove extensão .lua
     local module = path:gsub("%.lua$", "")
 
-    -- troca / por .
+    -- Troca "/" por ".".
     module = module:gsub("/", ".")
 
     return module
@@ -97,10 +103,108 @@ local function deleteTree(root)
     end
 end
 
+--- Define o foco do mouse do **Control**.
+--- @param control NodeUI.Control
+--- @param enabled boolean Se `true`, ativa o foco do mouse.
+local function setControlMouseFocus(control, enabled)
+    local had_focus = control_mouse_focus == control
+
+    if enabled then
+        control_mouse_focus = control
+    elseif had_focus then
+        control_mouse_focus = nil
+    end
+
+    local has_focus = control_mouse_focus == control
+
+    if had_focus ~= has_focus then
+        control:_emit("MOUSE_FOCUS_CHANGED", has_focus) --- @diagnostic disable-line: invisible
+    end
+end
+
+--- Limpa o foco do mouse da árvore de nós.
+--- @param root NodeUI.Control     Raiz da árvore de **Control**.
+--- @param exclude? NodeUI.Control **Control** que será excluido da limpeza.
+local function clearTreeMouseFocus(root, exclude)
+    if root ~= exclude then
+        setControlMouseFocus(root, false)
+    end
+
+    for _, child in ipairs(root:getChildren(true)) do
+        clearTreeMouseFocus(child, exclude)
+    end
+end
+
+
+--- Encontra o foco do mouse na árvore de nós. Caso não exista retorna `nil`.
+--- @param root NodeUI.Control      Raiz da árvore de **Control**.
+--- @return NodeUI.Control? focused **Control** com o foco do mouse.
+local function findTreeMouseFocus(root)
+    if not root:isVisible() then
+        return nil
+    end
+
+    local filter = root:getMouseFilter()
+
+    if filter == "IGNORE" then
+        return nil
+    end
+
+    -- Verifica se o mouse está sobre a root.
+    do
+        local mouse_x, mouse_y = NodeUI.getBaseMousePosition()
+        local root_x, root_y = root:getPosition()
+        local root_width, root_height = root:getDimensions()
+
+        if not (mouse_x >= root_x
+                and mouse_y >= root_y
+                and mouse_x <= root_x + root_width
+                and mouse_y <= root_y + root_height) then
+            return nil
+        end
+    end
+
+    if filter == "STOP" then
+        return root
+    end
+
+    if filter == "PASS" then
+        local children = root:getChildren(true)
+        for i = #children, 1, -1 do
+            local child = children[i]
+            local focused = findTreeMouseFocus(child)
+
+            if focused then
+                return focused
+            end
+        end
+
+        return root
+    end
+
+    return nil
+end
+
+--- Atualiza o foco do mouse na árvore de nós. Se existir, retorna o **Control** com o foco do mouse.
+--- @param root NodeUI.Control      Raiz da árvore de **Control**.
+--- @return NodeUI.Control? focused **Control** com o foco do mouse.
+local function updateTreeMouseFocus(root)
+    local focused = findTreeMouseFocus(root)
+
+    clearTreeMouseFocus(root, focused)
+
+    if focused then
+        setControlMouseFocus(focused, true)
+    end
+
+    return focused
+end
+
 --#endregion
 
 
 requireNodes() -- Carrega todos os nós do módulo.
+
 
 --#region Public
 
@@ -109,49 +213,75 @@ function NodeUI.drawDebug()
     callRootControlMethod("_drawDebug")
 end
 
+--- Envia para o **NodeUI** qual deve ser a posição do mouse usada pelos nós.
+--- @param x number Posição x do mouse.
+--- @param y number Posição y do mouse.
+function NodeUI.sendBaseMousePosition(x, y)
+    base_mouse_x, base_mouse_y = x, y
+    base_mouse_position_sended = true
+end
+
 --#endregion
 
 
 --#region Engine Callback
 
 --- Atualiza todos os **`Control`**.
---- @param dt number Tempo decorrido desde a última atualização.
 function NodeUI.update(dt)
+    -- Calcula a quantos loops a posição base do mouse foi enviada.
+    -- Isso é necessário porque "_sendBaseMousePosition()" deve ser chamado todo frame para manter suas alterações.
+    if base_mouse_position_sended then
+        base_mouse_position_sended_loops = base_mouse_position_sended_loops + 1
+
+        if base_mouse_position_sended_loops >= 2 then
+            base_mouse_position_sended_loops = 0
+            base_mouse_position_sended = false
+        end
+    end
+
     for i = #root_controls, 1, -1 do
         local root_control = root_controls[i]
 
+        -- Apaga o "root_control" se estiver marcado para deleção.
+        -- Cada Control é responsável por deletar seus filhos marcados para deleção.
         if root_control:isQueuedForDeletion() then
-            -- Remove os Control e seus filhos na fila de deleção.
             table.remove(root_controls, i)
             deleteTree(root_control)
-        elseif root_control:getParent() then
-            -- Remove os Control que possuem parente, pois todos os Control são adicionados
-            -- automaticamente na raiz da UI, mas os que têm parente não devem fazer parte da raiz.
+        end
+
+        -- Remove o "root_control" da raiz se ele ter um parente, pois controls na raiz não devem ter parente e
+        -- todos os controls criados são adicionados a raiz por padrão.
+        if root_control:getParent() then
             table.remove(root_controls, i)
         end
     end
 
-    callRootControlMethod("_update", dt)
+    callRootControlMethod("_update", dt) -- Atualiza os controls na raiz.
+
+    -- Rotina de foco do mouse.
+    do
+        local focus_caught = false
+
+        -- Varre de trás pra frente (o último desenhado é o que está por cima).
+        for i = #root_controls, 1, -1 do
+            local root_control = root_controls[i]
+
+            if not focus_caught then
+                local focused = updateTreeMouseFocus(root_control)
+                if focused then
+                    focus_caught = true
+                end
+            else
+                -- Se um root acima já pegou o mouse, limpa os que estão embaixo.
+                clearTreeMouseFocus(root_control)
+            end
+        end
+    end
 end
 
 --- Desenha todos os **`Control`**.
 function NodeUI.draw()
     callRootControlMethod("_draw")
-end
-
---- Lida com o pressionar de teclas.
---- @param key love.KeyConstant   Caractere da tecla pressionada.
---- @param scancode love.Scancode O scancode que representa a tecla pressionada.
---- @param isrepeat boolean       Se este evento de pressionamento de tecla é uma repetição.
-function NodeUI.keypressed(key, scancode, isrepeat)
-    callRootControlMethod("_keypressed", key, scancode, isrepeat)
-end
-
---- Lida com o soltar de teclas.
---- @param key love.KeyConstant   Caractere da tecla pressionada.
---- @param scancode love.Scancode O scancode que representa a tecla pressionada.
-function NodeUI.keyreleased(key, scancode)
-    callRootControlMethod("_keyreleased", key, scancode)
 end
 
 --- Lida com o pressionar de um botão do mouse.
@@ -161,7 +291,10 @@ end
 --- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousepressed(x, y, button, istouch, presses)
-    callRootControlMethod("_mousepressed", x, y, button, istouch, presses)
+    if control_mouse_focus then
+        control_mouse_focus:_emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+        control_mouse_pressed = control_mouse_focus
+    end
 end
 
 --- Lida com o soltar de um botão do mouse.
@@ -171,7 +304,9 @@ end
 --- @param istouch boolean `true` se o soltar do botão do mouse é originado de uma touchscreen.
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousereleased(x, y, button, istouch, presses)
-    callRootControlMethod("_mousereleased", x, y, button, istouch, presses)
+    if control_mouse_pressed then
+        control_mouse_pressed:_emit("MOUSE_RELEASED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+    end
 end
 
 --- Lida com o movimento do mouse.
@@ -181,14 +316,18 @@ end
 --- @param dy number       Quanto se moveu ao longo do eixo-y.
 --- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
 function NodeUI.mousemoved(x, y, dx, dy, istouch)
-    callRootControlMethod("_mousemoved", x, y, dx, dy, istouch)
+    if control_mouse_focus then
+        control_mouse_focus:_emit("MOUSE_MOVED", x, y, dx, dy, istouch) --- @diagnostic disable-line: invisible
+    end
 end
 
 --- Lida com o movimento da roda do mouse.
 --- @param x number Quanto se moveu ao longo do eixo-x.
 --- @param y number Quanto se moveu ao longo do eixo-y.
 function NodeUI.wheelmoved(x, y)
-    callRootControlMethod("_wheelmoved", x, y)
+    if control_mouse_focus then
+        control_mouse_focus:_emit("WHEEL_MOVED", x, y) --- @diagnostic disable-line: invisible
+    end
 end
 
 --#endregion
@@ -252,6 +391,13 @@ function NodeUI.getRootChildCount()
     return #root_controls
 end
 
+--- Retorna o **`Control`** que possui o foco do mouse. Se nenhum possuir, retorna `nil`.
+--- @nodiscard
+--- @return NodeUI.Control? mouse_focus_control **Control** que possui o foco do mouse.
+function NodeUI.getControlMouseFocus()
+    return control_mouse_focus
+end
+
 --- Retorna a posição horizontal base dos **`Control`** na raiz.
 --- @nodiscard
 --- @return number x Posição base x.
@@ -294,6 +440,28 @@ end
 --- @return number height Altura base.
 function NodeUI.getBaseDimensions()
     return base_width, base_height
+end
+
+--- Retorna a posição x base do mouse.
+--- @nodiscard
+--- @return number x Posição x do mouse.
+function NodeUI.getBaseMouseX()
+    return base_mouse_position_sended and base_mouse_x or love.mouse.getX()
+end
+
+--- Retorna a posição y base do mouse.
+--- @nodiscard
+--- @return number y Posição y do mouse.
+function NodeUI.getBaseMouseY()
+    return base_mouse_position_sended and base_mouse_y or love.mouse.getY()
+end
+
+--- Retorna a posição base do mouse.
+--- @nodiscard
+--- @return number x Posição x do mouse.
+--- @return number y Posição y do mouse.
+function NodeUI.getBaseMousePosition()
+    return NodeUI.getBaseMouseX(), NodeUI.getBaseMouseY()
 end
 
 --#endregion

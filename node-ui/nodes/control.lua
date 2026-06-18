@@ -20,24 +20,22 @@ local Class = require(ROOT .. ".class")      --- @type Class
 --- @field private _children NodeUI.Control[]
 --- @field private _minimum_width number
 --- @field private _minimum_height number
---- @field private _x number
---- @field private _y number
---- @field private _width number
---- @field private _height number
+--- @field protected _x number
+--- @field protected _y number
+--- @field protected _width number
+--- @field protected _height number
 --- @field protected _layout_x number
 --- @field protected _layout_y number
 --- @field protected _layout_width number
 --- @field protected _layout_height number
+--- @field private _size_flags_horizontal NodeUI.Control.SizeFlags
+--- @field private _size_flags_vertical NodeUI.Control.SizeFlags
 --- @field private _layout NodeUI.Control.Layout
 --- @field private _visible boolean
---- @field private _mouse_focused boolean
 --- @field private _mouse_filter NodeUI.Control.MouseFilter
---- @field private _mouse_focused_control? NodeUI.Control
---- @field private _mouse_pressed_control? NodeUI.Control
 --- @field private _signal_connections table<string, NodeUI.Control.SignalConnection[]>
 --- @field private _is_internal_child boolean
---- @field protected _graphics_push_method function
---- @field clip_content boolean Se `true`, clipa o desenho dos filhos à área do **Control**.
+--- @field private _clip_content boolean
 local Control = Class:extend("Control")
 
 
@@ -67,15 +65,17 @@ function Control:new(x, y, width, height)
 	obj._layout_width = width
 	obj._layout_height = height
 
+	obj._size_flags_horizontal = "FILL"
+	obj._size_flags_vertical = "FILL"
+
 	obj._layout = "TOP_LEFT"
 	obj._visible = true
 
-	obj._mouse_focused = false
 	obj._mouse_filter = "PASS"
 
 	obj._signal_connections = {}
 	obj._is_internal_child = false
-	obj.clip_content = false
+	obj._clip_content = false
 
 	obj:connect("MOUSE_PRESSED", "_onMousepressed", obj)
 	obj:connect("MOUSE_RELEASED", "_onMousereleased", obj)
@@ -208,6 +208,13 @@ function Control:disconnect(signal, method, owner)
 	end
 end
 
+--- Retorna se o **Control** possui o foco do mouse.
+--- @nodiscard
+--- @return boolean focused Se o **Control** possui o foco do mouse.
+function Control:hasMouseFocus()
+	return self._node_ui.getControlMouseFocus() == self
+end
+
 -- #endregion
 
 
@@ -217,7 +224,6 @@ end
 --- @private
 --- @param dt number Tempo decorrido desde a última atualização.
 function Control:_update(dt)
-	-- Atualiza o layout se estiver marcado para isto.
 	if self._queued_for_update_layout then
 		self._queued_for_update_layout = false
 		self:_updateLayout()
@@ -225,33 +231,34 @@ function Control:_update(dt)
 
 	self:_onUpdate(dt)
 
-	-- Atualiza os filhos.
-	for _, child in ipairs(self._children) do
-		child:_update(dt)
+	for i = #self._children, 1, -1 do
+		local child = self._children[i]
+
+		if child:isQueuedForDeletion() then
+			-- Deleta o filho se estiver marcado para deleção.
+			table.remove(self._children, i)
+		else
+			-- Atualiza o filho.
+			child:_update(dt)
+		end
 	end
 end
 
 --- Desenha o **Control**.
 --- @private
 function Control:_draw()
+	-- Controls invisíveis não são desenhados.
 	if not self._visible then
 		return
 	end
 
 	love.graphics.push("all")
 
-	if type(self._graphics_push_method) == "function" then
-		self._graphics_push_method()
-	end
-
 	-- Desenha o Control.
 	self:_onDraw()
 
-	love.graphics.pop()
-
 	-- Aplica o recorte de tela para área do Control.
-	local previous_clip_x, previous_clip_y, previous_clip_w, previous_clip_h = love.graphics.getScissor()
-	if self.clip_content then
+	if self._clip_content then
 		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 	end
 
@@ -260,90 +267,7 @@ function Control:_draw()
 		child:_draw()
 	end
 
-	-- Volta ao recorte de tela anterior.
-	if self.clip_content then
-		love.graphics.setScissor(previous_clip_x, previous_clip_y, previous_clip_w, previous_clip_h)
-	end
-end
-
---- Lida com o pressionar de teclas.
---- @private
---- @param key love.KeyConstant   Caractere da tecla pressionada.
---- @param scancode love.Scancode O scancode que representa a tecla pressionada.
---- @param isrepeat boolean       Se este evento de pressionamento de tecla é uma repetição.
-function Control:_keypressed(key, scancode, isrepeat)
-	assert(key, scancode, isrepeat)
-	-- !PASS
-end
-
---- Lida com o soltar de teclas.
---- @private
---- @param key love.KeyConstant   Caractere da tecla pressionada.
---- @param scancode love.Scancode O scancode que representa a tecla pressionada.
-function Control:_keyreleased(key, scancode)
-	assert(key, scancode)
-	-- !PASS
-end
-
---- Lida com o pressionar de um botão do mouse.
---- @private
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi pressionado.
---- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
-function Control:_mousepressed(x, y, button, istouch, presses)
-	local focused = self:_updateMouseFocus(x, y)
-
-	if focused then
-		focused:_emit("MOUSE_PRESSED", x, y, button, istouch, presses)
-		self._mouse_pressed_control = focused
-	end
-end
-
---- Lida com o soltar de um botão do mouse.
---- @private
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi solto.
---- @param istouch boolean `true` se o soltar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
-function Control:_mousereleased(x, y, button, istouch, presses)
-	local pressed_control = self._mouse_pressed_control
-
-	if pressed_control and pressed_control._visible then
-		pressed_control:_emit("MOUSE_RELEASED", x, y, button, istouch, presses)
-	end
-
-	self._mouse_pressed_control = nil
-	self:_updateMouseFocus(x, y)
-end
-
---- Lida com o movimento do mouse.
---- @private
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param dx number       Quanto se moveu ao longo do eixo-x.
---- @param dy number       Quanto se moveu ao longo do eixo-y.
---- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
-function Control:_mousemoved(x, y, dx, dy, istouch)
-	local focused = self:_updateMouseFocus(x, y)
-
-	if focused then
-		focused:_emit("MOUSE_MOVED", x, y, dx, dy, istouch)
-	end
-end
-
---- Lida com o movimento da roda do mouse.
---- @private
---- @param x number Quanto se moveu ao longo do eixo-x.
---- @param y number Quanto se moveu ao longo do eixo-y.
-function Control:_wheelmoved(x, y)
-	local focused = self:_updateMouseFocus(love.mouse.getPosition())
-
-	if focused then
-		focused:_emit("WHEEL_MOVED", x, y)
-	end
+	love.graphics.pop()
 end
 
 --#endregion
@@ -374,18 +298,18 @@ function Control:setPosition(x, y)
 end
 
 --- Define o comprimento mínimo do **Control**.
---- @param value number Novo comprimento mínimo.
-function Control:setMinimumWidth(value)
-	self._minimum_width = math.max(0, value)
-	self:setWidth(self:getWidth())
+--- @param width number Novo comprimento mínimo.
+function Control:setMinimumWidth(width)
+	self._minimum_width = math.max(0, width)
+	self:setWidth(self._width) -- [Correção] Usa _width em vez de getWidth() que puxava o layout atual
 	self:_queueUpdateLayout()
 end
 
 --- Define a altura mínima do **Control**.
---- @param value number Nova altura mínima.
-function Control:setMinimumHeight(value)
-	self._minimum_height = math.max(0, value)
-	self:setHeight(self:getHeight())
+--- @param height number Nova altura mínima.
+function Control:setMinimumHeight(height)
+	self._minimum_height = math.max(0, height)
+	self:setHeight(self._height) -- [Correção] Usa _height em vez de getHeight()
 	self:_queueUpdateLayout()
 end
 
@@ -398,16 +322,16 @@ function Control:setMinimumDimensions(width, height)
 end
 
 --- Define o comprimento do **Control**.
---- @param value number Novo comprimento.
-function Control:setWidth(value)
-	self._width = math.max(value, self._minimum_width)
+--- @param width number Novo comprimento.
+function Control:setWidth(width)
+	self._width = math.max(width, self._minimum_width)
 	self:_queueUpdateLayout()
 end
 
 --- Define a altura do **Control**.
---- @param value number Novo comprimento.
-function Control:setHeight(value)
-	self._height = math.max(value, self._minimum_height)
+--- @param height number Nova altura.
+function Control:setHeight(height)
+	self._height = math.max(height, self._minimum_height)
 	self:_queueUpdateLayout()
 end
 
@@ -439,28 +363,30 @@ function Control:setVisible(enabled)
 	self._visible = enabled
 end
 
+--- Define o recorte de conteúdo do **Control**. Se `true`, clipa o desenho dos filhos à área do **Control**.
+--- Por padrão ativa o recorte de conteúdo.
+--- @param enabled? boolean
+function Control:setClipContent(enabled)
+	if enabled == "nil" then
+		enabled = true
+	end
+	--- @cast enabled boolean
+
+	self._clip_content = enabled
+end
+
 --- Define o filtro de mouse do **Control**.
 --- @param filter NodeUI.Control.MouseFilter Filtro do mouse.
 function Control:setMouseFilter(filter)
 	self._mouse_filter = filter
-	self:_updateMouseFocus(love.mouse.getPosition())
 end
 
---#endregion
-
-
---#region Private Setter
-
---- Define o foco do mouse do **Control**.
---- @private
---- @param enabled boolean Se `true`, ativa o foco do mouse.
-function Control:_setMouseFocus(enabled)
-	local previous_focus = self._mouse_focused
-	self._mouse_focused = enabled
-
-	if enabled ~= previous_focus then
-		self:_emit("MOUSE_FOCUS_CHANGED", enabled)
-	end
+--- Define a size flags do `axis`.
+--- @param axis NodeUI.Control.Axis Eixo da size flags.
+--- @param size_flags NodeUI.Control.SizeFlags Size flags aplicada ao `axis`.
+function Control:setSizeFlags(axis, size_flags)
+	self["_size_flags_" .. axis:lower()] = size_flags
+	self:_queueUpdateLayout()
 end
 
 --#endregion
@@ -518,18 +444,43 @@ function Control:getPosition()
 	return self:getX(), self:getY()
 end
 
+--- Retorna o comprimento base do **Control**. É o comprimento definido ao criar o **Control** e ao chamar
+--- `Control:setWidth()`.
+--- @nodiscard
+--- @return number width Comprimento base.
+function Control:getBaseWidth()
+	return self._width
+end
+
+--- Retorna a altura base do **Control**. É a altura definida ao criar o **Control** e ao chamar
+--- `Control:setHeight()`.
+--- @nodiscard
+--- @return number height Altura base.
+function Control:getBaseHeight()
+	return self._height
+end
+
+--- Retorna a dimensão base do **Control**. É a dimensão definida ao criar o **Control** e ao chamar
+--- `Control:setDimensions()`.
+--- @nodiscard
+--- @return number width  Comprimento base.
+--- @return number height Altura base.
+function Control:getBaseDimensions()
+	return self._width, self._height
+end
+
 --- Retorna o comprimento mínimo do **Control**.
 --- @nodiscard
 --- @return number width Comprimento mínimo do **Control**.
 function Control:getMinimumWidth()
-	return self._minimum_width
+	return math.max(self._minimum_width, self:_calculateMinimumWidth())
 end
 
 --- Retorna a altura mínima do **Control**.
 --- @nodiscard
 --- @return number height Altura mínima do **Control**.
 function Control:getMinimumHeight()
-	return self._minimum_height
+	return math.max(self._minimum_height, self:_calculateMinimumHeight())
 end
 
 --- Retorna a dimensão mínima do **Control**.
@@ -569,6 +520,13 @@ function Control:getLayout()
 	return self._layout
 end
 
+--- Retorna se o recorte de conteúdo do **Control** está ativado.
+--- @nodiscard
+--- @return boolean clip_content Se o recorte de conteúdo está ativo.
+function Control:getClipContent()
+	return self._clip_content
+end
+
 --- Retorna o filtro de mouse do **Control**.
 --- @nodiscard
 --- @return NodeUI.Control.MouseFilter mouse_filter Filtro do mouse.
@@ -576,18 +534,59 @@ function Control:getMouseFilter()
 	return self._mouse_filter
 end
 
+--- Retorna a size flags do `axis`.
+--- @nodiscard
+--- @param axis NodeUI.Control.Axis Eixo da size flags.
+--- @return NodeUI.Control.SizeFlags size_flags Size flags aplicada ao `axis`.
+function Control:getSizeFlags(axis)
+	return self["_size_flags_" .. axis:lower()]
+end
+
 --#endregion
 
 
 --#region Protected
 
---- Marca para atualizar o layout do **Control** no próximo `love.update()`.
+--- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
 --- @protected
-function Control:_queueUpdateLayout()
-	if self._queued_for_update_layout then
+function Control:_updateLayout()
+	if not self._visible then
 		return
 	end
 
+	do
+		local parent = self._parent
+
+		if parent and type(parent.is) == "function" and parent:is("Container") then
+			-- Se o Control tem suas propriedades base alteradas e é filho de um Container,
+			-- ele avisa o Container para reorganizar o layout geral.
+			--- @cast parent NodeUI.Container
+
+			--- @diagnostic disable-next-line: invisible
+			parent:_queueUpdateChildrenLayout()
+
+			-- Interrompe a cascata aqui. O próprio Container atualizará os filhos quando processar o layout.
+			return
+		end
+	end
+
+	local old_x, old_y = self._layout_x, self._layout_y
+	local old_width, old_height = self._layout_width, self._layout_height
+
+	-- Atualiza o layout do Control livremente.
+	self:_onUpdateLayout()
+
+	-- Só propaga a atualização de layout para os filhos se a geometria final realmente mudou
+	if old_x ~= self._layout_x or old_y ~= self._layout_y or old_width ~= self._layout_width or old_height ~= self._layout_height then
+		for _, child in ipairs(self._children) do
+			child:_queueUpdateLayout()
+		end
+	end
+end
+
+--- Marca para atualizar o layout do **Control** no próximo `love.update()`.
+--- @protected
+function Control:_queueUpdateLayout()
 	self._queued_for_update_layout = true
 end
 
@@ -600,7 +599,15 @@ function Control:_emit(signal, ...)
 		return
 	end
 
-	for _, connection in ipairs(connections) do
+	for i = #connections, 1, -1 do
+		local connection = connections[i]
+
+		-- Garbage Collection Dinâmico: Limpa conexões de objetos que já foram deletados
+		if connection.owner and type(connection.owner.isQueuedForDeletion) == "function" and connection.owner:isQueuedForDeletion() then
+			table.remove(connections, i)
+			goto continue
+		end
+
 		local method_function = connection.owner and connection.owner[connection.method] or connection.method
 
 		if type(method_function) ~= "function" then
@@ -620,153 +627,20 @@ end
 --#endregion
 
 
---#region Private
+--#region Protected Getter
 
---- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
---- @private
-function Control:_updateLayout()
-	if not self._visible then
-		return
-	end
-
-	if self:is("Container") then
-		--- @diagnostic disable-next-line: undefined-field
-		self:_queueUpdateChildrenLayout()
-	end
-
-	-- Quando o Control é filho de um Container ele não pode atualizar seu próprio layout.
-	local parent = self._parent
-	if parent and parent:is("Container") then
-		--- @cast parent NodeUI.Container
-
-		--- @diagnostic disable-next-line: invisible
-		parent:_queueUpdateChildrenLayout()
-
-		return
-	end
-
-	-- Atualiza o layout do Control.
-	self:_onUpdateLayout()
-
-	-- Marca os filhos para atualizarem seu layout.
-	for _, child in ipairs(self._children) do
-		child:_queueUpdateLayout()
-	end
+--- Calcula dinamicamente o comprimento mínimo do **Control**.
+--- @protected
+--- @return number width
+function Control:_calculateMinimumWidth()
+	return 0
 end
 
---- Desenha a depuração do **Control**.
---- @private
-function Control:_drawDebug()
-	if not self._visible then
-		return
-	end
-
-
-	local default_color = { love.graphics.getColor() }
-	love.graphics.setColor(self._mouse_focused and { 1, 1, 0 } or { 0, 1, 0 })
-
-	love.graphics.push("all")
-
-	if type(self._graphics_push_method) == "function" then
-		self._graphics_push_method()
-	end
-
-	self:_onDrawDebug()
-
-	love.graphics.pop()
-
-	love.graphics.setColor(default_color)
-
-	-- Aplica o recorte de tela para área do Control.
-	local previous_clip_x, previous_clip_y, previous_clip_w, previous_clip_h = love.graphics.getScissor()
-	if self.clip_content then
-		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
-	end
-
-	for _, child in ipairs(self._children) do
-		child:_drawDebug()
-	end
-
-	-- Volta ao recorte de tela anterior.
-	if self.clip_content then
-		love.graphics.setScissor(previous_clip_x, previous_clip_y, previous_clip_w, previous_clip_h)
-	end
-end
-
---- Encontra o foco do mouse na árvore de nós. Caso não exista retorna `nil`.
---- @private
---- @param x number        		    Posição x do mouse.
---- @param y number                 Posição y do mouse.
---- @return NodeUI.Control? focused **Control** com o foco do mouse.
-function Control:_findMouseFocus(x, y)
-	if not self:isVisible() then
-		return nil
-	end
-
-	local filter = self._mouse_filter
-
-	if filter == "IGNORE" then
-		return nil
-	end
-
-	-- Verifica se o mouse está sobre o Control.
-	if not (x >= self._layout_x
-			and y >= self._layout_y
-			and x <= self._layout_x + self._layout_width
-			and y <= self._layout_y + self._layout_height) then
-		return nil
-	end
-
-	if filter == "STOP" then
-		return self
-	end
-
-	if filter == "PASS" then
-		for i = #self._children, 1, -1 do
-			local child = self._children[i]
-			local focused = child:_findMouseFocus(x, y)
-
-			if focused then
-				return focused
-			end
-		end
-
-		return self
-	end
-
-	return nil
-end
-
---- Limpa o foco do mouse da árvore de nós.
---- @param exclude? NodeUI.Control **Control** que será excluido da limpeza.
---- @private
-function Control:_clearMouseFocus(exclude)
-	if self ~= exclude then
-		self:_setMouseFocus(false)
-	end
-
-	for _, child in ipairs(self._children) do
-		child:_clearMouseFocus()
-	end
-end
-
---- Atualiza o foco do mouse na árvore de nós. Se existir, retorna o **Control** com o foco do mouse.
---- @private
---- @param x number 				Posição horizontal do mouse.
---- @param y number                 Posição vertical do mouse.
---- @return NodeUI.Control? focused **Control** com o foco do mouse.
-function Control:_updateMouseFocus(x, y)
-	local focused = self:_findMouseFocus(x, y)
-
-	self._mouse_focused_control = focused
-	self:_clearMouseFocus(focused)
-
-	if focused then
-		focused:_setMouseFocus(true)
-	end
-
-
-	return focused
+--- Calcula dinamicamente a altura mínima do **Control**.
+--- @protected
+--- @return number height
+function Control:_calculateMinimumHeight()
+	return 0
 end
 
 --#endregion
@@ -777,9 +651,8 @@ end
 --- Chamado durante a atualização do **Control**.
 --- @protected
 --- @param dt number Tempo decorrido desde a última atualização.
-function Control:_onUpdate(dt)
-	assert(dt)
-end
+--- @diagnostic disable-next-line: unused-local
+function Control:_onUpdate(dt) end
 
 --- Chamado durante o desenho do **Control**.
 --- @protected
@@ -985,6 +858,36 @@ end
 --- @param focused boolean Se está focado pelo mouse.
 --- @diagnostic disable-next-line: unused-local
 function Control:_onMouseFocusChanged(focused) end
+
+--#endregion
+
+
+--#region Private
+
+--- Desenha a depuração do **Control**.
+--- @private
+function Control:_drawDebug()
+	if not self._visible then
+		return
+	end
+
+	love.graphics.push("all")
+
+	love.graphics.setColor(self:hasMouseFocus() and { 1, 1, 0 } or { 0, 1, 0 })
+
+	self:_onDrawDebug()
+
+	-- Aplica o recorte de tela para área do Control.
+	if self._clip_content then
+		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
+	end
+
+	for _, child in ipairs(self._children) do
+		child:_drawDebug()
+	end
+
+	love.graphics.pop()
+end
 
 --#endregion
 

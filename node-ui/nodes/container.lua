@@ -54,20 +54,50 @@ end
 --#endregion
 
 
+--#region Override Setter
+
+--- Calcula o comprimento mínimo baseando-se nos filhos.
+--- @protected
+--- @return number width
+function Container:_calculateMinimumWidth()
+    local min_width = 0
+    for _, child in ipairs(self:getChildren(true)) do
+        min_width = math.max(min_width, child:getMinimumWidth())
+    end
+    return min_width
+end
+
+--- Calcula a altura mínima baseando-se nos filhos.
+--- @protected
+--- @return number height
+function Container:_calculateMinimumHeight()
+    local min_height = 0
+    for _, child in ipairs(self:getChildren(true)) do
+        min_height = math.max(min_height, child:getMinimumHeight())
+    end
+    return min_height
+end
+
+--#endregion
+
+
 --#region Protected
+
+--- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
+--- @protected
+function Container:_updateLayout()
+    Control._updateLayout(self)
+
+    self:_queueUpdateChildrenLayout()
+end
 
 --- Atualiza o layout dos filhos.
 --- @protected
-function Container:_updateChildrenLayout()
-end
+function Container:_updateChildrenLayout() end
 
 --- Marca o **Container** para atualizar o layout de seus filhos.
 --- @protected
 function Container:_queueUpdateChildrenLayout()
-    if self._queued_for_update_children_layout then
-        return
-    end
-
     self._queued_for_update_children_layout = true
 end
 

@@ -8,11 +8,11 @@ Define o comprimento mínimo do **Control**.
 ## Sinopse
 
 ```lua
-NodeUI.Control:setMinimumWidth(value)
+NodeUI.Control:setMinimumWidth(width)
 ```
 
 ## Argumentos
-- **`number` value** <br>
+- **`number` width** <br>
 Novo comprimento mínimo.
 
 ## Retornos

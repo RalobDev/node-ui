@@ -98,7 +98,7 @@ end
 --- @param axis NodeUI.Control.Axis                     Eixo de alinhamento.
 --- @return NodeUI.Control.AlignmentMode alignment_mode Modo de alinhamento.
 function AspectRatioContainer:getAlignmentMode(axis)
-    local alignment_axis = "_" .. axis:lower() .. "alignment_mode"
+    local alignment_axis = "_" .. axis:lower() .. "_alignment_mode"
     return self[alignment_axis]
 end
 
@@ -112,7 +112,16 @@ end
 function AspectRatioContainer:_updateChildrenLayout()
     for _, child in ipairs(self:getChildren(true)) do
         local base_width, base_height = self:getDimensions()
-        local child_width, child_height = child:getDimensions()
+        local child_width, child_height = child:getBaseDimensions()
+
+        if child_width <= 0 or child_height <= 0 then
+            goto continue
+        end
+
+        -- Salva o layout anterior do filho.
+        local old_x, old_y = child._layout_x, child._layout_y
+        local old_w, old_h = child._layout_width, child._layout_height
+
         local scale
 
         if self._stretch_mode == "STRETCH_WIDTH" then
@@ -120,33 +129,47 @@ function AspectRatioContainer:_updateChildrenLayout()
         elseif self._stretch_mode == "STRETCH_HEIGHT" then
             scale = base_height / child_height
         elseif self._stretch_mode == "FIT" then
-            scale = math.min(base_width / child_width, base_height / child_height)
+            scale = math.min(
+                base_width / child_width,
+                base_height / child_height
+            )
         elseif self._stretch_mode == "COVER" then
-            scale = math.max(base_width / child_width, base_height / child_height)
+            scale = math.max(
+                base_width / child_width,
+                base_height / child_height
+            )
         end
 
-        local scaled_x, scaled_y = self._layout_x / scale, self._layout_y / scale
-        local scaled_base_width, scaled_base_height = base_width / scale, base_height / scale
+        local scaled_width = child_width * scale
+        local scaled_height = child_height * scale
 
         if self._horizontal_alignment_mode == "BEGIN" then
-            child._layout_x = scaled_x
+            child._layout_x = self._layout_x
         elseif self._horizontal_alignment_mode == "CENTER" then
-            child._layout_x = scaled_x + (scaled_base_width / 2) - (child_width / 2)
+            child._layout_x = self._layout_x + (base_width - scaled_width) / 2
         elseif self._horizontal_alignment_mode == "END" then
-            child._layout_x = scaled_x + (scaled_base_width / 2) - child_width
+            child._layout_x = self._layout_x + base_width - scaled_width
         end
 
         if self._vertical_alignment_mode == "BEGIN" then
-            child._layout_y = scaled_y
+            child._layout_y = self._layout_y
         elseif self._vertical_alignment_mode == "CENTER" then
-            child._layout_y = scaled_y + (scaled_base_height / 2) - (child_height / 2)
+            child._layout_y = self._layout_y + (base_height - scaled_height) / 2
         elseif self._vertical_alignment_mode == "END" then
-            child._layout_y = scaled_y + (scaled_base_height / 2) - child_height
+            child._layout_y = self._layout_y + base_height - scaled_height
         end
 
-        child._graphics_push_method = function()
-            love.graphics.scale(scale)
+        child._layout_width = scaled_width
+        child._layout_height = scaled_height
+
+        -- Dispara a cascata de layout apenas se a escala/posição mudou na prática
+        if old_x ~= child._layout_x or old_y ~= child._layout_y or old_w ~= child._layout_width or old_h ~= child._layout_height then
+            for _, grandchild in ipairs(child:getChildren(true)) do
+                grandchild:_queueUpdateLayout()
+            end
         end
+
+        ::continue::
     end
 end
 

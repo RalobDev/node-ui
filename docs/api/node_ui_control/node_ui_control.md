@@ -21,7 +21,11 @@ gerencia visibilidade, foco do mouse, renderização, atualização, clipping de
 [addChild](node_ui_control_add_child.md) | Adiciona um filho ao **Control**. O filho adicionado é retornado, simplificando a criação e referência de filhos. | `control`
 [connect](node_ui_control_connect.md) | Cria uma conexão em determinado sinal do **Control**.   O `owner` é a tabela que possui o `method`, que deve ser uma `string`. Caso não seja passado um `owner`, o `method` deve ser uma `function`.   Quando é passado um `owner` o método é chamado desta forma: `owner.method(owner, ...)` para respeitar o padrão `self`. | `nil`
 [disconnect](node_ui_control_disconnect.md) | Remove a conexão de um sinal do **Control**. | `nil`
+[getBaseDimensions](node_ui_control_get_base_dimensions.md) | Retorna a dimensão base do **Control**. É a dimensão definida ao criar o **Control** e ao chamar `Control:setDimensions()`. | `number`, `number`
+[getBaseHeight](node_ui_control_get_base_height.md) | Retorna a altura base do **Control**. É a altura definida ao criar o **Control** e ao chamar `Control:setHeight()`. | `number`
+[getBaseWidth](node_ui_control_get_base_width.md) | Retorna o comprimento base do **Control**. É o comprimento definido ao criar o **Control** e ao chamar `Control:setWidth()`. | `number`
 [getChildren](node_ui_control_get_children.md) | Retorna uma tabela com todos os filhos do **Control**. | `NodeUI.Control[]`
+[getClipContent](node_ui_control_get_clip_content.md) | Retorna se o recorte de conteúdo do **Control** está ativado. | `boolean`
 [getDimensions](node_ui_control_get_dimensions.md) | Retorna a dimensão do **Control**. | `number`, `number`
 [getHeight](node_ui_control_get_height.md) | Retorna a altura do **Control**. | `number`
 [getLayout](node_ui_control_get_layout.md) | Retorna o layout do **Control**. | `NodeUI.Control.Layout`
@@ -31,14 +35,17 @@ gerencia visibilidade, foco do mouse, renderização, atualização, clipping de
 [getMouseFilter](node_ui_control_get_mouse_filter.md) | Retorna o filtro de mouse do **Control**. | `NodeUI.Control.MouseFilter`
 [getParent](node_ui_control_get_parent.md) | Retorna o parente do **Control** ou `nil` caso ela não tenha um. | `NodeUI.Control?`
 [getPosition](node_ui_control_get_position.md) | Retorna a posição do **Control**. | `number`, `number`
+[getSizeFlags](node_ui_control_get_size_flags.md) | Retorna a size flags do `axis`. | `NodeUI.Control.SizeFlags`
 [getWidth](node_ui_control_get_width.md) | Retorna o comprimento do **Control**. | `number`
 [getX](node_ui_control_get_x.md) | Retorna a posição x do **Control**. | `number`
 [getY](node_ui_control_get_y.md) | Retorna a posição y do **Control**. | `number`
+[hasMouseFocus](node_ui_control_has_mouse_focus.md) | Retorna se o **Control** possui o foco do mouse. | `boolean`
 [isQueuedForDeletion](node_ui_control_is_queued_for_deletion.md) | Retorna se o **Control** está na fila de deleção. | `boolean`
 [isVisible](node_ui_control_is_visible.md) | Retorna se o **Control** está visível ou não. | `boolean`
 [new](node_ui_control_new.md) | Cria um novo **Control**. | [`NodeUI.Control`](../node_ui_control/node_ui_control.md)
 [queueFree](node_ui_control_queue_free.md) | Marca para deletar o **Control** no próximo `love.update()`.   Os nós não são coletados pelo coletor de lixo do **Lua** ao ser definido com `nil`, pois o próprio módulo [NodeUI](../node_ui/node_ui.md) armazena uma referência deles. Assim é necessário chamar `queueFree` quando quiser remover um nó da biblioteca.   Ao ser deletado o nó e seus filhos são removidos da raiz do **NodeUI**, mas quaisquer referências fora do módulo continuarão existindo. | `nil`
 [removeChild](node_ui_control_remove_child.md) | Remove o `child` do **Control**. | `nil`
+[setClipContent](node_ui_control_set_clip_content.md) | Define o recorte de conteúdo do **Control**. Se `true`, clipa o desenho dos filhos à área do **Control**. Por padrão ativa o recorte de conteúdo. | `nil`
 [setDimensions](node_ui_control_set_dimensions.md) | Define a dimensão do **Control**. | `nil`
 [setHeight](node_ui_control_set_height.md) | Define a altura do **Control**. | `nil`
 [setLayout](node_ui_control_set_layout.md) | Define o layout do **Control**. | `nil`
@@ -47,12 +54,12 @@ gerencia visibilidade, foco do mouse, renderização, atualização, clipping de
 [setMinimumWidth](node_ui_control_set_minimum_width.md) | Define o comprimento mínimo do **Control**. | `nil`
 [setMouseFilter](node_ui_control_set_mouse_filter.md) | Define o filtro de mouse do **Control**. | `nil`
 [setPosition](node_ui_control_set_position.md) | Define a posição do **Control** | `nil`
+[setSizeFlags](node_ui_control_set_size_flags.md) | Define a size flags do `axis`. | `nil`
 [setVisible](node_ui_control_set_visible.md) | Define a visibilidade do **Control**. Por padrão ativa a visibilidade. | `nil`
 [setWidth](node_ui_control_set_width.md) | Define o comprimento do **Control**. | `nil`
 [setX](node_ui_control_set_x.md) | Define a posição horizontal do **Control** | `nil`
 [setY](node_ui_control_set_y.md) | Define a posição vertical do **Control** | `nil`
 
-## Tipos
 ### Layout
 
 Representa os modos de layout disponíveis para posicionamento de um Control.
@@ -111,6 +118,10 @@ Quando o mouse se move sobre o Control. -> fun(x: number, y: number, dx: number,
 Quando o scroll do mouse é usado. -> fun(x: number, y: number)
 - `MOUSE_FOCUS_CHANGED`
 Quando o foco de mouse entra ou sai. -> fun(focused: bool)
+- `CHILD_ADDED`
+Quando um filho é adicionado. -> fun(child: NodeUI.Control)
+- `CHILD_REMOVED`
+Quando um filho é removido. -> fun(child: NodeUI.Control)
 
 ---
 ### AlignmentMode
@@ -133,5 +144,22 @@ Eixo horizontal ou vertical.
 
 - `HORIZONTAL`
 - `VERTICAL`
+
+---
+### SizeFlags
+
+Define como o controle ocupa o espaço disponível.
+
+
+- `FILL`
+Expande para preencher todo o espaço disponível.
+- `EXPAND`
+Expande para preencher o espaço disponíveis divido entre outros Control que também expandem.
+- `SHRINK_BEGIN`
+Mantém o tamanho mínimo e alinha no início.
+- `SHRINK_CENTER`
+Mantém o tamanho mínimo e centraliza.
+- `SHRINK_END`
+Mantém o tamanho mínimo e alinha no fim.
 
 ---
