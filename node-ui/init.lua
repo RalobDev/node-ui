@@ -15,6 +15,7 @@ local ROOT = ... --- @type string
 --- @field Container NodeUI.Container                       Referência ao **NodeUI.Container**.
 --- @field Control NodeUI.Control                           Referência ao **NodeUI.Control**.
 --- @field FlowContainer NodeUI.FlowContainer               Referência ao **NodeUI.FlowContainer**.
+--- @field GridContainer NodeUI.GridContainer               Referência ao **NodeUI.GridContainer**.
 local NodeUI = {}
 
 local root_controls = {} --- @type NodeUI.Control[]
