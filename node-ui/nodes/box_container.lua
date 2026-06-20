@@ -195,6 +195,12 @@ function BoxContainer:_updateChildrenLayout()
         end
     end
 
+    local largest_size = 0
+    for _, child in ipairs(children) do
+        local child_size = self._vertical and child:getMinimumWidth() or child:getMinimumHeight()
+        largest_size = math.max(largest_size, child_size)
+    end
+
     for _, child in ipairs(children) do
         -- Alinha o eixo que não é alvo do BoxContainer com o eixo do BoxContainer.
         if target_axis == "_layout_x" then
@@ -206,34 +212,43 @@ function BoxContainer:_updateChildrenLayout()
         child[target_axis] = self[target_axis] + used_size
         child._layout_width, child._layout_height = child:getMinimumDimensions()
 
-        local size_flags_h = child:getSizeFlags("HORIZONTAL")
-        local size_flags_v = child:getSizeFlags("VERTICAL")
+        local opposite_child_size = self._vertical and "_layout_width" or "_layout_height"
+        if child[opposite_child_size] == largest_size then
+            goto ignore_size_flags
+        end
 
-        if self._vertical then
-            if size_flags_h == "FILL" or size_flags_h == "EXPAND" then
-                child._layout_width = self._layout_x + self._layout_width - child._layout_x
-            elseif size_flags_h == "SHRINK_CENTER" then
-                child._layout_x = self._layout_x + self._layout_width / 2 - child._layout_width / 2
-            elseif size_flags_h == "SHRINK_END" then
-                child._layout_x = self._layout_x + self._layout_width - child._layout_width
-            end
+        do
+            local size_flags_h = child:getSizeFlags("HORIZONTAL")
+            local size_flags_v = child:getSizeFlags("VERTICAL")
 
-            if size_flags_v == "EXPAND" then
-                child._layout_height = math.max(child:getMinimumHeight(), expand_child_size)
-            end
-        else
-            if size_flags_v == "FILL" or size_flags_v == "EXPAND" then
-                child._layout_height = self._layout_y + self._layout_height - child._layout_y
-            elseif size_flags_v == "SHRINK_CENTER" then
-                child._layout_y = self._layout_y + self._layout_height / 2 - child._layout_height / 2
-            elseif size_flags_v == "SHRINK_END" then
-                child._layout_y = self._layout_y + self._layout_height - child._layout_height
-            end
+            if self._vertical then
+                if size_flags_h == "FILL" or size_flags_h == "EXPAND" then
+                    child._layout_width = largest_size
+                elseif size_flags_h == "SHRINK_CENTER" then
+                    child._layout_x = self._layout_x + largest_size / 2 - child._layout_width / 2
+                elseif size_flags_h == "SHRINK_END" then
+                    child._layout_x = self._layout_x + largest_size - child._layout_width
+                end
 
-            if size_flags_h == "EXPAND" then
-                child._layout_width = math.max(child:getMinimumWidth(), expand_child_size)
+                if size_flags_v == "EXPAND" then
+                    child._layout_height = math.max(child:getMinimumHeight(), expand_child_size)
+                end
+            else
+                if size_flags_v == "FILL" or size_flags_v == "EXPAND" then
+                    child._layout_height = largest_size
+                elseif size_flags_v == "SHRINK_CENTER" then
+                    child._layout_y = self._layout_y + largest_size / 2 - child._layout_height / 2
+                elseif size_flags_v == "SHRINK_END" then
+                    child._layout_y = self._layout_y + largest_size - child._layout_height
+                end
+
+                if size_flags_h == "EXPAND" then
+                    child._layout_width = math.max(child:getMinimumWidth(), expand_child_size)
+                end
             end
         end
+
+        ::ignore_size_flags::
 
         local child_size = self._vertical and child._layout_height or child._layout_width
         used_size = used_size + child_size + self._separation

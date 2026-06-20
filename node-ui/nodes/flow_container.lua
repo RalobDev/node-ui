@@ -229,14 +229,14 @@ function FlowContainer:_updateChildrenLayout()
                             wrapped_child._layout_height = math.max(wrapped_child:getMinimumHeight(), expand_child_size)
                         end
                     else
-                        if size_flags_v == "FILL" then
+                        if size_flags_v == "FILL" or size_flags_v == "EXPAND" then
                             wrapped_child._layout_height = largest_child_size
                         elseif size_flags_v == "SHRINK_CENTER" then
                             wrapped_child._layout_y = (
                                 wrapped_child._layout_y + largest_child_size / 2 - opposite_child_size / 2
                             )
                         elseif size_flags_v == "SHRINK_END" then
-                            wrapped_child._layout_y = wrapped_child._layout_y + largest_child_size / 2
+                            wrapped_child._layout_y = wrapped_child._layout_y + largest_child_size - opposite_child_size
                         end
 
                         if size_flags_h == "EXPAND" then
