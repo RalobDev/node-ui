@@ -59,6 +59,20 @@
 --- | "SHRINK_CENTER" Mantém o tamanho mínimo e centraliza.
 --- | "SHRINK_END"    Mantém o tamanho mínimo e alinha no fim.
 
+--- Representa os lados de um retângulo.
+--- @alias NodeUI.Control.Edge
+--- | "LEFT"
+--- | "RIGHT"
+--- | "TOP"
+--- | "BOTTOM"
+
+--- Representa os cantos de um retângulo.
+--- @alias NodeUI.Control.Corner
+--- | "TOP_LEFT"
+--- | "TOP_RIGHT"
+--- | "BOTTOM_LEFT"
+--- | "BOTTOM_RIGHT"
+
 --- Representa a conexão de um sinal no **`Control`**.
 --- @class NodeUI.Control.SignalConnection
 --- @field method string|function Nome do método chamado quando o sinal é emitido.
