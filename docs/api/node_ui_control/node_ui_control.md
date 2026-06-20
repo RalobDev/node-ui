@@ -163,3 +163,25 @@ Mantém o tamanho mínimo e centraliza.
 Mantém o tamanho mínimo e alinha no fim.
 
 ---
+### Edge
+
+Representa os lados de um retângulo.
+
+
+- `LEFT`
+- `RIGHT`
+- `TOP`
+- `BOTTOM`
+
+---
+### Corner
+
+Representa os cantos de um retângulo.
+
+
+- `TOP_LEFT`
+- `TOP_RIGHT`
+- `BOTTOM_LEFT`
+- `BOTTOM_RIGHT`
+
+---
