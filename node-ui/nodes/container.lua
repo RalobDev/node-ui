@@ -56,6 +56,23 @@ end
 
 --#region Override Setter
 
+--- Define o comprimento do **Control**.
+--- @param width number Novo comprimento.
+function Container:setWidth(width)
+    self._width = math.max(width, self:_calculateMinimumWidth())
+end
+
+--- Define a altura do **Control**.
+--- @param height number Nova altura.
+function Container:setHeight(height)
+    self._height = math.max(height, self:_calculateMinimumHeight())
+end
+
+--#endregion
+
+
+--#region Protected
+
 --- Calcula o comprimento mínimo baseando-se nos filhos.
 --- @protected
 --- @return number width
@@ -77,11 +94,6 @@ function Container:_calculateMinimumHeight()
     end
     return min_height
 end
-
---#endregion
-
-
---#region Protected
 
 --- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
 --- @protected

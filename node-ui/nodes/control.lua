@@ -554,6 +554,7 @@ function Control:_updateLayout()
 		return
 	end
 
+	-- !NOTE: Mover para o _updateLayout() do Container.
 	do
 		local parent = self._parent
 

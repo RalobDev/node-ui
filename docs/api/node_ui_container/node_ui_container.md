@@ -21,3 +21,5 @@ comportamentos específicos de posicionamento e organização dos elementos filh
 [connect](node_ui_container_connect.md) | Cria uma conexão em determinado sinal do [Control](../node_ui_control/node_ui_control.md). | `nil`
 [disconnect](node_ui_container_disconnect.md) | Desconecta o `method` do `signal`. | `nil`
 [new](node_ui_container_new.md) | Cria um novo **Container**. | [`NodeUI.Container`](../node_ui_container/node_ui_container.md)
+[setHeight](node_ui_container_set_height.md) | Define a altura do **Control**. | `nil`
+[setWidth](node_ui_container_set_width.md) | Define o comprimento do **Control**. | `nil`

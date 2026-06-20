@@ -34,16 +34,16 @@ end
 
 --- Cria uma conexão em determinado sinal do **`Control`**.
 --- @param signal NodeUI.BoxContainer.Signals Nome do sinal.
---- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
---- @param owner? table                  Objeto dono do método.
+--- @param method string|function             Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner? table                       Objeto dono do método.
 function BoxContainer:connect(signal, method, owner)
     return Container.connect(self, signal, method, owner)
 end
 
 --- Remove a conexão de um sinal do **`Control`**.
 --- @param signal NodeUI.BoxContainer.Signals Nome do sinal.
---- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
---- @param owner table?                  Objeto dono do método.
+--- @param method string|function             Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                       Objeto dono do método.
 function BoxContainer:disconnect(signal, method, owner)
     Container.disconnect(self, signal, method, owner)
 end
@@ -107,7 +107,51 @@ end
 --#endregion
 
 
---#region Protected
+--#region Override Protected
+
+--- Calcula o comprimento mínimo empilhando os filhos horizontalmente ou pegando o maior verticalmente.
+--- @protected
+--- @return number width
+function BoxContainer:_calculateMinimumWidth()
+    local min_width = 0
+    local children = self:getChildren(true)
+    if #children == 0 then return 0 end
+
+    if self._vertical then
+        for _, child in ipairs(children) do
+            min_width = math.max(min_width, child:getMinimumWidth())
+        end
+    else
+        for _, child in ipairs(children) do
+            min_width = min_width + child:getMinimumWidth()
+        end
+        min_width = min_width + self._separation * (#children - 1)
+    end
+
+    return min_width
+end
+
+--- Calcula a altura mínima empilhando os filhos verticalmente ou pegando a maior horizontalmente.
+--- @protected
+--- @return number height
+function BoxContainer:_calculateMinimumHeight()
+    local min_height = 0
+    local children = self:getChildren(true)
+    if #children == 0 then return 0 end
+
+    if self._vertical then
+        for _, child in ipairs(children) do
+            min_height = min_height + child:getMinimumHeight()
+        end
+        min_height = min_height + self._separation * (#children - 1)
+    else
+        for _, child in ipairs(children) do
+            min_height = math.max(min_height, child:getMinimumHeight())
+        end
+    end
+
+    return min_height
+end
 
 --- Atualiza o layout dos filhos.
 --- @protected
@@ -228,55 +272,6 @@ function BoxContainer:_updateChildrenLayout()
             end
         end
     end
-end
-
---#endregion
-
-
---#region Protected Getter
-
---- Calcula o comprimento mínimo empilhando os filhos horizontalmente ou pegando o maior verticalmente.
---- @protected
---- @return number width
-function BoxContainer:_calculateMinimumWidth()
-    local min_width = 0
-    local children = self:getChildren(true)
-    if #children == 0 then return 0 end
-
-    if self._vertical then
-        for _, child in ipairs(children) do
-            min_width = math.max(min_width, child:getMinimumWidth())
-        end
-    else
-        for _, child in ipairs(children) do
-            min_width = min_width + child:getMinimumWidth()
-        end
-        min_width = min_width + self._separation * (#children - 1)
-    end
-
-    return min_width
-end
-
---- Calcula a altura mínima empilhando os filhos verticalmente ou pegando a maior horizontalmente.
---- @protected
---- @return number height
-function BoxContainer:_calculateMinimumHeight()
-    local min_height = 0
-    local children = self:getChildren(true)
-    if #children == 0 then return 0 end
-
-    if self._vertical then
-        for _, child in ipairs(children) do
-            min_height = min_height + child:getMinimumHeight()
-        end
-        min_height = min_height + self._separation * (#children - 1)
-    else
-        for _, child in ipairs(children) do
-            min_height = math.max(min_height, child:getMinimumHeight())
-        end
-    end
-
-    return min_height
 end
 
 --#endregion
