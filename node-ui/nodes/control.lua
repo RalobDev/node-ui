@@ -1,6 +1,7 @@
-local ROOT = (...):match("^(.*)%.%w+%.%w+$") --- @type string
+local ROOT = (...):match("^(.*)%.%w+%.%w+$")       --- @type string
 
-local Class = require(ROOT .. ".class")      --- @type Class
+local Class = require(ROOT .. ".class")            --- @type Class
+local Signal = require(ROOT .. ".abstract.signal") --- @type NodeUI.Signal
 
 --- O **Control** é a classe base de todos os elementos da interface do **`NodeUI`**. Ela fornece funcionalidades fundamentais
 --- como hierarquia de nós, sistema de layout, renderização, processamento de eventos de entrada e gerenciamento de sinais.
@@ -33,7 +34,7 @@ local Class = require(ROOT .. ".class")      --- @type Class
 --- @field private _layout NodeUI.Control.Layout
 --- @field private _visible boolean
 --- @field private _mouse_filter NodeUI.Control.MouseFilter
---- @field private _signal_connections table<string, NodeUI.Control.SignalConnection[]>
+--- @field private _signal NodeUI.Signal
 --- @field private _is_internal_child boolean
 --- @field private _clip_content boolean
 local Control = Class:extend("Control")
@@ -73,7 +74,7 @@ function Control:new(x, y, width, height)
 
 	obj._mouse_filter = "PASS"
 
-	obj._signal_connections = {}
+	obj._signal = Signal:new()
 	obj._is_internal_child = false
 	obj._clip_content = false
 
@@ -158,32 +159,7 @@ end
 --- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                  Objeto dono do método.
 function Control:connect(signal, method, owner)
-	if owner and type(method) ~= "string" then
-		-- Quando um owner é passado o método deve ser obrigatoriamente uma string.
-		return
-	elseif not owner and type(method) ~= "function" then
-		-- Quando um owner não é passado o método deve ser obrigatoriamente uma função.
-		return
-	end
-
-	local connection = { --- @type NodeUI.Control.SignalConnection
-		method = method,
-		owner = owner,
-	}
-
-	local _signal_connections = self._signal_connections
-	if type(_signal_connections) == "nil" then
-		_signal_connections = {}
-		self._signal_connections = _signal_connections
-	end
-
-	local connections = _signal_connections[signal]
-	if type(connections) == "nil" then
-		connections = {}
-		_signal_connections[signal] = connections
-	end
-
-	connections[#connections + 1] = connection
+	self._signal:connect(signal, method, owner)
 end
 
 --- Remove a conexão de um sinal do **Control**.
@@ -191,21 +167,7 @@ end
 --- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                  Objeto dono do método.
 function Control:disconnect(signal, method, owner)
-	local connections = self._signal_connections[signal]
-	if type(connections) ~= "table" then
-		return
-	end
-
-	if type(method) == "function" then
-		owner = nil
-	end
-
-	for i, connection in ipairs(connections) do
-		if connection.method == method and connection.owner == owner then
-			table.remove(connections, i)
-			return
-		end
-	end
+	self._signal:disconnect(signal, method, owner)
 end
 
 --- Retorna se o **Control** possui o foco do mouse.
@@ -593,35 +555,9 @@ end
 --- Emite o `signal`, chamando todos os seus métodos.
 --- @protected
 --- @param signal NodeUI.Control.Signals Nome do sinal.
+--- @param ... any Retornos do sinal.
 function Control:_emit(signal, ...)
-	local connections = self._signal_connections[signal]
-	if type(connections) == "nil" then
-		return
-	end
-
-	for i = #connections, 1, -1 do
-		local connection = connections[i]
-
-		-- Garbage Collection Dinâmico: Limpa conexões de objetos que já foram deletados
-		if connection.owner and type(connection.owner.isQueuedForDeletion) == "function" and connection.owner:isQueuedForDeletion() then
-			table.remove(connections, i)
-			goto continue
-		end
-
-		local method_function = connection.owner and connection.owner[connection.method] or connection.method
-
-		if type(method_function) ~= "function" then
-			goto continue
-		end
-
-		if connection.owner then
-			method_function(connection.owner, ...)
-		else
-			method_function(...)
-		end
-
-		::continue::
-	end
+	self._signal:emit(signal, ...)
 end
 
 --#endregion

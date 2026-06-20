@@ -60,6 +60,7 @@ gerencia visibilidade, foco do mouse, renderização, atualização, clipping de
 [setX](node_ui_control_set_x.md) | Define a posição horizontal do **Control** | `nil`
 [setY](node_ui_control_set_y.md) | Define a posição vertical do **Control** | `nil`
 
+## Tipos
 ### Layout
 
 Representa os modos de layout disponíveis para posicionamento de um Control.

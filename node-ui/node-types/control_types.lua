@@ -72,8 +72,3 @@
 --- | "TOP_RIGHT"
 --- | "BOTTOM_LEFT"
 --- | "BOTTOM_RIGHT"
-
---- Representa a conexão de um sinal no **`Control`**.
---- @class NodeUI.Control.SignalConnection
---- @field method string|function Nome do método chamado quando o sinal é emitido.
---- @field owner? table           Objeto dono do método.
