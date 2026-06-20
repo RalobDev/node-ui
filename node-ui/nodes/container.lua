@@ -59,12 +59,14 @@ end
 --- Define o comprimento do **Control**.
 --- @param width number Novo comprimento.
 function Container:setWidth(width)
+    Control.setWidth(self, width)
     self._width = math.max(width, self:_calculateMinimumWidth())
 end
 
 --- Define a altura do **Control**.
 --- @param height number Nova altura.
 function Container:setHeight(height)
+    Control.setHeight(self, height)
     self._height = math.max(height, self:_calculateMinimumHeight())
 end
 
@@ -99,6 +101,10 @@ end
 --- @protected
 function Container:_updateLayout()
     Control._updateLayout(self)
+
+    -- Atualiza as dimensões, pois ao atualizar o layout as dimensões mínimas podem ter sido alteradas pela
+    -- adição ou remoção de filhos.
+    self:setDimensions(self:getBaseDimensions())
 
     self:_queueUpdateChildrenLayout()
 end

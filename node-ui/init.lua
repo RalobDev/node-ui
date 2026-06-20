@@ -377,8 +377,13 @@ end
 --- @param width number  Novo comprimento.
 --- @param height number Nova altura.
 function NodeUI.setBaseDimensions(width, height)
+    local old_width, old_height = base_width, base_height
+
     base_width, base_height = width, height
-    callRootControlMethod("_queueUpdateLayout")
+
+    if base_width ~= old_width or base_height ~= old_height then
+        callRootControlMethod("_queueUpdateLayout")
+    end
 end
 
 --#endregion
