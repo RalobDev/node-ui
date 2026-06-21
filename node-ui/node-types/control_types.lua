@@ -66,6 +66,13 @@
 --- | "TOP"
 --- | "BOTTOM"
 
+--- Representa as principais direções.
+--- @alias NodeUI.Control.Direction
+--- | "LEFT"
+--- | "RIGHT"
+--- | "UP"
+--- | "DOWN"
+
 --- Representa os cantos de um retângulo.
 --- @alias NodeUI.Control.Corner
 --- | "TOP_LEFT"
