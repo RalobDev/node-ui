@@ -114,13 +114,6 @@ end
 
 --#region Override Protected
 
-function MarginContainer:_onDrawDebug()
-    Container._onDrawDebug(self)
-
-    love.graphics.setColor(0.8, 0.0, 0.8, 1.0)
-    love.graphics.rectangle("line", self:_getMarginRect())
-end
-
 --- Calcula o comprimento mínimo baseando-se nos filhos.
 --- @protected
 --- @return number width
@@ -180,6 +173,23 @@ function MarginContainer:_updateChildrenLayout()
             child._layout_y = y + height - child._layout_height
         end
     end
+end
+
+--#endregion
+
+
+--#region Protected Callback
+
+--- Chamado durante a depuração do **Control**.
+---
+--- Este método deve ser sobreescrito em cada classe de **Control**, pois
+--- é responsável por desenhar a depuração dela.
+--- @protected
+function MarginContainer:_onDrawDebug()
+    Container._onDrawDebug(self)
+
+    love.graphics.setColor(0.8, 0.0, 0.8, 1.0)
+    love.graphics.rectangle("line", self:_getMarginRect())
 end
 
 --#endregion
