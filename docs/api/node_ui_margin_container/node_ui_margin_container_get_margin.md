@@ -8,11 +8,11 @@ Define a margem de um lado do **MarginContainer**.
 ## Sinopse
 
 ```lua
-margin = NodeUI.MarginContainer:getMargin(edge)
+margin = NodeUI.MarginContainer:getMargin(side)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Side` edge** <br>
+- **`NodeUI.Control.Side` side** <br>
 Lado da margem.
 
 ## Retornos
