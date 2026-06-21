@@ -9,7 +9,7 @@ local Class = require(ROOT .. ".class")      --- @type Class
 
 --- @class NodeUI.Signal: Class
 --- @field private _signal_connections table<string, NodeUI.Signal.Connection>
-local Signal = Class:extend("Signals")
+local Signal = Class:extend("Signal")
 
 --#region Public
 
