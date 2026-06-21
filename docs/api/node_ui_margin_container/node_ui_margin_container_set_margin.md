@@ -12,7 +12,7 @@ NodeUI.MarginContainer:setMargin(edge, margin)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Edge` edge** <br>
+- **`NodeUI.Control.Side` edge** <br>
 Lado da margem.
 - **`number` margin** <br>
 Margem do lado.

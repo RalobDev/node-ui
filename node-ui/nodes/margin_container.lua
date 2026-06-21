@@ -57,7 +57,7 @@ end
 --#region Setter
 
 --- Define a margem de um lado do **MarginContainer**.
---- @param edge NodeUI.Control.Edge Lado da margem.
+--- @param edge NodeUI.Control.Side Lado da margem.
 --- @param margin number Margem do lado.
 function MarginContainer:setMargin(edge, margin)
     self["_margin_" .. edge:lower()] = margin
@@ -71,7 +71,7 @@ end
 
 --- Define a margem de um lado do **MarginContainer**.
 --- @nodiscard
---- @param edge NodeUI.Control.Edge Lado da margem.
+--- @param edge NodeUI.Control.Side Lado da margem.
 --- @return number margin Margem do lado.
 function MarginContainer:getMargin(edge)
     return self["_margin_" .. edge:lower()]

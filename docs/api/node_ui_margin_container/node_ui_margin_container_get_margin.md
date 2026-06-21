@@ -12,7 +12,7 @@ margin = NodeUI.MarginContainer:getMargin(edge)
 ```
 
 ## Argumentos
-- **`NodeUI.Control.Edge` edge** <br>
+- **`NodeUI.Control.Side` edge** <br>
 Lado da margem.
 
 ## Retornos

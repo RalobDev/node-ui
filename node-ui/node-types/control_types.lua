@@ -60,7 +60,7 @@
 --- | "SHRINK_END"    Mantém o tamanho mínimo e alinha no fim.
 
 --- Representa os lados de um retângulo.
---- @alias NodeUI.Control.Edge
+--- @alias NodeUI.Control.Side
 --- | "LEFT"
 --- | "RIGHT"
 --- | "TOP"
