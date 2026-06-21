@@ -164,7 +164,7 @@ Mantém o tamanho mínimo e centraliza.
 Mantém o tamanho mínimo e alinha no fim.
 
 ---
-### Edge
+### Side
 
 Representa os lados de um retângulo.
 
@@ -173,6 +173,17 @@ Representa os lados de um retângulo.
 - `RIGHT`
 - `TOP`
 - `BOTTOM`
+
+---
+### Direction
+
+Representa as principais direções.
+
+
+- `LEFT`
+- `RIGHT`
+- `UP`
+- `DOWN`
 
 ---
 ### Corner

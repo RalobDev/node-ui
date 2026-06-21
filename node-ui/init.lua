@@ -17,7 +17,14 @@ local ROOT = ... --- @type string
 --- @field FlowContainer NodeUI.FlowContainer               Referência ao **NodeUI.FlowContainer**.
 --- @field GridContainer NodeUI.GridContainer               Referência ao **NodeUI.GridContainer**.
 --- @field MarginContainer NodeUI.MarginContainer           Referência ao **NodeUI.MarginContainer**.
+--- @field Resources NodeUI.Resources                       Referência a todos os recursos.
 local NodeUI = {}
+
+--- @class NodeUI.Resources
+--- @field StyleBoxEmpty NodeUI.StyleBoxEmpty     Referência ao **NodeUI.StyleBoxEmpty**.
+--- @field StyleBoxFlat NodeUI.StyleBoxFlat       Referência ao **NodeUI.StyleBoxFlat**.
+--- @field StyleBoxLine NodeUI.StyleBoxLine       Referência ao **NodeUI.StyleBoxLine**.
+--- @field StyleBoxTexture NodeUI.StyleBoxTexture Referência ao **NodeUI.StyleBoxTexture**.
 
 local root_controls = {} --- @type NodeUI.Control[]
 local base_x = 0
@@ -63,23 +70,53 @@ local function toModulePath(path)
     return module
 end
 
+--- Retorna recursivamente todos os arquivos em um diretório.
+--- @param dir string Diretório dos arquivos.
+--- @return string[] files Caminho de todos os arquivos.
+local function getFilesAt(dir)
+    local files = {} --- @type string[]
+
+    for _, path in ipairs(love.filesystem.getDirectoryItems(dir)) do
+        local full_path = dir .. path
+        local info = love.filesystem.getInfo(full_path)
+        local type = info and info.type or ""
+
+        if type == "file" then
+            files[#files + 1] = full_path
+        elseif type == "directory" then
+            for _, file in ipairs(getFilesAt(full_path)) do
+                files[#files + 1] = file
+            end
+        end
+    end
+
+    return files
+end
+
 --- Carrega todos os nós da biblioteca.
 --- @param dir? string Caminho do diretório e subdiretórios com todos os nós.
 local function requireNodes(dir)
     dir = dir or ROOT .. "/nodes/"
 
-    for _, path in ipairs(love.filesystem.getDirectoryItems(dir)) do
-        local full_path = dir .. path
-        local type = love.filesystem.getInfo(full_path).type
+    for _, file in ipairs(getFilesAt(dir)) do
+        local node_name = toClassName(file)
+        --- @diagnostic disable-next-line: need-check-nil
+        NodeUI[node_name] = require(toModulePath(file))
+        NodeUI[node_name]._node_ui = NodeUI
+    end
+end
 
-        if type == "file" then
-            local node_name = toClassName(full_path)
-            --- @diagnostic disable-next-line: need-check-nil
-            NodeUI[node_name] = require(toModulePath(full_path))
-            NodeUI[node_name]._node_ui = NodeUI
-        elseif type == "directory" then
-            requireNodes(full_path)
-        end
+--- Carrega todos os recursos da biblioteca.
+--- @param dir? string Caminho do diretório e subdiretórios com todos os recursos.
+local function requireResources(dir)
+    dir = dir or ROOT .. "/nodes-resources/"
+
+    NodeUI.Resources = {} --- @diagnostic disable-line: missing-fields
+
+    for _, file in ipairs(getFilesAt(dir)) do
+        local resource_name = toClassName(file)
+        --- @diagnostic disable-next-line: need-check-nil
+        NodeUI.Resources[resource_name] = require(toModulePath(file))
     end
 end
 
@@ -207,7 +244,8 @@ end
 --#endregion
 
 
-requireNodes() -- Carrega todos os nós do módulo.
+requireNodes()     -- Carrega todos os nós.
+requireResources() -- Carrega todos os recursos.
 
 
 --#region Public
