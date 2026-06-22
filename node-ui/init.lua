@@ -20,12 +20,6 @@ local ROOT = ... --- @type string
 --- @field Resources NodeUI.Resources                       Referência a todos os recursos.
 local NodeUI = {}
 
---- @class NodeUI.Resources
---- @field StyleBoxEmpty NodeUI.StyleBoxEmpty     Referência ao **NodeUI.StyleBoxEmpty**.
---- @field StyleBoxFlat NodeUI.StyleBoxFlat       Referência ao **NodeUI.StyleBoxFlat**.
---- @field StyleBoxLine NodeUI.StyleBoxLine       Referência ao **NodeUI.StyleBoxLine**.
---- @field StyleBoxTexture NodeUI.StyleBoxTexture Referência ao **NodeUI.StyleBoxTexture**.
-
 local root_controls = {} --- @type NodeUI.Control[]
 local base_x = 0
 local base_y = 0
@@ -109,7 +103,7 @@ end
 --- Carrega todos os recursos da biblioteca.
 --- @param dir? string Caminho do diretório e subdiretórios com todos os recursos.
 local function requireResources(dir)
-    dir = dir or ROOT .. "/nodes-resources/"
+    dir = dir or ROOT .. "/resources/"
 
     NodeUI.Resources = {} --- @diagnostic disable-line: missing-fields
 

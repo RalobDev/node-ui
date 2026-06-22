@@ -1,0 +1,5 @@
+--- @class NodeUI.Resources
+--- @field StyleBoxEmpty NodeUI.StyleBoxEmpty     Referência ao **NodeUI.StyleBoxEmpty**.
+--- @field StyleBoxFlat NodeUI.StyleBoxFlat       Referência ao **NodeUI.StyleBoxFlat**.
+--- @field StyleBoxLine NodeUI.StyleBoxLine       Referência ao **NodeUI.StyleBoxLine**.
+--- @field StyleBoxTexture NodeUI.StyleBoxTexture Referência ao **NodeUI.StyleBoxTexture**.

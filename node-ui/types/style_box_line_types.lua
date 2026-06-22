@@ -1,0 +1,12 @@
+--- Tipos de limites de uma linha.
+--- @alias NodeUI.StyleBoxLine.CapStyle
+--- | "BUTT"            Corta no limite.
+--- | "ROUNDED"         Limite circular.
+--- | "SQUARE"          Adiciona um quadrado no limite.
+--- | "SQUARE_FILLED"   Adiciona um quadrado preenchido no limite.
+--- | "CIRCLE"          Adiciona um cículo no limite.
+--- | "CIRCLE_FILLED"   Adiciona um círculo preenchido no limite.
+--- | "DIAMOND"         Adiciona um diamente no limite
+--- | "DIAMOND_FILLED" Adiciona um diamente preenchido no limite
+--- | "ARROW"           Adiciona uma flecha no limite.
+--- | "ARROW_FILLED"    Adiciona uma flecha preenchida no limite.

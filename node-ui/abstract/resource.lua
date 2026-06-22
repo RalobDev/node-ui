@@ -13,10 +13,6 @@ local Signal = require(ROOT .. ".abstract.signal")
 --- @field _signal NodeUI.Signal
 local Resource = Class:extend("Resource")
 
---- Lista de sinais emitidos por um Resource.
---- @alias NodeUI.Resource.Signals
---- | "CHANGED" Quando o recurso é alterado. -> fun()
-
 
 --#region Public
 

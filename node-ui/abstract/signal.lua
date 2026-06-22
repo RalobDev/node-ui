@@ -2,14 +2,10 @@ local ROOT = (...):match("^(.*)%.%w+%.%w+$") --- @type string
 
 local Class = require(ROOT .. ".class")      --- @type Class
 
---- Representa a conexão de um sinal no **`Control`**.
---- @class NodeUI.Signal.Connection
---- @field method string|function Nome do método chamado quando o sinal é emitido.
---- @field owner? table           Objeto dono do método.
-
 --- @class NodeUI.Signal: Class
 --- @field private _signal_connections table<string, NodeUI.Signal.Connection>
 local Signal = Class:extend("Signal")
+
 
 --#region Public
 
@@ -119,5 +115,6 @@ function Signal:emit(signal, ...)
 end
 
 --#endregion
+
 
 return Signal

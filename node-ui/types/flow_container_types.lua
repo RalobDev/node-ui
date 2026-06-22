@@ -1,0 +1,12 @@
+--- Lista de sinais emitidos por um BoxContainer.
+--- @alias NodeUI.FlowContainer.Signals
+--- | NodeUI.Container.Signals
+
+--- Maneira como as linhas ou colunas sem alinham.
+---
+--- ## Descrição
+---
+--- Just a test
+--- @alias NodeUI.FlowContainer.LastWrapAlignmentMode
+--- | NodeUI.Control.AlignmentMode
+--- | "INHERIT" Usa o alinhamento da última linha ou coluna.

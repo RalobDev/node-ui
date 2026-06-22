@@ -1,0 +1,3 @@
+--- Lista de sinais emitidos por um Container.
+--- @alias NodeUI.Container.Signals
+--- | NodeUI.Control.Signals
