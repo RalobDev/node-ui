@@ -2,7 +2,7 @@ local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")        --- @type string
 
 local StyleBox = require(ROOT .. ".abstract.style_box") --- @type NodeUI.StyleBox
 
---- Uma **`StyleBox`** que exibe uma única linha.
+--- Uma **StyleBox** que exibe uma única linha.
 --- @class NodeUI.StyleBoxLine: NodeUI.StyleBox
 --- @field private _color [number, number, number, number?]
 --- @field private _grow_begin number
@@ -129,7 +129,7 @@ end
 
 --#region Setter
 
---- Define a cor da linha da **StyleBoxLine**.
+--- Define a cor da linha.
 --- @param color [number, number, number, number?] Cor da linha.
 function StyleBoxLine:setColor(color)
     local old = self._color
@@ -146,7 +146,7 @@ function StyleBoxLine:setColor(color)
     end
 end
 
---- Define o crescimento inicial da linha da **StyleBoxLine**.
+--- Define o crescimento inicial da linha.
 --- @param grow number Crescimento inicial.
 function StyleBoxLine:setGrowBegin(grow)
     local old = self._grow_begin
@@ -158,7 +158,7 @@ function StyleBoxLine:setGrowBegin(grow)
     end
 end
 
---- Define o crescimento final da linha da **StyleBoxLine**.
+--- Define o crescimento final da linha.
 --- @param grow number Crescimento final.
 function StyleBoxLine:setGrowEnd(grow)
     local old = self._grow_end
@@ -170,7 +170,7 @@ function StyleBoxLine:setGrowEnd(grow)
     end
 end
 
---- Define a espessura da linha da **StyleBoxLine**.
+--- Define a espessura da linha.
 --- @param thickness number Espessura da linha.
 function StyleBoxLine:setThickness(thickness)
     local old = self._thickness
@@ -182,7 +182,7 @@ function StyleBoxLine:setThickness(thickness)
     end
 end
 
---- Define o lado que a linha da **StyleBoxLine** é desenhada.
+--- Define o **`NodeUI.Control.Side`** que a linha é desenhada.
 --- @param side NodeUI.Control.Side Lado que é desenhada.
 function StyleBoxLine:setEdge(side)
     local old = self._side
@@ -194,7 +194,7 @@ function StyleBoxLine:setEdge(side)
     end
 end
 
---- Define o limite do início da linha da **StyleBoxLine**.
+--- Define o **`NodeUI.StyleBoxLine.CapStyle`** do início da linha.
 --- @param cap NodeUI.StyleBoxLine.CapStyle Limite do início da linha.
 function StyleBoxLine:setCapBegin(cap)
     local old = self._cap_begin
@@ -206,7 +206,7 @@ function StyleBoxLine:setCapBegin(cap)
     end
 end
 
---- Define o limite do final da linha da **StyleBoxLine**.
+--- Define o **`NodeUI.StyleBoxLine.CapStyle`** do final da linha.
 --- @param cap NodeUI.StyleBoxLine.CapStyle Limite do final da linha.
 function StyleBoxLine:setCapEnd(cap)
     local old = self._cap_end
@@ -223,49 +223,49 @@ end
 
 --#region Getter
 
---- Retorna a cor da linha da **StyleBoxLine**.
+--- Retorna a cor da linha.
 --- @nodiscard
 --- @return [number, number, number, number?] color Cor da linha.
 function StyleBoxLine:getColor()
     return self._color
 end
 
---- Retorna o crescimento inicial da linha da **StyleBoxLine**.
+--- Retorna o crescimento inicial da linha.
 --- @nodiscard
 --- @return number grow Crescimento inicial.
 function StyleBoxLine:getGrowBegin()
     return self._grow_begin
 end
 
---- Retorna o crescimento final da linha da **StyleBoxLine**.
+--- Retorna o crescimento final da linha.
 --- @nodiscard
 --- @return number grow Crescimento final.
 function StyleBoxLine:getGrowEnd()
     return self._grow_end
 end
 
---- Retorna a espessura da linha da **StyleBoxLine**.
+--- Retorna a espessura da linha.
 --- @nodiscard
 --- @return number thickness Espessura da linha.
 function StyleBoxLine:getThickness()
     return self._thickness
 end
 
---- Retorna o lado que a linha da **StyleBoxLine** é desenhada.
+--- Retorna o **`NodeUI.Control.side`** que a linha é desenhada.
 --- @nodiscard
 --- @return NodeUI.Control.Side side Lado que é desenhada.
 function StyleBoxLine:getEdge()
     return self._side
 end
 
---- Retorna o limite do início da linha da **StyleBoxLine**.
+--- Retorna o **`NodeUI.StyleBoxLine.CapStyle`** do início da linha.
 --- @nodiscard
 --- @return NodeUI.StyleBoxLine.CapStyle cap Limite do início da linha.
 function StyleBoxLine:getCapBegin()
     return self._cap_begin
 end
 
---- Retorna o limite do final da linha da **StyleBoxLine**.
+--- Retorna o **`NodeUI.StyleBoxLine.CapStyle`** do final da linha.
 --- @nodiscard
 --- @return NodeUI.StyleBoxLine.CapStyle cap Limite do final da linha.
 function StyleBoxLine:getCapEnd()

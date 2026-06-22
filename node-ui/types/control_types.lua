@@ -1,6 +1,6 @@
---- Representa os modos de layout disponíveis para posicionamento de um Control.
+--- Representa os modos de layout disponíveis para posicionamento de um **`Control`**.
 ---
---- O layout define como o Control é posicionado e redimensionado dentro do
+--- O layout define como o **Control** é posicionado e redimensionado dentro do
 --- retângulo base do pai (ou da raiz quando não há pai).
 --- @alias NodeUI.Control.Layout
 --- | "TOP_LEFT"
@@ -24,21 +24,21 @@
 --- | "FULL_RECT"
 --- | "CUSTOM"
 
---- Define como eventos de mouse são propagados entre Controls.
+--- Define como eventos de mouse são propagados para o **`Control`**.
 --- @alias NodeUI.Control.MouseFilter
 --- | "STOP"   Consome o evento e impede propagação.
 --- | "PASS"   Permite propagação após processar o evento.
 --- | "IGNORE" Ignora o evento completamente.
 
---- Lista de sinais emitidos por um Control.
+--- Lista de sinais emitidos por um **`Control`**.
 --- @alias NodeUI.Control.Signals
---- | "MOUSE_PRESSED"       Quando um botão do mouse é pressionado. -> fun(x: number, y: number, button: number, istouch: bool, presses: int)
---- | "MOUSE_RELEASED"      Quando um botão do mouse é solto. -> fun(x: number, y: number, button: number, istouch: bool, presses: int)
---- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control. -> fun(x: number, y: number, dx: number, dy: number, istouch: bool)
---- | "WHEEL_MOVED"         Quando o scroll do mouse é usado. -> fun(x: number, y: number)
---- | "MOUSE_FOCUS_CHANGED" Quando o foco de mouse entra ou sai. -> fun(focused: bool)
---- | "CHILD_ADDED"         Quando um filho é adicionado. -> fun(child: NodeUI.Control)
---- | "CHILD_REMOVED"       Quando um filho é removido. -> fun(child: NodeUI.Control)
+--- | "MOUSE_PRESSED"       Quando um botão do mouse é pressionado. | fun(x: number, y: number, button: number, istouch: bool, presses: int)`
+--- | "MOUSE_RELEASED"      Quando um botão do mouse é solto. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
+--- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control. | `fun(x: number, y: number, dx: number, dy: number, istouch: bool)`
+--- | "WHEEL_MOVED"         Quando o scroll do mouse é usado. | `fun(x: number, y: number)`
+--- | "MOUSE_FOCUS_CHANGED" Quando o foco de mouse entra ou sai. | `fun(focused: bool)`
+--- | "CHILD_ADDED"         Quando um filho é adicionado. | `fun(child: NodeUI.Control)`
+--- | "CHILD_REMOVED"       Quando um filho é removido. | `fun(child: NodeUI.Control)`
 
 --- Modo de alinhamento de algum elemento.
 --- @alias NodeUI.Control.AlignmentMode
@@ -51,10 +51,10 @@
 --- | "HORIZONTAL"
 --- | "VERTICAL"
 
---- Define como o controle ocupa o espaço disponível.
+--- Define como o **`Control`** ocupa o espaço disponível em um **`Container`**.
 --- @alias NodeUI.Control.SizeFlags
 --- | "FILL"          Expande para preencher todo o espaço disponível.
---- | "EXPAND"        Expande para preencher o espaço disponíveis divido entre outros Control que também expandem.
+--- | "EXPAND"        Expande para preencher o espaço disponíveis divido entre outros **Control** que também expandem.
 --- | "SHRINK_BEGIN"  Mantém o tamanho mínimo e alinha no início.
 --- | "SHRINK_CENTER" Mantém o tamanho mínimo e centraliza.
 --- | "SHRINK_END"    Mantém o tamanho mínimo e alinha no fim.

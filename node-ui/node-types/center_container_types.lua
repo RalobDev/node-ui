@@ -1,3 +1,0 @@
---- Lista de sinais emitidos por um AspectRatioContainer.
---- @alias NodeUI.CenterContainer.Signals
---- | NodeUI.Container.Signals

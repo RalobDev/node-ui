@@ -1,3 +1,0 @@
---- Lista de sinais emitidos por um BoxContainer.
---- @alias NodeUI.BoxContainer.Signals
---- | NodeUI.Container.Signals

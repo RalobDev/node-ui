@@ -7,7 +7,7 @@ local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 --- ## Descrição
 ---
 --- O **GridContainer** organiza seus filhos em linhas e colunas de acordo com o seu número de colunas, que
---- pode ser definido através de `GridContainer:setColumns()`.
+--- pode ser definido através de `NodeUI.GridContainer:setColumns()`.
 --- @class NodeUI.GridContainer: NodeUI.Container
 --- @field private _columns number
 --- @field private _horizontal_separation number
@@ -37,7 +37,7 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado sinal do **`Control`**.
+--- Cria uma conexão em determinado **`NodeUI.GridContainer.Signals`** do **GridContainer**.
 --- @param signal NodeUI.GridContainer.Signals Nome do sinal.
 --- @param method string|function              Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner? table                        Objeto dono do método.
@@ -45,7 +45,7 @@ function GridContainer:connect(signal, method, owner)
     return Container.connect(self, signal, method, owner)
 end
 
---- Remove a conexão de um sinal do **`Control`**.
+--- Remove a conexão de um **`NodeUI.GridContainer.Signals`** do **GridContainer**.
 --- @param signal NodeUI.GridContainer.Signals Nome do sinal.
 --- @param method string|function              Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                        Objeto dono do método.

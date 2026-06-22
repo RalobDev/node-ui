@@ -3,7 +3,7 @@ local ROOT = (...):match("^(.*)%.")
 local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 
 --- **AspectRatioContainer** é um tipo de **`Container`** que ajusta seus filhos mantendo uma proporção de
---- aspecto (aspect ratio), aplicando diferentes modos de escala como `FIT` e `COVER`, além de controle de alinhamento.
+--- aspecto (aspect ratio), aplicando diferentes **`NodeUI.AspectRatioContainer.StretchMode`** como `FIT` e `COVER`, além de controle de alinhamento.
 ---
 --- ## Descrição
 ---
@@ -12,14 +12,15 @@ local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 --- escala com base no tamanho do container e no tamanho dos filhos,
 --- permitindo que o conteúdo seja ajustado sem distorção.
 ---
---- Ele suporta diferentes modos de escala através de `setStretchMode()`.
+--- Ele suporta diferentes modos de escala através de `NodeUI.AspectRatioContainer:setStretchMode()`.
 ---
---- Também permite controle de alinhamento horizontal e vertical dos filhos através de `setAlignmentMode()`.
+--- Também permite controle de alinhamento horizontal e vertical dos filhos através de `NodeUI.AspectRationContainer:setAlignmentMode()`.
 --- @class NodeUI.AspectRatioContainer: NodeUI.Container
 --- @field private _stretch_mode NodeUI.AspectRatioContainer.StretchMode
 --- @field private _horizontal_alignment_mode NodeUI.Control.AlignmentMode
 --- @field private _vertical_alignment_mode NodeUI.Control.AlignmentMode
 local AspectRatioContainer = Container:extend("AspectRatioContainer")
+
 
 --#region Public
 
@@ -44,18 +45,18 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado sinal do **`Control`**.
---- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
---- @param owner? table                  Objeto dono do método.
+--- Cria uma conexão em determinado **`NodeUI.AspectRatioContainer.Signals`** do **AspectRatioContainer**.
+--- @param signal NodeUI.AspectRatioContainer.Signals Nome do sinal.
+--- @param method string|function                     Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner? table                               Objeto dono do método.
 function AspectRatioContainer:connect(signal, method, owner)
     return Container.connect(self, signal, method, owner)
 end
 
---- Remove a conexão de um sinal do **`Control`**.
---- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
---- @param owner table?                  Objeto dono do método.
+--- Remove a conexão de um **`NodeUI.AspectRatioContainer.Signals`** do **AspectRatioContainer**.
+--- @param signal NodeUI.AspectRatioContainer.Signals Nome do sinal.
+--- @param method string|function                     Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                               Objeto dono do método.
 function AspectRatioContainer:disconnect(signal, method, owner)
     Container.disconnect(self, signal, method, owner)
 end
@@ -65,14 +66,14 @@ end
 
 --#region Setter
 
---- Define a maneira como escalona os filhos.
+--- Define o **`NodeUI.AspectRatioContainer.StretchMode`**, que é a maneira como os filhos são escalonados.
 --- @param stretch_mode NodeUI.AspectRatioContainer.StretchMode Modo de escalonamento.
 function AspectRatioContainer:setStretchMode(stretch_mode)
     self._stretch_mode = stretch_mode
     self:_queueUpdateChildrenLayout()
 end
 
---- Define o `AlignmentMode` aplicado aos filhos.
+--- Define o **`NodeUI.Control.AlignmentMode`** aplicado aos filhos.
 --- @param axis NodeUI.Control.Axis                    Eixo do alinhamento.
 --- @param alignment_mode NodeUI.Control.AlignmentMode Modo de alinhamento.
 function AspectRatioContainer:setAlignmentMode(axis, alignment_mode)
@@ -86,14 +87,14 @@ end
 
 --#region Getter
 
---- Retorna a maneira como escalona os filhos.
+--- Retorna o **`NodeUI.AspectRatioContainer.StretchMode`**, que é a maneira como os filhos são escalonados.
 --- @nodiscard
 --- @return NodeUI.AspectRatioContainer.StretchMode stretch_mode Modo de escalonamento.
 function AspectRatioContainer:getStretchMode()
     return self._stretch_mode
 end
 
---- Retorna o `AlignmentMode` aplicado aos filhos.
+--- Retorna o **`NodeUI.Control.AlignmentMode`** aplicado aos filhos.
 --- @nodiscard
 --- @param axis NodeUI.Control.Axis                     Eixo de alinhamento.
 --- @return NodeUI.Control.AlignmentMode alignment_mode Modo de alinhamento.

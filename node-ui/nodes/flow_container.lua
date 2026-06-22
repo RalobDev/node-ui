@@ -42,7 +42,7 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado sinal do **`Control`**.
+--- Cria uma conexão em determinado **`NodeUI.FlowContainer.Signals`** do **FlowContainer**.
 --- @param signal NodeUI.FlowContainer.Signals Nome do sinal.
 --- @param method string|function              Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner? table                        Objeto dono do método.
@@ -50,7 +50,7 @@ function FlowContainer:connect(signal, method, owner)
     return Container.connect(self, signal, method, owner)
 end
 
---- Remove a conexão de um sinal do **`Control`**.
+--- Remove a conexão de um **`NodeUI.FlowContainer.Signals`** do **FlowContainer**.
 --- @param signal NodeUI.FlowContainer.Signals Nome do sinal.
 --- @param method string|function              Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                        Objeto dono do método.
@@ -63,7 +63,7 @@ end
 
 --#region Setter
 
---- Define o alinhamento dos filhos.
+--- Define o **`NodeUI.Control.AlignmentMode`** dos filhos.
 --- @param alignment NodeUI.Control.AlignmentMode Alinhamento dos filhos.
 function FlowContainer:setAlignment(alignment)
     self._alignment = alignment
@@ -81,7 +81,7 @@ function FlowContainer:setVertical(enabled)
     self:_queueUpdateChildrenLayout()
 end
 
---- Define o alinhamento dos filhos da última linha ou coluna.
+--- Define o **`NodeUI.FlowContainer.LastWrapAlignmentMode`** dos filhos da última linha ou coluna.
 --- @param alignment NodeUI.FlowContainer.LastWrapAlignmentMode Alinhamento dos filhos.
 function FlowContainer:setLastWrapAlignment(alignment)
     self._last_wrap_alignment = alignment
@@ -101,7 +101,7 @@ end
 
 --#region Getter
 
---- Retorna o alinhamento dos filhos.
+--- Retorna o **`NodeUI.Control.AlignmentMode`** dos filhos.
 --- @nodiscard
 --- @return NodeUI.Control.AlignmentMode alignment Alinhamento dos filhos.
 function FlowContainer:getAlignment()
@@ -115,7 +115,7 @@ function FlowContainer:getVertical()
     return self._vertical
 end
 
---- Define o alinhamento dos filhos da última linha ou coluna.
+--- Define o **`NodeUI.FlowContainer.LastWrapAlignmentMode`** dos filhos da última linha ou coluna.
 --- @return NodeUI.FlowContainer.LastWrapAlignmentMode alignment Alinhamento dos filhos.
 function FlowContainer:getLastWrapAlignment()
     return self._last_wrap_alignment

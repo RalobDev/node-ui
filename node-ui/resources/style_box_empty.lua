@@ -2,7 +2,7 @@ local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")        --- @type string
 
 local StyleBox = require(ROOT .. ".abstract.style_box") --- @type NodeUI.StyleBox
 
---- Uma **`StyleBox`** vazia que não exibe nada.
+--- Uma **StyleBox** vazia que não exibe nada.
 --- @class NodeUI.StyleBoxEmpty: NodeUI.StyleBox
 local StyleBoxEmpty = StyleBox:extend("StyleBoxEmpty")
 

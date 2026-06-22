@@ -7,7 +7,7 @@ local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 --- ## Descrição
 ---
 --- A centralização dos filhos pode acontecer no centro do próprio **CenterContainer** ou no seu canto superior esquerdo.
---- Para alterar entre os dois modos use `CenterContainer:setUseTopLeft()`.
+--- Para alterar entre os dois modos use `NodeUI.CenterContainer:setUseTopLeft()`.
 --- @class NodeUI.CenterContainer: NodeUI.Container
 --- @field private _use_top_left boolean
 local CenterContainer = Container:extend("CenterContainer")
@@ -24,6 +24,27 @@ local CenterContainer = Container:extend("CenterContainer")
 function CenterContainer:new(x, y, width, height)
     local obj = Container.new(self, x, y, width, height) --- @cast obj NodeUI.CenterContainer
     return obj
+end
+
+--#endregion
+
+
+--#region Override
+
+--- Cria uma conexão em determinado **`NodeUI.CenterContainer.Signals`** do **CenterContainer**.
+--- @param signal NodeUI.CenterContainer.Signals Nome do sinal.
+--- @param method string|function                Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner? table                          Objeto dono do método.
+function CenterContainer:connect(signal, method, owner)
+    return Container.connect(self, signal, method, owner)
+end
+
+--- Remove a conexão de um **`NodeUI.CenterContainer.Signals`** do **CenterContainer**.
+--- @param signal NodeUI.CenterContainer.Signals Nome do sinal.
+--- @param method string|function                Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                          Objeto dono do método.
+function CenterContainer:disconnect(signal, method, owner)
+    Container.disconnect(self, signal, method, owner)
 end
 
 --#endregion

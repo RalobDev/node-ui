@@ -1,3 +1,3 @@
---- Lista de sinais emitidos por um AspectRatioContainer.
+--- Lista de sinais emitidos por um **`GridContainer`**.
 --- @alias NodeUI.GridContainer.Signals
 --- | NodeUI.Container.Signals

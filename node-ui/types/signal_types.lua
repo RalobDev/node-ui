@@ -1,4 +1,4 @@
---- Representa a conexão de um sinal no **`Control`**.
+--- Representa a conexão de um sinal no **Control**.
 --- @class NodeUI.Signal.Connection
 --- @field method string|function Nome do método chamado quando o sinal é emitido.
 --- @field owner? table           Objeto dono do método.

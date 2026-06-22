@@ -1,3 +1,3 @@
---- Lista de sinais emitidos por um BoxContainer.
+--- Lista de sinais emitidos por um **`MarginContainer`**.
 --- @alias NodeUI.MarginContainer.Signals
 --- | NodeUI.Container.Signals

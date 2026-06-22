@@ -7,11 +7,8 @@ local Control = require(ROOT .. ".control") --- @type NodeUI.Control
 ---
 --- ## Descrição
 ---
---- O **Container** estende **Control** adicionando suporte a organização de filhos e
+--- O **Container** estende **`Control`** adicionando suporte a organização de filhos e
 --- controle de layout.
----
---- Classes derivadas podem sobrescrever `_updateChildrenLayout()` para implementar
---- comportamentos específicos de posicionamento e organização dos elementos filhos.
 --- @class NodeUI.Container: NodeUI.Control
 --- @field private _queued_for_update_children_layout boolean
 local Container = Control:extend("Container")
@@ -35,18 +32,18 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado sinal do **`Control`**.
---- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
---- @param owner? table                  Objeto dono do método.
+--- Cria uma conexão em determinado **`NodeUI.Container.Signals`** do **Container**.
+--- @param signal NodeUI.Container.Signals Nome do sinal.
+--- @param method string|function          Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner? table                    Objeto dono do método.
 function Container:connect(signal, method, owner)
     Control.connect(self, signal, method, owner)
 end
 
---- Desconecta o `method` do `signal`.
---- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
---- @param owner table?                  Objeto dono do método.
+--- Remove a conexão de um **`NodeUI.Container.Signals`** do **Container**.
+--- @param signal NodeUI.Container.Signals Nome do sinal.
+--- @param method string|function          Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                    Objeto dono do método.
 function Container:disconnect(signal, method, owner)
     Control.disconnect(self, signal, method, owner)
 end
@@ -56,14 +53,14 @@ end
 
 --#region Override Setter
 
---- Define o comprimento do **Control**.
+--- Define o comprimento do **Container**.
 --- @param width number Novo comprimento.
 function Container:setWidth(width)
     Control.setWidth(self, width)
     self._width = math.max(width, self:_calculateMinimumWidth())
 end
 
---- Define a altura do **Control**.
+--- Define a altura do **Container**.
 --- @param height number Nova altura.
 function Container:setHeight(height)
     Control.setHeight(self, height)

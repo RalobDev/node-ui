@@ -2,7 +2,7 @@ local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")        --- @type string
 
 local StyleBox = require(ROOT .. ".abstract.style_box") --- @type NodeUI.StyleBox
 
---- Uma **`StyleBox`** que exibe uma textura.
+--- Uma **StyleBox** que exibe uma textura.
 --- @class NodeUI.StyleBoxTexture: NodeUI.StyleBox
 --- @field private _texture love.Image?
 --- @field private _texture_margin_left number
@@ -153,7 +153,7 @@ end
 
 --#region Setter
 
---- Define a textura da **StyleBoxTexture**.
+--- Define a textura.
 --- @param texture love.Image Textura da **StyleBoxTexture**.
 function StyleBoxTexture:setTexture(texture)
     local old = self._texture
@@ -165,7 +165,7 @@ function StyleBoxTexture:setTexture(texture)
     end
 end
 
---- Define a margem de um lado da textura da **StyleBoxTexture**.
+--- Define a margem de um lado da textura.
 --- @param side NodeUI.Control.Side Lado da margem.
 --- @param margin number            Margem do lado.
 function StyleBoxTexture:setTextureMargin(side, margin)
@@ -179,7 +179,7 @@ function StyleBoxTexture:setTextureMargin(side, margin)
     end
 end
 
---- Define a expanção de um lado da **StyleBoxTexture**.
+--- Define a expanção de um lado.
 --- @param side NodeUI.Control.Side Lado da expansão.
 --- @param expand number            Expansão do lado.
 function StyleBoxTexture:setExpandMargin(side, expand)
@@ -193,7 +193,8 @@ function StyleBoxTexture:setExpandMargin(side, expand)
     end
 end
 
---- Define a maneira como a textura da **StyleBoxTexture** será exibida horizontal ou verticalmente.
+--- Define a **`NodeUI.StyleBoxTexture.AxisStretchMode`**, que afeta a maneira como
+--- a textura será exibida horizontal ou verticalmente.
 --- @param axis NodeUI.Control.Axis                       Eixo do stretch.
 --- @param stretch NodeUI.StyleBoxTexture.AxisStretchMode Stretch do eixo.
 function StyleBoxTexture:setStretch(axis, stretch)
@@ -207,7 +208,7 @@ function StyleBoxTexture:setStretch(axis, stretch)
     end
 end
 
---- Define a posição x da sub região da textura da **StyleBoxTexture**.
+--- Define a posição x da sub região da textura.
 --- @param x number Posição x.
 function StyleBoxTexture:setSubRegionX(x)
     local old = self._sub_region_x
@@ -219,7 +220,7 @@ function StyleBoxTexture:setSubRegionX(x)
     end
 end
 
---- Define a posição y da sub região da textura da **StyleBoxTexture**.
+--- Define a posição y da sub região da textura.
 --- @param y number Posição y.
 function StyleBoxTexture:setSubRegionY(y)
     local old = self._sub_region_y
@@ -231,7 +232,7 @@ function StyleBoxTexture:setSubRegionY(y)
     end
 end
 
---- Define a posição da sub região da textura da **StyleBoxTexture**.
+--- Define a posição da sub região da textura.
 --- @param x number Posição x.
 --- @param y number Posição y.
 function StyleBoxTexture:setSubRegionPosition(x, y)
@@ -244,7 +245,7 @@ function StyleBoxTexture:setSubRegionPosition(x, y)
     end
 end
 
---- Define o comprimento da sub região da textura da **StyleBoxTexture**.
+--- Define o comprimento da sub região da textura.
 --- @param width number Comprimento.
 function StyleBoxTexture:setSubRegionWidth(width)
     local old = self._sub_region_width
@@ -256,7 +257,7 @@ function StyleBoxTexture:setSubRegionWidth(width)
     end
 end
 
---- Define a altura da sub região da textura da **StyleBoxTexture**.
+--- Define a altura da sub região da textura.
 --- @param height number Altura.
 function StyleBoxTexture:setSubRegionHeight(height)
     local old = self._sub_region_height
@@ -268,7 +269,7 @@ function StyleBoxTexture:setSubRegionHeight(height)
     end
 end
 
---- Define a dimensão da sub região da textura da **StyleBoxTexture**.
+--- Define a dimensão da sub região da textura.
 --- @param width number Comprimento.
 --- @param height number Altura.
 function StyleBoxTexture:setSubRegionDimensions(width, height)
@@ -281,7 +282,7 @@ function StyleBoxTexture:setSubRegionDimensions(width, height)
     end
 end
 
---- Define a cor da textura da **StyleBoxTexture**.
+--- Define a cor da textura.
 --- @param color [number, number, number, number?] Cor da textura.
 function StyleBoxTexture:setColor(color)
     local old = self._color
@@ -298,7 +299,7 @@ function StyleBoxTexture:setColor(color)
     end
 end
 
---- Define se o centro da **StyleBoxTexture** deve ser desenhado.
+--- Define se o centro deve ser desenhado.
 --- @param enabled boolean Se o centro da **StyleBoxTexture** deve ser desenhado.
 function StyleBoxTexture:setDrawCenter(enabled)
     local old = self._draw_center
@@ -315,13 +316,13 @@ end
 
 --#region Getter
 
---- Retorna a textura da **StyleBoxTexture**.
+--- Retorna a textura.
 --- @return love.Image texture  Textura da **StyleBoxTexture**.
 function StyleBoxTexture:getTexture()
     return self._texture
 end
 
---- Retorna a margem de um lado da textura da **StyleBoxTexture**.
+--- Retorna a margem de um lado da textura.
 --- @param side NodeUI.Control.Side Lado da margem.
 --- @return number margin           Margem do lado.
 function StyleBoxTexture:getTextureMargin(side)
@@ -329,7 +330,7 @@ function StyleBoxTexture:getTextureMargin(side)
     return self[margin_key]
 end
 
---- Retorna a expanção de um lado da **StyleBoxTexture**.
+--- Retorna a expanção de um lado.
 --- @param side NodeUI.Control.Side Lado da expansão.
 --- @return number expand           Expansão do lado.
 function StyleBoxTexture:getExpandMargin(side)
@@ -337,7 +338,8 @@ function StyleBoxTexture:getExpandMargin(side)
     return self[expand_key]
 end
 
---- Retorna a maneira como a textura da **StyleBoxTexture** será exibida horizontal ou verticalmente.
+--- Retorna a **`NodeUI.StyleBoxTexture.AxisStretchMode`**, que afeta a maneira como
+--- a textura será exibida horizontal ou verticalmente.
 --- @param axis NodeUI.Control.Axis                        Eixo do stretch.
 --- @return NodeUI.StyleBoxTexture.AxisStretchMode stretch Stretch do eixo.
 function StyleBoxTexture:getStretch(axis)
@@ -345,51 +347,51 @@ function StyleBoxTexture:getStretch(axis)
     return self[stretch_key]
 end
 
---- Retorna a posição x da sub região da textura da **StyleBoxTexture**.
+--- Retorna a posição x da sub região da textura.
 --- @return number x Posição x.
 function StyleBoxTexture:getSubRegionX()
     return self._sub_region_x
 end
 
---- Retorna a posição y da sub região da textura da **StyleBoxTexture**.
+--- Retorna a posição y da sub região da textura.
 --- @return number y Posição y.
 function StyleBoxTexture:getSubRegionY()
     return self._sub_region_y
 end
 
---- Retorna a posição da sub região da textura da **StyleBoxTexture**.
+--- Retorna a posição da sub região da textura.
 --- @return number x Posição x.
 --- @return number y Posição y.
 function StyleBoxTexture:getSubRegionPosition()
     return self._sub_region_x, self._sub_region_y
 end
 
---- Retorna o comprimento da sub região da textura da **StyleBoxTexture**.
+--- Retorna o comprimento da sub região da textura.
 --- @return number width Comprimento.
 function StyleBoxTexture:getSubRegionWidth()
     return self._sub_region_width
 end
 
---- Retorna a altura da sub região da textura da **StyleBoxTexture**.
+--- Retorna a altura da sub região da textura.
 --- @return number height Altura.
 function StyleBoxTexture:getSubRegionHeight()
     return self._sub_region_height
 end
 
---- Retorna a dimensão da sub região da textura da **StyleBoxTexture**.
+--- Retorna a dimensão da sub região da textura.
 --- @return number width Comprimento.
 --- @return number height Altura.
 function StyleBoxTexture:getSubRegionDimensions()
     return self._sub_region_width, self._sub_region_height
 end
 
---- Retorna a cor da textura da **StyleBoxTexture**.
+--- Retorna a cor da textura.
 --- @return [number, number, number, number?] color Cor da textura.
 function StyleBoxTexture:getColor()
     return self._color
 end
 
---- Retorna se o centro da **StyleBoxTexture** deve ser desenhado.
+--- Retorna se o centro deve ser desenhado.
 --- @return boolean enabled Se o centro da **StyleBoxTexture** deve ser desenhado.
 function StyleBoxTexture:getDrawCenter()
     return self._draw_center

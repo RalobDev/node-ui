@@ -2,7 +2,7 @@ local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")        --- @type string
 
 local StyleBox = require(ROOT .. ".abstract.style_box") --- @type NodeUI.StyleBox
 
---- Uma **`StyleBox`** que exibe um retângulo altamente customizável.
+--- Uma **StyleBox** que exibe um retângulo altamente customizável.
 --- @class NodeUI.StyleBoxFlat: NodeUI.StyleBox
 --- @field private _fill_color [number, number, number, number?]
 --- @field private _draw_center boolean
@@ -82,7 +82,7 @@ end
 
 --#region Setter
 
---- Define a cor de preenchimento da **StyleBox**.
+--- Define a cor de preenchimento.
 --- @param color [number, number, number, number?] Cor de preenchimento.
 function StyleBoxFlat:setFillColor(color)
     local old = self._fill_color
@@ -99,7 +99,7 @@ function StyleBoxFlat:setFillColor(color)
     end
 end
 
---- Define se é para desenhar o centro da **StyleBox**.
+--- Define se é para desenhar o centro.
 --- @param enabled boolean Se é para desenhar o centro.
 function StyleBoxFlat:setDrawCenter(enabled)
     local old = self._draw_center
@@ -111,7 +111,7 @@ function StyleBoxFlat:setDrawCenter(enabled)
     end
 end
 
---- Define o skew x da **StyleBox**.
+--- Define o skew x.
 --- @param x number Skew x.
 function StyleBoxFlat:setSkewX(x)
     local old = self._skew_x
@@ -123,7 +123,7 @@ function StyleBoxFlat:setSkewX(x)
     end
 end
 
---- Define o skew y da **StyleBox**.
+--- Define o skew y.
 --- @param y number Skew y.
 function StyleBoxFlat:setSkewX(y)
     local old = self._skew_y
@@ -135,7 +135,7 @@ function StyleBoxFlat:setSkewX(y)
     end
 end
 
---- Define o skew da **StyleBox**.
+--- Define o skew.
 --- @param x number Skew x.
 --- @param y number Skew y.
 function StyleBoxFlat:setSkew(x, y)
@@ -149,7 +149,7 @@ function StyleBoxFlat:setSkew(x, y)
     end
 end
 
---- Define o tamanho da borda da **StyleBox**.
+--- Define o tamanho da borda.
 --- @param size number Tamanho da borda.
 function StyleBoxFlat:setBorderSize(size)
     local old = self._border_size
@@ -161,7 +161,7 @@ function StyleBoxFlat:setBorderSize(size)
     end
 end
 
---- Define a cor da borda da **StyleBox**.
+--- Define a cor da borda.
 --- @param color [number, number, number, number?] Cor da borda.
 function StyleBoxFlat:setBorderColor(color)
     local old = self._border_color
@@ -178,7 +178,7 @@ function StyleBoxFlat:setBorderColor(color)
     end
 end
 
---- Define a mistura da borda da **StyleBox**. Se `true`, a cor da borda mescla com a cor de preenchimento.
+--- Define a mistura da borda. Se `true`, a cor da borda mescla com a cor de preenchimento.
 --- @param enabled boolean Se a mistura está ativa.
 function StyleBoxFlat:setBorderBlend(enabled)
     local old = self._border_blend
@@ -190,7 +190,7 @@ function StyleBoxFlat:setBorderBlend(enabled)
     end
 end
 
---- Define o raio de um canto da **StyleBox**.
+--- Define o raio de um canto.
 --- @param corner NodeUI.Control.Corner Canto do raio.
 --- @param radius number                Raio do canto.
 function StyleBoxFlat:setCornerRadius(corner, radius)
@@ -204,7 +204,7 @@ function StyleBoxFlat:setCornerRadius(corner, radius)
     end
 end
 
---- Define a expansão da margem de determinado lado da **StyleBox**.
+--- Define a expansão da margem de determinado lado.
 --- @param side NodeUI.Control.Side Lado da expansão de margem.
 --- @param expand number            Valor da expansão de margem.
 function StyleBoxFlat:setExpandMargin(side, expand)
@@ -218,7 +218,7 @@ function StyleBoxFlat:setExpandMargin(side, expand)
     end
 end
 
---- Define a cor da sombra da **StyleBox**.
+--- Define a cor da sombra.
 --- @param color [number, number, number, number?] Cor da sombra.
 function StyleBoxFlat:setShadowColor(color)
     local old = self._shadow_color
@@ -235,7 +235,7 @@ function StyleBoxFlat:setShadowColor(color)
     end
 end
 
---- Define o tamanho da sombra da **StyleBox**.
+--- Define o tamanho da sombra.
 --- @param size number Tamanho da sombra.
 function StyleBoxFlat:setShadowSize(size)
     local old = self._shadow_size
@@ -247,7 +247,7 @@ function StyleBoxFlat:setShadowSize(size)
     end
 end
 
---- Define o blur da sombra da **StyleBox**.
+--- Define o blur da sombra.
 --- @param blur number Blur da sombra.
 function StyleBoxFlat:setShadowBlur(blur)
     local old = self._shadow_blur
@@ -259,7 +259,7 @@ function StyleBoxFlat:setShadowBlur(blur)
     end
 end
 
---- Define o offset x da sombra da **StyleBox**.
+--- Define o offset x da sombra.
 --- @param x number Offset x da sombra.
 function StyleBoxFlat:setShadowOffsetX(x)
     local old = self._shadow_offset_x
@@ -271,7 +271,7 @@ function StyleBoxFlat:setShadowOffsetX(x)
     end
 end
 
---- Define o offset y da sombra da **StyleBox**.
+--- Define o offset y da sombra.
 --- @param y number Offset y da sombra.
 function StyleBoxFlat:setShadowOffsetY(y)
     local old = self._shadow_offset_y
@@ -282,7 +282,7 @@ function StyleBoxFlat:setShadowOffsetY(y)
     end
 end
 
---- Define o offset da sombra da **StyleBox**.
+--- Define o offset da sombra.
 --- @param x number Offset x da sombra.
 --- @param y number Offset y da sombra.
 function StyleBoxFlat:setShadowOffset(x, y)
@@ -301,35 +301,35 @@ end
 
 --#region Getter
 
---- Retorna a cor de preenchimento da **StyleBox**.
+--- Retorna a cor de preenchimento.
 --- @nodiscard
 --- @return [number, number, number, number?] color Cor de preenchimento.
 function StyleBoxFlat:getFillColor()
     return self._fill_color
 end
 
---- Retorna se é para desenhar o centro da **StyleBox**.
+--- Retorna se é para desenhar o centro.
 --- @nodiscard
 --- @return boolean enabled Se é para desenhar o centro.
 function StyleBoxFlat:getDrawCenter()
     return self._draw_center
 end
 
---- Retorna o skew x da **StyleBox**.
+--- Retorna o skew x.
 --- @nodiscard
 --- @return number x Skew x.
 function StyleBoxFlat:getSkewX()
     return self._skew_x
 end
 
---- Retorna o skew y da **StyleBox**.
+--- Retorna o skew y*.
 --- @nodiscard
 --- @return number y Skew y.
 function StyleBoxFlat:getSkewX()
     return self._skew_y
 end
 
---- Retorna o skew da **StyleBox**.
+--- Retorna o skew.
 --- @nodiscard
 --- @return number x Skew x.
 --- @return number y Skew y.
@@ -337,28 +337,28 @@ function StyleBoxFlat:getSkew()
     return self._skew_x, self._skew_y
 end
 
---- Retorna o tamanho da borda da **StyleBox**.
+--- Retorna o tamanho da borda.
 --- @nodiscard
 --- @return number size Tamanho da borda.
 function StyleBoxFlat:getBorderSize()
     return self._border_size
 end
 
---- Retorna a cor da borda da **StyleBox**.
+--- Retorna a cor da borda.
 --- @nodiscard
 --- @return [number, number, number, number?] color Cor da borda.
 function StyleBoxFlat:getBorderColor()
     return self._border_color
 end
 
---- Retorna a mistura da borda da **StyleBox**. Se `true`, a cor da borda mescla com a cor de preenchimento.
+--- Retorna a mistura da borda. Se `true`, a cor da borda mescla com a cor de preenchimento.
 --- @nodiscard
 --- @return boolean enabled Se a mistura está ativa.
 function StyleBoxFlat:getBorderBlend()
     return self._border_blend
 end
 
---- Retorna o raio de um canto da **StyleBox**.
+--- Retorna o raio de um canto.
 --- @nodiscard
 --- @param corner NodeUI.Control.Corner Canto do raio.
 --- @return number radius               Raio do canto.
@@ -366,7 +366,7 @@ function StyleBoxFlat:getCornerRadius(corner)
     return self["_corner_radius_" .. corner:lower()]
 end
 
---- Retorna a expansão da margem de determinado lado da **StyleBox**.
+--- Retorna a expansão da margem de determinado lado.
 --- @nodiscard
 --- @param side NodeUI.Control.Side Lado da expansão de margem.
 --- @return number expand           Valor da expansão de margem.
@@ -374,42 +374,42 @@ function StyleBoxFlat:getExpandMargin(side)
     return self["_expand_margin_" .. side:lower()]
 end
 
---- Retorna a cor da sombra da **StyleBox**.
+--- Retorna a cor da sombra.
 --- @nodiscard
 --- @return [number, number, number, number?] color Cor da sombra.
 function StyleBoxFlat:getShadowColor()
     return self._shadow_color
 end
 
---- Retorna o tamanho da sombra da **StyleBox**.
+--- Retorna o tamanho da sombra.
 --- @nodiscard
 --- @return number size Tamanho da sombra.
 function StyleBoxFlat:getShadowSize()
     return self._shadow_size
 end
 
---- Retorna o blur da sombra da **StyleBox**.
+--- Retorna o blur da sombra.
 --- @nodiscard
 --- @return number blur Blur da sombra.
 function StyleBoxFlat:getShadowBlur()
     return self._shadow_blur
 end
 
---- Retorna o offset x da sombra da **StyleBox**.
+--- Retorna o offset x da sombra.
 --- @nodiscard
 --- @return number x Offset x da sombra.
 function StyleBoxFlat:getShadowOffsetX()
     return self._shadow_offset_x
 end
 
---- Retorna o offset y da sombra da **StyleBox**.
+--- Retorna o offset y da sombra.
 --- @nodiscard
 --- @return number y Offset y da sombra.
 function StyleBoxFlat:getShadowOffsetY()
     return self._shadow_offset_y
 end
 
---- Retorna o offset da sombra da **StyleBox**.
+--- Retorna o offset da sombra.
 --- @nodiscard
 --- @return number x Offset x da sombra.
 --- @return number y Offset y da sombra.

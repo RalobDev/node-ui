@@ -35,7 +35,7 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado sinal do **`Control`**.
+--- Cria uma conexão em determinado **`NodeUI.MarginContainer.Signals`** do **MarginContainer**.
 --- @param signal NodeUI.MarginContainer.Signals Nome do sinal.
 --- @param method string|function                Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner? table                          Objeto dono do método.
@@ -43,7 +43,7 @@ function MarginContainer:connect(signal, method, owner)
     Container.connect(self, signal, method, owner)
 end
 
---- Desconecta o `method` do `signal`.
+--- Remove a conexão de um **`NodeUI.MarginContainer.Signals`** do **MarginContainer**.
 --- @param signal NodeUI.MarginContainer.Signals Nome do sinal.
 --- @param method string|function                Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                          Objeto dono do método.

@@ -32,7 +32,7 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado sinal do **`Control`**.
+--- Cria uma conexão em determinado **`NodeUI.BoxContainer.Signals`** do **BoxContainer**.
 --- @param signal NodeUI.BoxContainer.Signals Nome do sinal.
 --- @param method string|function             Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner? table                       Objeto dono do método.
@@ -40,7 +40,7 @@ function BoxContainer:connect(signal, method, owner)
     return Container.connect(self, signal, method, owner)
 end
 
---- Remove a conexão de um sinal do **`Control`**.
+--- Remove a conexão de um **`NodeUI.BoxContainer.Signals`** do **BoxContainer**.
 --- @param signal NodeUI.BoxContainer.Signals Nome do sinal.
 --- @param method string|function             Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                       Objeto dono do método.
@@ -53,7 +53,7 @@ end
 
 --#region Setter
 
---- Define o alinhamento dos filhos.
+--- Define o **`NodeUI.Control.AlignmentMode`** aplicado aos filhos.
 --- @param alignment NodeUI.Control.AlignmentMode Alinhamento dos filhos.
 function BoxContainer:setAlignment(alignment)
     self._alignment = alignment
@@ -83,7 +83,7 @@ end
 
 --#region Getter
 
---- Retorna o alinhamento dos filhos.
+--- Retorna o **`NodeUI.Control.AlignmentMode`** aplicado aos filhos.
 --- @nodiscard
 --- @return NodeUI.Control.AlignmentMode alignment Alinhamento dos filhos.
 function BoxContainer:getAlignment()

@@ -1,0 +1,3 @@
+--- Lista de sinais emitidos por um **StyleBox**.
+--- @alias NodeUI.StyleBox.Signals
+--- | NodeUI.Resource.Signals

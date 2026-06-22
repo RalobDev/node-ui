@@ -1,0 +1,3 @@
+--- Lista de sinais emitidos por um **`StyleBoxEmpty`**.
+--- @alias NodeUI.StyleBoxEmpty.Signals
+--- | NodeUI.StyleBox.Signals

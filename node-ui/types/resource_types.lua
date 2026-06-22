@@ -1,3 +1,3 @@
---- Lista de sinais emitidos por um Resource.
+--- Lista de sinais emitidos por um **Resource**.
 --- @alias NodeUI.Resource.Signals
---- | "CHANGED" Quando o recurso é alterado. -> fun().
+--- | "CHANGED" Quando o recurso é alterado. | `fun()`

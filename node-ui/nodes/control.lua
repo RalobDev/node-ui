@@ -99,7 +99,7 @@ end
 --- o próprio módulo **`NodeUI`** armazena uma referência deles. Assim é necessário chamar
 --- `queueFree` quando quiser remover um nó da biblioteca.
 ---
---- Ao ser deletado o nó e seus filhos são removidos da raiz do **NodeUI**, mas quaisquer
+--- Ao ser deletado o nó e seus filhos são removidos da raiz do **`NodeUI`**, mas quaisquer
 --- referências fora do módulo continuarão existindo.
 function Control:queueFree()
 	self._queued_freed = true
@@ -149,7 +149,7 @@ function Control:isVisible()
 	return self._visible
 end
 
---- Cria uma conexão em determinado sinal do **Control**.
+--- Cria uma conexão em determinado **`NodeUI.Control.Signals** do **Control**.
 ---
 --- O `owner` é a tabela que possui o `method`, que deve ser uma `string`. Caso não seja passado um `owner`, o `method`
 --- deve ser uma `function`.
@@ -162,7 +162,7 @@ function Control:connect(signal, method, owner)
 	self._signal:connect(signal, method, owner)
 end
 
---- Remove a conexão de um sinal do **Control**.
+--- Remove a conexão de um **`NodeUI.Control.Signals`** do **Control**.
 --- @param signal NodeUI.Control.Signals Nome do sinal.
 --- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                  Objeto dono do método.
@@ -305,7 +305,7 @@ function Control:setDimensions(width, height)
 	self:setHeight(height)
 end
 
---- Define o layout do **Control**.
+--- Define o **`NodeUI.Control.Layout`** do **Control**.
 --- @param layout NodeUI.Control.Layout Novo layout.
 function Control:setLayout(layout)
 	self._layout = layout
@@ -337,13 +337,14 @@ function Control:setClipContent(enabled)
 	self._clip_content = enabled
 end
 
---- Define o filtro de mouse do **Control**.
+--- Define o **`NodeUI.Control.MouseFilter`** do **Control**.
 --- @param filter NodeUI.Control.MouseFilter Filtro do mouse.
 function Control:setMouseFilter(filter)
 	self._mouse_filter = filter
 end
 
---- Define a size flags do `axis`.
+--- Define a **`NodeUI.Control.SizeFlags`** do `axis`. Ela afeta a maneira como o **Control**
+--- se comporta em um **`Container`**.
 --- @param axis NodeUI.Control.Axis Eixo da size flags.
 --- @param size_flags NodeUI.Control.SizeFlags Size flags aplicada ao `axis`.
 function Control:setSizeFlags(axis, size_flags)
@@ -475,7 +476,7 @@ function Control:getDimensions()
 	return self:getWidth(), self:getHeight()
 end
 
---- Retorna o layout do **Control**.
+--- Retorna o **`NodeUI.Control.Layout`** do **Control**.
 --- @nodiscard
 --- @return NodeUI.Control.Layout layout Layout do **Control**.
 function Control:getLayout()
@@ -489,14 +490,15 @@ function Control:getClipContent()
 	return self._clip_content
 end
 
---- Retorna o filtro de mouse do **Control**.
+--- Retorna o **`NodeUI.Control.MouseFilter`** do **Control**.
 --- @nodiscard
 --- @return NodeUI.Control.MouseFilter mouse_filter Filtro do mouse.
 function Control:getMouseFilter()
 	return self._mouse_filter
 end
 
---- Retorna a size flags do `axis`.
+--- Retorna a **`NodeUI.Control.SizeFlags`** do `axis`. Ela afeta a maneira como o **Control**
+--- se comporta em um **`Container`**.
 --- @nodiscard
 --- @param axis NodeUI.Control.Axis Eixo da size flags.
 --- @return NodeUI.Control.SizeFlags size_flags Size flags aplicada ao `axis`.
