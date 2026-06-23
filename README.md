@@ -2,7 +2,8 @@
 
 NodeUI é uma biblioteca de UI inspirada na estrutura dos nós de controle da Godot, mas com diversas adaptações para atender melhor ao Love2D e aos objetivos do projeto.
 
-> [!TIP] Visite a documentação completa:
+> [!TIP]
+> Visite a documentação completa: https://node-ui.readthedocs.io/pt-br/latest/
 
 ## Filosofia
 
