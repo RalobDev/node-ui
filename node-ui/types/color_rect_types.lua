@@ -1,0 +1,3 @@
+--- Lista de sinais emitidos por um **`ColorRect`**.
+--- @alias NodeUI.ColorRect.Signals
+--- | NodeUI.Control.Signals

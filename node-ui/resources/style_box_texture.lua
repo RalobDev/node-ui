@@ -287,7 +287,11 @@ end
 function StyleBoxTexture:setColor(color)
     local old = self._color
 
-    self._color = color
+    self._color = {
+        color[1] or 1,
+        color[2] or 1,
+        color[3] or 1
+    }
 
     if (
             self._color[1] ~= old[1]

@@ -87,7 +87,11 @@ end
 function StyleBoxFlat:setFillColor(color)
     local old = self._fill_color
 
-    self._fill_color = color
+    self._fill_color = {
+        color[1] or 1,
+        color[2] or 1,
+        color[3] or 1
+    }
 
     if (
             self._fill_color[1] ~= old[1]
@@ -166,7 +170,11 @@ end
 function StyleBoxFlat:setBorderColor(color)
     local old = self._border_color
 
-    self._border_color = color
+    self._border_color = {
+        color[1] or 1,
+        color[2] or 1,
+        color[3] or 1
+    }
 
     if (
             self._border_color[1] ~= old[1]
@@ -223,7 +231,11 @@ end
 function StyleBoxFlat:setShadowColor(color)
     local old = self._shadow_color
 
-    self._shadow_color = color
+    self._shadow_color = {
+        color[1] or 1,
+        color[2] or 1,
+        color[3] or 1
+    }
 
     if (
             self._shadow_color[1] ~= old[1]
