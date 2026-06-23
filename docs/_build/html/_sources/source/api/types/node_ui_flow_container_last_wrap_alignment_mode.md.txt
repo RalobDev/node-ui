@@ -1,0 +1,3 @@
+(node_ui_flow_container_last_wrap_alignment_mode)=
+
+# NodeUI.FlowContainer.LastWrapAlignmentMode

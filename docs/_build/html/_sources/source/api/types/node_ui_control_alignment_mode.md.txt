@@ -1,0 +1,3 @@
+(node_ui_control_alignment_mode)=
+
+# NodeUI.Control.AlignmentMode

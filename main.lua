@@ -4,18 +4,37 @@ end
 
 NodeUI = require("node-ui")
 
+local main_control = NodeUI.MarginContainer:new(0, 0, 400, 400)
+main_control:setLayout("CENTER")
+
+love.graphics.setDefaultFilter("nearest", "nearest")
+local texture = love.graphics.newImage("icon.png")
+local style_box = NodeUI.Resources.StyleBoxTexture:new(texture)
+
 --#region Engine Callback
 
 --- Lida com a lógica de atualização.
 --- @param dt number
 function love.update(dt)
+	if love.keyboard.isDown("left") then
+		main_control:setWidth(main_control:getWidth() - 1)
+	elseif love.keyboard.isDown("right") then
+		main_control:setWidth(main_control:getWidth() + 1)
+	elseif love.keyboard.isDown("up") then
+		main_control:setHeight(main_control:getHeight() - 1)
+	elseif love.keyboard.isDown("down") then
+		main_control:setHeight(main_control:getHeight() + 1)
+	end
+
 	NodeUI.update(dt)
 end
 
 --- Lida com o desenho.
 function love.draw()
-	NodeUI.draw()
-	NodeUI.drawDebug()
+	-- NodeUI.draw()
+	-- NodeUI.drawDebug()
+
+	style_box:draw(1280 / 2 - 200, 720 / 2 - 100, 400, 200)
 end
 
 --- Lida com o pressionar do mouse.

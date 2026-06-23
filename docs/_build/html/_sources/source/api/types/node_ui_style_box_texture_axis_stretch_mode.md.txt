@@ -1,0 +1,3 @@
+(node_ui_style_box_texture_axis_stretch_mode)=
+
+# NodeUI.StyleBoxTexture.AxisStretchMode

@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StyleBoxFlat &mdash; documentação NodeUI 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=86f27845" />
+
+  
+  
+        <script src="../../../../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=2346ddef"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/translations.js?v=000972dd"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../../../search.html" />
+    <link rel="next" title="StyleBoxLine" href="../node_ui_style_box_line/index.html" />
+    <link rel="prev" title="StyleBoxEmpty" href="../node_ui_style_box_empty/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            NodeUI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">NodeUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#filosofia">Filosofia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#sumario">Sumário</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#instalacao">Instalação</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#primeiros-passos">Primeiros Passos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#modificando-os-nos">Modificando os Nós</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#sinais">Sinais</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../getting_started.html#callback-sem-dono">Callback sem dono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../getting_started.html#callback-com-dono">Callback com dono</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#removendo-nos">Removendo Nós</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Referência de Classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#nodes">Nodes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_aspect_ratio_container/index.html">AspectRatioContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_aspect_ratio_container/index.html#descricao">Descrição</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_aspect_ratio_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_aspect_ratio_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_box_container/index.html">BoxContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_box_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_box_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_center_container/index.html">CenterContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_center_container/index.html#descricao">Descrição</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_center_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_center_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_container/index.html">Container</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_container/index.html#descricao">Descrição</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_control/index.html">Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_control/index.html#descricao">Descrição</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_control/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_control/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_flow_container/index.html">FlowContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_flow_container/index.html#descricao">Descrição</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_flow_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_flow_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_grid_container/index.html">GridContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_grid_container/index.html#descricao">Descrição</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_grid_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_grid_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nodes/node_ui_margin_container/index.html">MarginContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_margin_container/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../nodes/node_ui_margin_container/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#resources">Resources</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../node_ui_style_box_empty/index.html">StyleBoxEmpty</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../node_ui_style_box_empty/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../node_ui_style_box_empty/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">StyleBoxFlat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../node_ui_style_box_line/index.html">StyleBoxLine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../node_ui_style_box_line/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../node_ui_style_box_line/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../node_ui_style_box_texture/index.html">StyleBoxTexture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../node_ui_style_box_texture/index.html#metodos">Métodos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../node_ui_style_box_texture/index.html#descricao-dos-metodos">Descrição dos Métodos</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#types">Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_aspect_ratio_container_types.html">AspectRatioContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_aspect_ratio_container_types.html#nodeui-aspectratiocontainer-signals">NodeUI.AspectRatioContainer.Signals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_aspect_ratio_container_types.html#nodeui-aspectratiocontainer-stretchmode">NodeUI.AspectRatioContainer.StretchMode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_box_container_types.html">BoxContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_box_container_types.html#nodeui-boxcontainer-signals">NodeUI.BoxContainer.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_center_container_types.html">CenterContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_center_container_types.html#nodeui-centercontainer-signals">NodeUI.CenterContainer.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_container_types.html">Container</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_container_types.html#nodeui-container-signals">NodeUI.Container.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_control_types.html">Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-alignmentmode">NodeUI.Control.AlignmentMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-axis">NodeUI.Control.Axis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-corner">NodeUI.Control.Corner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-direction">NodeUI.Control.Direction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-layout">NodeUI.Control.Layout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-mousefilter">NodeUI.Control.MouseFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-side">NodeUI.Control.Side</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-signals">NodeUI.Control.Signals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_control_types.html#nodeui-control-sizeflags">NodeUI.Control.SizeFlags</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_flow_container_types.html">FlowContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_flow_container_types.html#nodeui-flowcontainer-lastwrapalignmentmode">NodeUI.FlowContainer.LastWrapAlignmentMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_flow_container_types.html#nodeui-flowcontainer-signals">NodeUI.FlowContainer.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_grid_container_types.html">GridContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_grid_container_types.html#nodeui-gridcontainer-signals">NodeUI.GridContainer.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_margin_container_types.html">MarginContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_margin_container_types.html#nodeui-margincontainer-signals">NodeUI.MarginContainer.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_resource_types.html">Resource</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_resource_types.html#nodeui-resource-signals">NodeUI.Resource.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_style_box_types.html">StyleBox</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_types.html#nodeui-stylebox-signals">NodeUI.StyleBox.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_style_box_empty_types.html">StyleBoxEmpty</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_empty_types.html#nodeui-styleboxempty-signals">NodeUI.StyleBoxEmpty.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_style_box_flat_types.html">StyleBoxFlat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_flat_types.html#nodeui-styleboxflat-signals">NodeUI.StyleBoxFlat.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_style_box_line_types.html">StyleBoxLine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_line_types.html#nodeui-styleboxline-capstyle">NodeUI.StyleBoxLine.CapStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_line_types.html#nodeui-styleboxline-signals">NodeUI.StyleBoxLine.Signals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../types/node_ui_style_box_texture_types.html">StyleBoxTexture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_texture_types.html#nodeui-styleboxtexture-axisstretchmode">NodeUI.StyleBoxTexture.AxisStretchMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../types/node_ui_style_box_texture_types.html#nodeui-styleboxtexture-signals">NodeUI.StyleBoxTexture.Signals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">NodeUI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Referência de Classes</a></li>
+      <li class="breadcrumb-item active">StyleBoxFlat</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/source/api/resources/node_ui_style_box_flat/index.md.txt" rel="nofollow"> Ver código-fonte da página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="styleboxflat">
+<span id="node-ui-style-box-flat"></span><h1>StyleBoxFlat<a class="headerlink" href="#styleboxflat" title="Link to this heading"></a></h1>
+<p><strong>Inherits:</strong> <span class="xref std std-ref">**NodeUI.StyleBox**</span> <strong>→</strong> <span class="xref std std-ref">**NodeUI.Resource**</span></p>
+<p>Uma <strong>StyleBox</strong> que exibe um retângulo altamente customizável.</p>
+<section id="metodos">
+<h2>Métodos<a class="headerlink" href="#metodos" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9.1%" />
+<col style="width: 90.9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Tipo</p></th>
+<th class="head"><p>Nome</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-border-blend"><span class="std std-ref">getBorderBlend</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-border-color"><span class="std std-ref">getBorderColor</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-border-size"><span class="std std-ref">getBorderSize</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-corner-radius"><span class="std std-ref">getCornerRadius</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-draw-center"><span class="std std-ref">getDrawCenter</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-expand-margin"><span class="std std-ref">getExpandMargin</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-fill-color"><span class="std std-ref">getFillColor</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-shadow-blur"><span class="std std-ref">getShadowBlur</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-shadow-color"><span class="std std-ref">getShadowColor</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-shadow-offset"><span class="std std-ref">getShadowOffset</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-shadow-offset-x"><span class="std std-ref">getShadowOffsetX</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-shadow-offset-y"><span class="std std-ref">getShadowOffsetY</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-shadow-size"><span class="std std-ref">getShadowSize</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-get-skew"><span class="std std-ref">getSkew</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><span class="xref std std-ref">getSkewX</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p><span class="xref std std-ref">getSkewX</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NodeUI.StyleBoxFlat</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-new"><span class="std std-ref">new</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-border-blend"><span class="std std-ref">setBorderBlend</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-border-color"><span class="std std-ref">setBorderColor</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-border-size"><span class="std std-ref">setBorderSize</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-corner-radius"><span class="std std-ref">setCornerRadius</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-draw-center"><span class="std std-ref">setDrawCenter</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-expand-margin"><span class="std std-ref">setExpandMargin</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-fill-color"><span class="std std-ref">setFillColor</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-shadow-blur"><span class="std std-ref">setShadowBlur</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-shadow-color"><span class="std std-ref">setShadowColor</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-shadow-offset"><span class="std std-ref">setShadowOffset</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-shadow-offset-x"><span class="std std-ref">setShadowOffsetX</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-shadow-offset-y"><span class="std std-ref">setShadowOffsetY</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-shadow-size"><span class="std std-ref">setShadowSize</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><a class="reference internal" href="#style-box-flat-set-skew"><span class="std std-ref">setSkew</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><span class="xref std std-ref">setSkewX</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nil</span></code></p></td>
+<td><p><span class="xref std std-ref">setSkewX</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="descricao-dos-metodos">
+<h2>Descrição dos Métodos<a class="headerlink" href="#descricao-dos-metodos" title="Link to this heading"></a></h2>
+<section id="getborderblend">
+<span id="style-box-flat-get-border-blend"></span><h3><strong><span style='font-family: monospace;'>getBorderBlend()</span></strong><a class="headerlink" href="#getborderblend" title="Link to this heading"></a></h3>
+<p>Retorna a mistura da borda. Se <code class="docutils literal notranslate"><span class="pre">true</span></code>, a cor da borda mescla com a cor de preenchimento.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">enabled</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getBorderBlend</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Se a mistura está ativa.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getbordercolor">
+<span id="style-box-flat-get-border-color"></span><h3><strong><span style='font-family: monospace;'>getBorderColor()</span></strong><a class="headerlink" href="#getbordercolor" title="Link to this heading"></a></h3>
+<p>Retorna a cor da borda.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">color</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getBorderColor</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p>Cor da borda.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getbordersize">
+<span id="style-box-flat-get-border-size"></span><h3><strong><span style='font-family: monospace;'>getBorderSize()</span></strong><a class="headerlink" href="#getbordersize" title="Link to this heading"></a></h3>
+<p>Retorna o tamanho da borda.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getBorderSize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>size</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Tamanho da borda.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getcornerradius">
+<span id="style-box-flat-get-corner-radius"></span><h3><strong><span style='font-family: monospace;'>getCornerRadius()</span></strong><a class="headerlink" href="#getcornerradius" title="Link to this heading"></a></h3>
+<p>Retorna o raio de um canto.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">radius</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getCornerRadius</span><span class="p">(</span><span class="n">corner</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>corner</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NodeUI.Control.Corner</span></code></p></td>
+<td><p>Canto do raio.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>radius</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Raio do canto.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getdrawcenter">
+<span id="style-box-flat-get-draw-center"></span><h3><strong><span style='font-family: monospace;'>getDrawCenter()</span></strong><a class="headerlink" href="#getdrawcenter" title="Link to this heading"></a></h3>
+<p>Retorna se é para desenhar o centro.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">enabled</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getDrawCenter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Se é para desenhar o centro.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getexpandmargin">
+<span id="style-box-flat-get-expand-margin"></span><h3><strong><span style='font-family: monospace;'>getExpandMargin()</span></strong><a class="headerlink" href="#getexpandmargin" title="Link to this heading"></a></h3>
+<p>Retorna a expansão da margem de determinado lado.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">expand</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getExpandMargin</span><span class="p">(</span><span class="n">side</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>side</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NodeUI.Control.Side</span></code></p></td>
+<td><p>Lado da expansão de margem.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>expand</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Valor da expansão de margem.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getfillcolor">
+<span id="style-box-flat-get-fill-color"></span><h3><strong><span style='font-family: monospace;'>getFillColor()</span></strong><a class="headerlink" href="#getfillcolor" title="Link to this heading"></a></h3>
+<p>Retorna a cor de preenchimento.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">color</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getFillColor</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p>Cor de preenchimento.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getshadowblur">
+<span id="style-box-flat-get-shadow-blur"></span><h3><strong><span style='font-family: monospace;'>getShadowBlur()</span></strong><a class="headerlink" href="#getshadowblur" title="Link to this heading"></a></h3>
+<p>Retorna o blur da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">blur</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getShadowBlur</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>blur</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Blur da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getshadowcolor">
+<span id="style-box-flat-get-shadow-color"></span><h3><strong><span style='font-family: monospace;'>getShadowColor()</span></strong><a class="headerlink" href="#getshadowcolor" title="Link to this heading"></a></h3>
+<p>Retorna a cor da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">color</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getShadowColor</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p>Cor da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getshadowoffset">
+<span id="style-box-flat-get-shadow-offset"></span><h3><strong><span style='font-family: monospace;'>getShadowOffset()</span></strong><a class="headerlink" href="#getshadowoffset" title="Link to this heading"></a></h3>
+<p>Retorna o offset da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getShadowOffset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset x da sombra.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset y da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getshadowoffsetx">
+<span id="style-box-flat-get-shadow-offset-x"></span><h3><strong><span style='font-family: monospace;'>getShadowOffsetX()</span></strong><a class="headerlink" href="#getshadowoffsetx" title="Link to this heading"></a></h3>
+<p>Retorna o offset x da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getShadowOffsetX</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset x da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getshadowoffsety">
+<span id="style-box-flat-get-shadow-offset-y"></span><h3><strong><span style='font-family: monospace;'>getShadowOffsetY()</span></strong><a class="headerlink" href="#getshadowoffsety" title="Link to this heading"></a></h3>
+<p>Retorna o offset y da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getShadowOffsetY</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset y da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getshadowsize">
+<span id="style-box-flat-get-shadow-size"></span><h3><strong><span style='font-family: monospace;'>getShadowSize()</span></strong><a class="headerlink" href="#getshadowsize" title="Link to this heading"></a></h3>
+<p>Retorna o tamanho da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getShadowSize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>size</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Tamanho da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getskew">
+<span id="style-box-flat-get-skew"></span><h3><strong><span style='font-family: monospace;'>getSkew()</span></strong><a class="headerlink" href="#getskew" title="Link to this heading"></a></h3>
+<p>Retorna o skew.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getSkew</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew x.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew y.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="getskewx">
+<span id="style-box-flat-get-skew-x"></span><h3><strong><span style='font-family: monospace;'>getSkewX()</span></strong><a class="headerlink" href="#getskewx" title="Link to this heading"></a></h3>
+<p>Retorna o skew x.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getSkewX</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew x.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="id1">
+<span id="id2"></span><h3><strong><span style='font-family: monospace;'>getSkewX()</span></strong><a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Retorna o skew y*.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">getSkewX</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew y.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="new">
+<span id="style-box-flat-new"></span><h3><strong><span style='font-family: monospace;'>new()</span></strong><a class="headerlink" href="#new" title="Link to this heading"></a></h3>
+<p>Cria uma nova <strong>StyleBoxFlat</strong>.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span> <span class="o">=</span> <span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">new</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Retornos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>StyleBoxFlat</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NodeUI.StyleBoxFlat</span></code></p></td>
+<td><p>Nova <strong>StyleBoxFlat</strong>.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setborderblend">
+<span id="style-box-flat-set-border-blend"></span><h3><strong><span style='font-family: monospace;'>setBorderBlend()</span></strong><a class="headerlink" href="#setborderblend" title="Link to this heading"></a></h3>
+<p>Define a mistura da borda. Se <code class="docutils literal notranslate"><span class="pre">true</span></code>, a cor da borda mescla com a cor de preenchimento.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setBorderBlend</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Se a mistura está ativa.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setbordercolor">
+<span id="style-box-flat-set-border-color"></span><h3><strong><span style='font-family: monospace;'>setBorderColor()</span></strong><a class="headerlink" href="#setbordercolor" title="Link to this heading"></a></h3>
+<p>Define a cor da borda.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setBorderColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p>Cor da borda.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setbordersize">
+<span id="style-box-flat-set-border-size"></span><h3><strong><span style='font-family: monospace;'>setBorderSize()</span></strong><a class="headerlink" href="#setbordersize" title="Link to this heading"></a></h3>
+<p>Define o tamanho da borda.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setBorderSize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>size</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Tamanho da borda.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setcornerradius">
+<span id="style-box-flat-set-corner-radius"></span><h3><strong><span style='font-family: monospace;'>setCornerRadius()</span></strong><a class="headerlink" href="#setcornerradius" title="Link to this heading"></a></h3>
+<p>Define o raio de um canto.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setCornerRadius</span><span class="p">(</span><span class="n">corner</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>corner</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NodeUI.Control.Corner</span></code></p></td>
+<td><p>Canto do raio.</p></td>
+</tr>
+<tr class="row-odd"><td><p>radius</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Raio do canto.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setdrawcenter">
+<span id="style-box-flat-set-draw-center"></span><h3><strong><span style='font-family: monospace;'>setDrawCenter()</span></strong><a class="headerlink" href="#setdrawcenter" title="Link to this heading"></a></h3>
+<p>Define se é para desenhar o centro.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setDrawCenter</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Se é para desenhar o centro.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setexpandmargin">
+<span id="style-box-flat-set-expand-margin"></span><h3><strong><span style='font-family: monospace;'>setExpandMargin()</span></strong><a class="headerlink" href="#setexpandmargin" title="Link to this heading"></a></h3>
+<p>Define a expansão da margem de determinado lado.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setExpandMargin</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">expand</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>side</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NodeUI.Control.Side</span></code></p></td>
+<td><p>Lado da expansão de margem.</p></td>
+</tr>
+<tr class="row-odd"><td><p>expand</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Valor da expansão de margem.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setfillcolor">
+<span id="style-box-flat-set-fill-color"></span><h3><strong><span style='font-family: monospace;'>setFillColor()</span></strong><a class="headerlink" href="#setfillcolor" title="Link to this heading"></a></h3>
+<p>Define a cor de preenchimento.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setFillColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p>Cor de preenchimento.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setshadowblur">
+<span id="style-box-flat-set-shadow-blur"></span><h3><strong><span style='font-family: monospace;'>setShadowBlur()</span></strong><a class="headerlink" href="#setshadowblur" title="Link to this heading"></a></h3>
+<p>Define o blur da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setShadowBlur</span><span class="p">(</span><span class="n">blur</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>blur</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Blur da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setshadowcolor">
+<span id="style-box-flat-set-shadow-color"></span><h3><strong><span style='font-family: monospace;'>setShadowColor()</span></strong><a class="headerlink" href="#setshadowcolor" title="Link to this heading"></a></h3>
+<p>Define a cor da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setShadowColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[number,</span> <span class="pre">number,</span> <span class="pre">number,</span> <span class="pre">number?]</span></code></p></td>
+<td><p>Cor da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setshadowoffset">
+<span id="style-box-flat-set-shadow-offset"></span><h3><strong><span style='font-family: monospace;'>setShadowOffset()</span></strong><a class="headerlink" href="#setshadowoffset" title="Link to this heading"></a></h3>
+<p>Define o offset da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setShadowOffset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset x da sombra.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset y da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setshadowoffsetx">
+<span id="style-box-flat-set-shadow-offset-x"></span><h3><strong><span style='font-family: monospace;'>setShadowOffsetX()</span></strong><a class="headerlink" href="#setshadowoffsetx" title="Link to this heading"></a></h3>
+<p>Define o offset x da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setShadowOffsetX</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset x da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setshadowoffsety">
+<span id="style-box-flat-set-shadow-offset-y"></span><h3><strong><span style='font-family: monospace;'>setShadowOffsetY()</span></strong><a class="headerlink" href="#setshadowoffsety" title="Link to this heading"></a></h3>
+<p>Define o offset y da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setShadowOffsetY</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Offset y da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setshadowsize">
+<span id="style-box-flat-set-shadow-size"></span><h3><strong><span style='font-family: monospace;'>setShadowSize()</span></strong><a class="headerlink" href="#setshadowsize" title="Link to this heading"></a></h3>
+<p>Define o tamanho da sombra.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setShadowSize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>size</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Tamanho da sombra.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setskew">
+<span id="style-box-flat-set-skew"></span><h3><strong><span style='font-family: monospace;'>setSkew()</span></strong><a class="headerlink" href="#setskew" title="Link to this heading"></a></h3>
+<p>Define o skew.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setSkew</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew x.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew y.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="setskewx">
+<span id="style-box-flat-set-skew-x"></span><h3><strong><span style='font-family: monospace;'>setSkewX()</span></strong><a class="headerlink" href="#setskewx" title="Link to this heading"></a></h3>
+<p>Define o skew x.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setSkewX</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew x.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+<section id="id3">
+<span id="id4"></span><h3><strong><span style='font-family: monospace;'>setSkewX()</span></strong><a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>Define o skew y.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">StyleBoxFlat</span><span class="p">:</span><span class="n">setSkewX</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Argumentos</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Skew y.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="../node_ui_style_box_empty/index.html" class="btn btn-neutral float-left" title="StyleBoxEmpty" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="../node_ui_style_box_line/index.html" class="btn btn-neutral float-right" title="StyleBoxLine" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Direitos autorais 2026, RalobDev.</p>
+  </div>
+
+  Compilado com <a href="https://www.sphinx-doc.org/">Sphinx</a> usando um
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornecido por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
