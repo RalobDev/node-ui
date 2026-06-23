@@ -1,0 +1,3 @@
+--- Lista de sinais emitidos por um **`Panel`**.
+--- @alias NodeUI.Panel.Signals
+--- | NodeUI.Control.Signals
