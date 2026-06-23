@@ -120,7 +120,7 @@ def main() -> None:
     write_docs(code_classes)
     resolve_files_references()
 
-    print("Doc Generated!")
+    print("Documentation Generated!")
 
 
 # Executa a sequência lógica principal de criação da documentação.
