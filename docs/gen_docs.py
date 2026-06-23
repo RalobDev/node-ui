@@ -50,7 +50,6 @@ class CodeClass(DocClass):
         self.methods: list[CodeClassMethod] = [] # Todos os métodos de classe.
         self.fields: list[DocClass] = []         # Campos de uma classe, usado apenas pelos alias.
         self.type_owner: str = ""                # Nome da CodeClass dona do alias.
-        self.is_abstract: bool = False           # Se for abstrata, a API é privada.
 
 
 # Classe usada na criação de arquivos markdown.
@@ -108,7 +107,7 @@ DOCS_API_PATH: Path = Path(f"{DOCS_SOURCE_PATH}/api")
 def main() -> None:
     code_classes: list[CodeClass] = []
 
-    code_classes.extend(get_code_classes(ABSTRACT_CLASSES_PATH, CodeClassType.RESOURCE, True))
+    code_classes.extend(get_code_classes(ABSTRACT_CLASSES_PATH, CodeClassType.RESOURCE))
     code_classes.extend(get_code_classes(NODES_PATH, CodeClassType.NODE))
     code_classes.extend(get_code_classes(RESOURCES_PATH, CodeClassType.RESOURCE))
     code_classes.extend(get_code_classes(ALIAS_PATH, CodeClassType.ALIAS))
@@ -134,17 +133,17 @@ def write_docs(code_classes: list[CodeClass]) -> None:
     write_code_classes(code_classes)
 
 
-# Retorna todas as CodeClass dos arquivos em path. O parâmetro is_public marca se a documentação das classes é pública ou não.
-def get_code_classes(path: Path, class_type: CodeClassType, abstract: bool = False) -> list[CodeClass]:
+# Retorna todas as CodeClass dos arquivos em path.
+def get_code_classes(path: Path, class_type: CodeClassType) -> list[CodeClass]:
     code_classes: list[CodeClass] = []
 
     # Procura todos os arquivos em path.
     for file in path.rglob("*.lua"):
         if file.is_file():
             if class_type == CodeClassType.ALIAS:
-                code_classes.extend(parse_code_alias_file(file, abstract))
+                code_classes.extend(parse_code_alias_file(file))
             else:
-                code_class: CodeClass = parse_code_class_file(file, class_type, abstract)
+                code_class: CodeClass = parse_code_class_file(file, class_type)
                 if code_class:
                     code_classes.append(code_class)
 
@@ -192,7 +191,7 @@ def write_classes_reference(code_classes: list[CodeClass]) -> None:
         written_alias_owner: list[str] = []
 
         for code_class in code_classes:
-            if code_class.type_owner in written_alias_owner or code_class.is_abstract:
+            if code_class.type_owner in written_alias_owner:
                 continue
 
             dir: str = None
@@ -236,9 +235,6 @@ def write_code_classes(code_classes: list[CodeClass]) -> None:
         path.mkdir()
 
     for code_class in code_classes:
-        # Pula a geração de pastas e arquivos se a classe for abstrata.
-        if code_class.is_abstract:
-            continue
 
         path: Path = None
         if code_class.type == CodeClassType.NODE: path = nodes_path
@@ -296,9 +292,6 @@ def write_code_class(code_class: CodeClass, path: Path) -> None:
 
 # Escreve o alias no arquivo referente a seu type_owner.
 def write_alias_class(code_class: CodeClass) -> None:
-    if code_class.is_abstract:
-        return
-
     file: Markdown = Markdown(f"{DOCS_API_PATH}/types/{to_snake(code_class.type_owner)}_types.md")
 
     if not file.exists():
@@ -448,12 +441,11 @@ def write_doc_details(file: Markdown, brief: list[str], description: list[str]) 
 #region File Parsers
 
 # Analisa um arquivo de classe e retorna a CodeClass referente a ele.
-def parse_code_class_file(file: Path, class_type: CodeClassType, abstract: bool = False) -> CodeClass:
+def parse_code_class_file(file: Path, class_type: CodeClassType) -> CodeClass:
     if class_type == CodeClassType.ALIAS:
         return None
 
     code_class: CodeClass = CodeClass(class_type)
-    code_class.is_abstract = abstract
 
     lines: list[str] = file.read_text(encoding="utf-8").splitlines()
 
@@ -476,7 +468,7 @@ def parse_code_class_file(file: Path, class_type: CodeClassType, abstract: bool 
 
 
 # Analisa um arquivo de alias e retorna a CodeClass de todas as alias referente a ele.
-def parse_code_alias_file(file: Path, abstract: bool = False) -> list[CodeClass]:
+def parse_code_alias_file(file: Path) -> list[CodeClass]:
     code_alias_classes: list[CodeClass] = []
     current_code_alias: CodeClass = None
 
@@ -487,7 +479,6 @@ def parse_code_alias_file(file: Path, abstract: bool = False) -> list[CodeClass]
         # Preenche os dados gerais da alias.
         if line.startswith("--- @alias"):
             current_code_alias = CodeClass(CodeClassType.ALIAS)
-            current_code_alias.is_abstract = abstract
 
             current_code_alias.name = line.replace("--- @alias ", "")
             current_code_alias.brief, current_code_alias.description = parse_general_docs_details(lines, line_number)
@@ -727,9 +718,7 @@ def resolve_inheritance(code_classes: list[CodeClass]) -> None:
 
         resolve(parent)
 
-
-        # NOTE: Nome de CodeClass que não são abstratas, ficam entre **.
-        code_class.inherits.append(parent.name if not parent.is_abstract else f"**{parent.name}**")
+        code_class.inherits.append(parent.name)
         code_class.inherits.extend(parent.inherits)
 
         visiting.remove(code_class.name)

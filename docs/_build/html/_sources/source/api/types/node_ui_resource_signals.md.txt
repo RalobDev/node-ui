@@ -1,3 +1,0 @@
-(node_ui_resource_signals)=
-
-# NodeUI.Resource.Signals

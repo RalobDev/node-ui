@@ -1,3 +1,0 @@
-(node_ui_aspect_ratio_container_signals)=
-
-# NodeUI.AspectRatioContainer.Signals

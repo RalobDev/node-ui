@@ -1,3 +1,0 @@
-(node_ui_style_box_line_signals)=
-
-# NodeUI.StyleBoxLine.Signals

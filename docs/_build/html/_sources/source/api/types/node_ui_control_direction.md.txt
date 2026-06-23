@@ -1,3 +1,0 @@
-(node_ui_control_direction)=
-
-# NodeUI.Control.Direction

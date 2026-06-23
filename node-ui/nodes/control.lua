@@ -1,7 +1,7 @@
-local ROOT = (...):match("^(.*)%.%w+%.%w+$")       --- @type string
+local ROOT = (...):match("^(.*)%.%w+%.%w+$")        --- @type string
 
-local Class = require(ROOT .. ".class")            --- @type Class
-local Signal = require(ROOT .. ".abstract.signal") --- @type NodeUI.Signal
+local Class = require(ROOT .. ".class")             --- @type Class
+local Signal = require(ROOT .. ".resources.signal") --- @type NodeUI.Signal
 
 --- O **Control** é a classe base de todos os elementos da interface do **`NodeUI`**. Ela fornece funcionalidades fundamentais
 --- como hierarquia de nós, sistema de layout, renderização, processamento de eventos de entrada e gerenciamento de sinais.

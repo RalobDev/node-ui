@@ -1,6 +1,6 @@
-local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")        --- @type string
+local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")         --- @type string
 
-local StyleBox = require(ROOT .. ".abstract.style_box") --- @type NodeUI.StyleBox
+local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleBox
 
 --- Uma **StyleBox** que exibe uma textura.
 --- @class NodeUI.StyleBoxTexture: NodeUI.StyleBox

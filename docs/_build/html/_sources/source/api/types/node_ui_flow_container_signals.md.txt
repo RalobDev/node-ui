@@ -1,3 +1,0 @@
-(node_ui_flow_container_signals)=
-
-# NodeUI.FlowContainer.Signals
