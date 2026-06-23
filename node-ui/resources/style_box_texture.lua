@@ -19,7 +19,7 @@ local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleB
 --- @field private _sub_region_y number
 --- @field private _sub_region_width number
 --- @field private _sub_region_height number
---- @field private _color [number, number, number, number?]
+--- @field private _color number[]
 --- @field private _draw_center boolean
 local StyleBoxTexture = StyleBox:extend("StyleBoxTexture")
 
@@ -283,7 +283,7 @@ function StyleBoxTexture:setSubRegionDimensions(width, height)
 end
 
 --- Define a cor da textura.
---- @param color [number, number, number, number?] Cor da textura.
+--- @param color number[] Cor da textura.
 function StyleBoxTexture:setColor(color)
     local old = self._color
 
@@ -391,7 +391,7 @@ function StyleBoxTexture:getSubRegionDimensions()
 end
 
 --- Retorna a cor da textura.
---- @return [number, number, number, number?] color Cor da textura.
+--- @return number[] color Cor da textura.
 function StyleBoxTexture:getColor()
     return self._color
 end

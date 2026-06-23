@@ -4,7 +4,7 @@ local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleB
 
 --- Uma **StyleBox** que exibe uma única linha.
 --- @class NodeUI.StyleBoxLine: NodeUI.StyleBox
---- @field private _color [number, number, number, number?]
+--- @field private _color number[]
 --- @field private _grow_begin number
 --- @field private _grow_end number
 --- @field private _thickness number
@@ -130,7 +130,7 @@ end
 --#region Setter
 
 --- Define a cor da linha.
---- @param color [number, number, number, number?] Cor da linha.
+--- @param color number[] Cor da linha.
 function StyleBoxLine:setColor(color)
     local old = self._color
 
@@ -230,7 +230,7 @@ end
 
 --- Retorna a cor da linha.
 --- @nodiscard
---- @return [number, number, number, number?] color Cor da linha.
+--- @return number[] color Cor da linha.
 function StyleBoxLine:getColor()
     return self._color
 end

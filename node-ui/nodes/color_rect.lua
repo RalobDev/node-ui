@@ -4,7 +4,7 @@ local Control = require(ROOT .. ".control") --- @type NodeUI.Control
 
 --- Desenha um retângulo preenchido com uma cor sólida.
 --- @class NodeUI.ColorRect: NodeUI.Control
---- @field private _color [number, number, number, number?]
+--- @field private _color number[]
 local ColorRect = Control:extend("ColorRect")
 
 
@@ -51,7 +51,7 @@ end
 --#region Setter
 
 --- Define a cor de preenchimento do **ColorRect**.
---- @param color [number, number, number, number?] Cor de preenchimento.
+--- @param color number[] Cor de preenchimento.
 function ColorRect:setColor(color)
     self._color = {
         color[1] or 1,
@@ -68,7 +68,7 @@ end
 
 --- Retorna a cor de preenchimento do **ColorRect**.
 --- @nodiscard
---- @return [number, number, number, number?] color Cor de preenchimento.
+--- @return number[] color Cor de preenchimento.
 function ColorRect:getColor()
     return self._color
 end

@@ -4,12 +4,12 @@ local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleB
 
 --- Uma **StyleBox** que exibe um retângulo altamente customizável.
 --- @class NodeUI.StyleBoxFlat: NodeUI.StyleBox
---- @field private _fill_color [number, number, number, number?]
+--- @field private _fill_color number[]
 --- @field private _draw_center boolean
 --- @field private _skew_x number
 --- @field private _skew_y number
 --- @field private _border_size number
---- @field private _border_color [number, number, number, number?]
+--- @field private _border_color number[]
 --- @field private _border_blend boolean
 --- @field private _corner_radius_top_left number
 --- @field private _corner_radius_top_right number
@@ -19,7 +19,7 @@ local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleB
 --- @field private _expand_margin_right number
 --- @field private _expand_margin_top number
 --- @field private _expand_margin_bottom number
---- @field private _shadow_color [number, number, number, number?]
+--- @field private _shadow_color number[]
 --- @field private _shadow_size number
 --- @field private _shadow_blur number
 --- @field private _shadow_offset_x number
@@ -83,7 +83,7 @@ end
 --#region Setter
 
 --- Define a cor de preenchimento.
---- @param color [number, number, number, number?] Cor de preenchimento.
+--- @param color number[] Cor de preenchimento.
 function StyleBoxFlat:setFillColor(color)
     local old = self._fill_color
 
@@ -167,7 +167,7 @@ function StyleBoxFlat:setBorderSize(size)
 end
 
 --- Define a cor da borda.
---- @param color [number, number, number, number?] Cor da borda.
+--- @param color number[] Cor da borda.
 function StyleBoxFlat:setBorderColor(color)
     local old = self._border_color
 
@@ -229,7 +229,7 @@ function StyleBoxFlat:setExpandMargin(side, expand)
 end
 
 --- Define a cor da sombra.
---- @param color [number, number, number, number?] Cor da sombra.
+--- @param color number[] Cor da sombra.
 function StyleBoxFlat:setShadowColor(color)
     local old = self._shadow_color
 
@@ -318,7 +318,7 @@ end
 
 --- Retorna a cor de preenchimento.
 --- @nodiscard
---- @return [number, number, number, number?] color Cor de preenchimento.
+--- @return number[] color Cor de preenchimento.
 function StyleBoxFlat:getFillColor()
     return self._fill_color
 end
@@ -361,7 +361,7 @@ end
 
 --- Retorna a cor da borda.
 --- @nodiscard
---- @return [number, number, number, number?] color Cor da borda.
+--- @return number[] color Cor da borda.
 function StyleBoxFlat:getBorderColor()
     return self._border_color
 end
@@ -391,7 +391,7 @@ end
 
 --- Retorna a cor da sombra.
 --- @nodiscard
---- @return [number, number, number, number?] color Cor da sombra.
+--- @return number[] color Cor da sombra.
 function StyleBoxFlat:getShadowColor()
     return self._shadow_color
 end
