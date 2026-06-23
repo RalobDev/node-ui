@@ -290,7 +290,8 @@ function StyleBoxTexture:setColor(color)
     self._color = {
         color[1] or 1,
         color[2] or 1,
-        color[3] or 1
+        color[3] or 1,
+        color[4] or 1
     }
 
     if (

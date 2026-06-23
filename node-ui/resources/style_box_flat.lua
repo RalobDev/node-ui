@@ -90,7 +90,8 @@ function StyleBoxFlat:setFillColor(color)
     self._fill_color = {
         color[1] or 1,
         color[2] or 1,
-        color[3] or 1
+        color[3] or 1,
+        color[4] or 1
     }
 
     if (
@@ -173,7 +174,8 @@ function StyleBoxFlat:setBorderColor(color)
     self._border_color = {
         color[1] or 1,
         color[2] or 1,
-        color[3] or 1
+        color[3] or 1,
+        color[4] or 1
     }
 
     if (
@@ -234,7 +236,8 @@ function StyleBoxFlat:setShadowColor(color)
     self._shadow_color = {
         color[1] or 1,
         color[2] or 1,
-        color[3] or 1
+        color[3] or 1,
+        color[4] or 1
     }
 
     if (
