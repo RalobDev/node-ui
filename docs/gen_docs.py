@@ -236,6 +236,10 @@ def write_code_classes(code_classes: list[CodeClass]) -> None:
         path.mkdir()
 
     for code_class in code_classes:
+        # Pula a geração de pastas e arquivos se a classe for abstrata.
+        if code_class.is_abstract:
+            continue
+
         path: Path = None
         if code_class.type == CodeClassType.NODE: path = nodes_path
         elif code_class.type == CodeClassType.RESOURCE: path = resources_path
@@ -262,11 +266,15 @@ def write_code_class(code_class: CodeClass, path: Path) -> None:
         if not inheritances:
             return None
 
-        # Referencia cada herança.
-        for i in range(len(inheritances)):
-            inheritances[i] = create_link_reference(inheritances[i], to_snake(inheritances[i]))
+        formatted_inheritances = []
+        # Referencia cada herança, pulando classes abstratas que já estão em negrito.
+        for inheritance in inheritances:
+            if inheritance.startswith("**") and inheritance.endswith("**"):
+                formatted_inheritances.append(inheritance)
+            else:
+                formatted_inheritances.append(create_link_reference(inheritance, to_snake(inheritance)))
 
-        file.line(f"**{title}:** " + " **→** ".join(inheritances))
+        file.line(f"**{title}:** " + " **→** ".join(formatted_inheritances))
         file.blank()
 
     file: Markdown = Markdown(f"{path}/index.md")
