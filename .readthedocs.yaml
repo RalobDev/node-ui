@@ -8,7 +8,7 @@ build:
   tools:
     python: "3.12"
   jobs:
-    pre-build:
+    pre_build:
       - python docs/gen_docs.py
 
 python:
