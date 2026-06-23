@@ -216,13 +216,13 @@ function Control:_draw()
 
 	love.graphics.push("all")
 
-	-- Desenha o Control.
-	self:_onDraw()
-
 	-- Aplica o recorte de tela para área do Control.
 	if self._clip_content then
 		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 	end
+
+	-- Desenha o Control.
+	self:_onDraw()
 
 	-- Chama o desenho dos filhos do Control.
 	for _, child in ipairs(self._children) do
