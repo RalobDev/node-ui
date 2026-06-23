@@ -18,6 +18,9 @@ local ColorRect = Control:extend("ColorRect")
 --- @return NodeUI.ColorRect ColorRect Novo **ColorRect**.
 function ColorRect:new(x, y, width, height)
     local obj = Control.new(self, x, y, width, height) --- @cast obj NodeUI.ColorRect
+
+    obj._color = { 1, 1, 1, 1 }
+
     return obj
 end
 
