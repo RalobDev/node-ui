@@ -16,13 +16,15 @@ local CenterContainer = Container:extend("CenterContainer")
 --#region Public
 
 --- Cria um novo **CenterContainer**.
+--- @nodiscard
 --- @param x number 			                   Posição horizontal.
 --- @param y number 			                   Posição vertical.
 --- @param width number 		                   Comprimento em pixels.
 --- @param height number 		                   Altura em pixels.
+--- @param is_minimum? boolean                     Se a dimensão passada é a mínima.
 --- @return NodeUI.CenterContainer CenterContainer Novo **CenterContainer**.
-function CenterContainer:new(x, y, width, height)
-    local obj = Container.new(self, x, y, width, height) --- @cast obj NodeUI.CenterContainer
+function CenterContainer:new(x, y, width, height, is_minimum)
+    local obj = Container.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.CenterContainer
     return obj
 end
 

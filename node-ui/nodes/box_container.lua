@@ -9,16 +9,19 @@ local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 --- @field private _separation number
 local BoxContainer = Container:extend("BoxContainer")
 
+
 --#region Public
 
 --- Cria um novo **BoxContainer**.
+--- @nodiscard
 --- @param x number 			             Posição horizontal.
 --- @param y number 			             Posição vertical.
 --- @param width number 		             Comprimento em pixels.
 --- @param height number 		             Altura em pixels.
+--- @param is_minimum? boolean               Se a dimensão passada é a mínima.
 --- @return NodeUI.BoxContainer BoxContainer Novo **BoxContainer**.
-function BoxContainer:new(x, y, width, height)
-    local obj = Container.new(self, x, y, width, height) --- @cast obj NodeUI.BoxContainer
+function BoxContainer:new(x, y, width, height, is_minimum)
+    local obj = Container.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.BoxContainer
 
     obj._alignment = "BEGIN"
     obj._vertical = false

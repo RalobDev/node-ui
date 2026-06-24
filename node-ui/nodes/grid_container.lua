@@ -17,13 +17,15 @@ local GridContainer = Container:extend("GridContainer")
 --#region Public
 
 --- Cria um novo **GridContainer**.
+--- @nodiscard
 --- @param x number 			               Posição horizontal.
 --- @param y number 			               Posição vertical.
 --- @param width number 		               Comprimento em pixels.
 --- @param height number 		               Altura em pixels.
+--- @param is_minimum? boolean                 Se a dimensão passada é a mínima.
 --- @return NodeUI.GridContainer GridContainer Novo **GridContainer**.
-function GridContainer:new(x, y, width, height)
-    local obj = Container.new(self, x, y, width, height) --- @cast obj NodeUI.GridContainer
+function GridContainer:new(x, y, width, height, is_minimum)
+    local obj = Container.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.GridContainer
 
     obj._columns = 1
     obj._horizontal_separation = 8

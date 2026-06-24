@@ -17,13 +17,15 @@ local Container = Control:extend("Container")
 --#region Public
 
 --- Cria um novo **Container**.
+--- @nodiscard
 --- @param x number 			       Posição horizontal.
 --- @param y number 			       Posição vertical.
 --- @param width number 		       Comprimento em pixels.
 --- @param height number 		       Altura em pixels.
+--- @param is_minimum? boolean         Se a dimensão passada é a mínima.
 --- @return NodeUI.Container Container Novo **Container**.
-function Container:new(x, y, width, height)
-    local obj = Control.new(self, x, y, width, height) --- @cast obj NodeUI.Container
+function Container:new(x, y, width, height, is_minimum)
+    local obj = Control.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.Container
     return obj
 end
 
@@ -46,25 +48,6 @@ end
 --- @param owner table?                    Objeto dono do método.
 function Container:disconnect(signal, method, owner)
     Control.disconnect(self, signal, method, owner)
-end
-
---#endregion
-
-
---#region Override Setter
-
---- Define o comprimento do **Container**.
---- @param width number Novo comprimento.
-function Container:setWidth(width)
-    Control.setWidth(self, width)
-    self._width = math.max(width, self:_calculateMinimumWidth())
-end
-
---- Define a altura do **Container**.
---- @param height number Nova altura.
-function Container:setHeight(height)
-    Control.setHeight(self, height)
-    self._height = math.max(height, self:_calculateMinimumHeight())
 end
 
 --#endregion
@@ -94,18 +77,6 @@ function Container:_calculateMinimumHeight()
     return min_height
 end
 
---- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
---- @protected
-function Container:_updateLayout()
-    Control._updateLayout(self)
-
-    -- Atualiza as dimensões, pois ao atualizar o layout as dimensões mínimas podem ter sido alteradas pela
-    -- adição ou remoção de filhos.
-    self:setDimensions(self:getBaseDimensions())
-
-    self:_queueUpdateChildrenLayout()
-end
-
 --- Atualiza o layout dos filhos.
 --- @protected
 function Container:_updateChildrenLayout() end
@@ -130,6 +101,13 @@ function Container:_onUpdate(dt)
         self._queued_for_update_children_layout = false
         self:_updateChildrenLayout()
     end
+end
+
+--- Chamado durante a atualização do layout do **Control**.
+--- @protected
+function Container:_onUpdateLayout()
+    Control._onUpdateLayout(self)
+    self:_queueUpdateChildrenLayout()
 end
 
 --#endregion

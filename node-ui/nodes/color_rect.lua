@@ -11,13 +11,15 @@ local ColorRect = Control:extend("ColorRect")
 --#region Public
 
 --- Cria um novo **ColorRect**.
+--- @nodiscard
 --- @param x number 			       Posição horizontal.
 --- @param y number 			       Posição vertical.
 --- @param width number 		       Comprimento em pixels.
 --- @param height number 		       Altura em pixels.
+--- @param is_minimum? boolean         Se a dimensão passada é a mínima.
 --- @return NodeUI.ColorRect ColorRect Novo **ColorRect**.
-function ColorRect:new(x, y, width, height)
-    local obj = Control.new(self, x, y, width, height) --- @cast obj NodeUI.ColorRect
+function ColorRect:new(x, y, width, height, is_minimum)
+    local obj = Control.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.ColorRect
 
     obj._color = { 1, 1, 1, 1 }
 

@@ -43,12 +43,14 @@ local Control = Class:extend("Control")
 --#region Public
 
 --- Cria um novo **Control**.
+--- @nodiscard
 --- @param x number 			   Posição horizontal.
 --- @param y number 			   Posição vertical.
 --- @param width number 		   Comprimento em pixels.
 --- @param height number 		   Altura em pixels.
+--- @param is_minimum? boolean      Se a dimensão passada é a mínima.
 --- @return NodeUI.Control Control Novo Control.
-function Control:new(x, y, width, height)
+function Control:new(x, y, width, height, is_minimum)
 	local obj = Class.new(self) --- @cast obj NodeUI.Control
 
 	obj._children = {}
@@ -58,13 +60,13 @@ function Control:new(x, y, width, height)
 
 	obj._x = x
 	obj._y = y
-	obj._width = width
-	obj._height = height
+	obj._width = 0
+	obj._height = 0
 
 	obj._layout_x = x
 	obj._layout_y = y
-	obj._layout_width = width
-	obj._layout_height = height
+	obj._layout_width = 0
+	obj._layout_height = 0
 
 	obj._size_flags_horizontal = "FILL"
 	obj._size_flags_vertical = "FILL"
@@ -83,7 +85,11 @@ function Control:new(x, y, width, height)
 	obj:connect("MOUSE_MOVED", "_onMousemoved", obj)
 	obj:connect("WHEEL_MOVED", "_onWheelMoved", obj)
 
-	obj:_queueUpdateLayout()
+	obj:setMinimumDimensions(
+		is_minimum and width or 0,
+		is_minimum and height or 0
+	)
+	obj:setDimensions(width, height)
 
 	-- Adiciona o Control à raiz da UI, mas caso tenha um parente seja definido
 	-- posteriormente, será removido pelo módulo em NodeUI.process.
@@ -263,7 +269,7 @@ end
 --- @param width number Novo comprimento mínimo.
 function Control:setMinimumWidth(width)
 	self._minimum_width = math.max(0, width)
-	self:setWidth(self._width) -- [Correção] Usa _width em vez de getWidth() que puxava o layout atual
+	self:setWidth(self._width)
 	self:_queueUpdateLayout()
 end
 
@@ -271,7 +277,7 @@ end
 --- @param height number Nova altura mínima.
 function Control:setMinimumHeight(height)
 	self._minimum_height = math.max(0, height)
-	self:setHeight(self._height) -- [Correção] Usa _height em vez de getHeight()
+	self:setHeight(self._height)
 	self:_queueUpdateLayout()
 end
 
@@ -286,14 +292,14 @@ end
 --- Define o comprimento do **Control**.
 --- @param width number Novo comprimento.
 function Control:setWidth(width)
-	self._width = math.max(width, self._minimum_width)
+	self._width = math.max(width, self:getMinimumWidth())
 	self:_queueUpdateLayout()
 end
 
 --- Define a altura do **Control**.
 --- @param height number Nova altura.
 function Control:setHeight(height)
-	self._height = math.max(height, self._minimum_height)
+	self._height = math.max(height, self:getMinimumHeight())
 	self:_queueUpdateLayout()
 end
 
@@ -511,43 +517,6 @@ end
 
 --#region Protected
 
---- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
---- @protected
-function Control:_updateLayout()
-	if not self._visible then
-		return
-	end
-
-	do
-		local parent = self._parent
-
-		if parent and type(parent.is) == "function" and parent:is("Container") then
-			-- Se o Control tem suas propriedades base alteradas e é filho de um Container,
-			-- ele avisa o Container para reorganizar o layout geral.
-			--- @cast parent NodeUI.Container
-
-			--- @diagnostic disable-next-line: invisible
-			parent:_queueUpdateChildrenLayout()
-
-			-- Interrompe a cascata aqui. O próprio Container atualizará os filhos quando processar o layout.
-			return
-		end
-	end
-
-	local old_x, old_y = self._layout_x, self._layout_y
-	local old_width, old_height = self._layout_width, self._layout_height
-
-	-- Atualiza o layout do Control livremente.
-	self:_onUpdateLayout()
-
-	-- Só propaga a atualização de layout para os filhos se a geometria final realmente mudou
-	if old_x ~= self._layout_x or old_y ~= self._layout_y or old_width ~= self._layout_width or old_height ~= self._layout_height then
-		for _, child in ipairs(self._children) do
-			child:_queueUpdateLayout()
-		end
-	end
-end
-
 --- Marca para atualizar o layout do **Control** no próximo `love.update()`.
 --- @protected
 function Control:_queueUpdateLayout()
@@ -654,8 +623,8 @@ function Control:_onUpdateLayout()
 
 	local x = self._x
 	local y = self._y
-	local width = self._width
-	local height = self._height
+	local width = math.max(self._width, self:getMinimumWidth())
+	local height = math.max(self._height, self:getMinimumHeight())
 
 	local layout = self._layout
 	local layout_x, layout_y = x, y
@@ -753,23 +722,23 @@ function Control:_onUpdateLayout()
 		layout_width = base_width
 		layout_height = height
 	elseif layout == "HEXPAND" then
-		layout_x = x
-		layout_y = y
+		layout_x = begin_x + x
+		layout_y = begin_y + y
 
-		layout_width = end_x - x
+		layout_width = end_x - layout_x
 		layout_height = height
 	elseif layout == "VEXPAND" then
-		layout_x = x
-		layout_y = y
+		layout_x = begin_x + x
+		layout_y = begin_y + y
 
 		layout_width = width
-		layout_height = end_y - y
+		layout_height = end_y - layout_y
 	elseif layout == "EXPAND" then
-		layout_x = x
-		layout_y = y
+		layout_x = begin_x + x
+		layout_y = begin_y + y
 
-		layout_width = end_x - x
-		layout_height = end_y - y
+		layout_width = end_x - layout_x
+		layout_height = end_y - layout_y
 	elseif layout == "FULL_RECT" then
 		layout_x = begin_x
 		layout_y = begin_y
@@ -825,6 +794,43 @@ function Control:_drawDebug()
 	end
 
 	love.graphics.pop()
+end
+
+--- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.
+--- @private
+function Control:_updateLayout()
+	if not self._visible then
+		return
+	end
+
+	do
+		local parent = self._parent
+
+		if parent and type(parent.is) == "function" and parent:is("Container") then
+			-- Se o Control tem suas propriedades base alteradas e é filho de um Container,
+			-- ele avisa o Container para reorganizar o layout geral.
+			--- @cast parent NodeUI.Container
+
+			--- @diagnostic disable-next-line: invisible
+			parent:_queueUpdateChildrenLayout()
+
+			-- Interrompe a cascata aqui. O próprio Container atualizará os filhos quando processar o layout.
+			return
+		end
+	end
+
+	local old_x, old_y = self._layout_x, self._layout_y
+	local old_width, old_height = self._layout_width, self._layout_height
+
+	-- Atualiza o layout do Control livremente.
+	self:_onUpdateLayout()
+
+	-- Só propaga a atualização de layout para os filhos se a geometria final realmente mudou
+	if old_x ~= self._layout_x or old_y ~= self._layout_y or old_width ~= self._layout_width or old_height ~= self._layout_height then
+		for _, child in ipairs(self._children) do
+			child:_queueUpdateLayout()
+		end
+	end
 end
 
 --#endregion
