@@ -40,6 +40,14 @@ function Resource:connect(signal, method, owner)
     self._signal:connect(signal, method, owner)
 end
 
+--- Remove a conexão de um **`NodeUI.Resource.Signals`** do **Resource**.
+--- @param signal NodeUI.Control.Signals Nome do sinal.
+--- @param method string|function        Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                  Objeto dono do método.
+function Resource:disconnect(signal, method, owner)
+    self._signal:disconnect(signal, method, owner)
+end
+
 --#endregion
 
 
