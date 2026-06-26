@@ -513,6 +513,13 @@ function TextBlock:_onMousepressed(x, y, button, istouch, presses)
     end
 end
 
+--- Chamado durante a atualização do layout do **Control**.
+--- @protected
+function TextBlock:_onUpdateLayout()
+    Control._onUpdateLayout(self)
+    self:_queueParseText()
+end
+
 --#endregion
 
 
