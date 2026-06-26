@@ -14,7 +14,7 @@ local Signal = require(ROOT .. ".resources.signal") --- @type NodeUI.Signal
 --- A classe permite posicionar e dimensionar controles em relação ao seu pai ou à área base da interface. Além disso,
 --- gerencia visibilidade, foco do mouse, renderização, atualização, clipping de conteúdo e propagação de eventos de entrada.
 --- @class NodeUI.Control: Class
---- @field private _node_ui NodeUI
+--- @field protected _node_ui NodeUI
 --- @field private _queued_for_deletion boolean
 --- @field private _queued_for_update_layout boolean
 --- @field private _parent? NodeUI.Control
