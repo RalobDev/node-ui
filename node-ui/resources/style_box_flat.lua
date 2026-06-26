@@ -1,6 +1,6 @@
 local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$") --- @type string
 
-print(ROOT)
+
 
 local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleBox
 
