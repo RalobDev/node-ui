@@ -246,15 +246,25 @@ end
 --- Define a posição horizontal do **Control**
 --- @param value number Nova posição x.
 function Control:setX(value)
+	local old = self._x
+
 	self._x = value
-	self:_queueUpdateLayout()
+
+	if self._x ~= old then
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a posição vertical do **Control**
 --- @param value number Nova posição y.
 function Control:setY(value)
+	local old = self._y
+
 	self._y = value
-	self:_queueUpdateLayout()
+
+	if self._y ~= old then
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a posição do **Control**
@@ -268,17 +278,27 @@ end
 --- Define o comprimento mínimo do **Control**.
 --- @param width number Novo comprimento mínimo.
 function Control:setMinimumWidth(width)
+	local old = self._minimum_width
+
 	self._minimum_width = math.max(0, width)
-	self:setWidth(self._width)
-	self:_queueUpdateLayout()
+
+	if self._minimum_width ~= old then
+		self:setWidth(self._width)
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a altura mínima do **Control**.
 --- @param height number Nova altura mínima.
 function Control:setMinimumHeight(height)
+	local old = self._minimum_height
+
 	self._minimum_height = math.max(0, height)
-	self:setHeight(self._height)
-	self:_queueUpdateLayout()
+
+	if self._minimum_height ~= old then
+		self:setHeight(self._height)
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a dimensão mínima do **Control**.
@@ -292,15 +312,25 @@ end
 --- Define o comprimento do **Control**.
 --- @param width number Novo comprimento.
 function Control:setWidth(width)
+	local old = self._width
+
 	self._width = math.max(width, self:getMinimumWidth())
-	self:_queueUpdateLayout()
+
+	if self._width ~= old then
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a altura do **Control**.
 --- @param height number Nova altura.
 function Control:setHeight(height)
+	local old = self._height
+
 	self._height = math.max(height, self:getMinimumHeight())
-	self:_queueUpdateLayout()
+
+	if self._height ~= old then
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a dimensão do **Control**.
@@ -314,30 +344,35 @@ end
 --- Define o **`NodeUI.Control.Layout`** do **Control**.
 --- @param layout NodeUI.Control.Layout Novo layout.
 function Control:setLayout(layout)
+	local old = self._layout
+
 	self._layout = layout
-	self:_queueUpdateLayout()
+
+	if self._layout ~= old then
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define a visibilidade do **Control**. Por padrão ativa a visibilidade.
 --- @param enabled? boolean Se `true`, ativa a visibilidade.
 function Control:setVisible(enabled)
-	enabled = type(enabled) == "nil" and true or enabled
+	enabled = enabled == nil and true or enabled
 	--- @cast enabled boolean
 
-	if self._visible == enabled then
-		return
-	end
+	local old = self._visible
 
 	self._visible = enabled
+
+	if old == false and self._visible then
+		self:_queueUpdateLayout()
+	end
 end
 
 --- Define o recorte de conteúdo do **Control**. Se `true`, clipa o desenho dos filhos à área do **Control**.
 --- Por padrão ativa o recorte de conteúdo.
 --- @param enabled? boolean
 function Control:setClipContent(enabled)
-	if enabled == nil then
-		enabled = true
-	end
+	enabled = enabled == nil and true or enabled
 	--- @cast enabled boolean
 
 	self._clip_content = enabled
@@ -354,8 +389,14 @@ end
 --- @param axis NodeUI.Control.Axis Eixo da size flags.
 --- @param size_flags NodeUI.Control.SizeFlags Size flags aplicada ao `axis`.
 function Control:setSizeFlags(axis, size_flags)
-	self["_size_flags_" .. axis:lower()] = size_flags
-	self:_queueUpdateLayout()
+	local size_flags_key = "_size_flags_" .. axis:lower()
+	local old = self[size_flags_key]
+
+	self[size_flags_key] = size_flags
+
+	if self[size_flags_key] ~= old then
+		self:_queueUpdateLayout()
+	end
 end
 
 --#endregion

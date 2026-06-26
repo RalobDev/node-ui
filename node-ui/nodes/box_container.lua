@@ -59,8 +59,13 @@ end
 --- Define o **`NodeUI.Control.AlignmentMode`** aplicado aos filhos.
 --- @param alignment NodeUI.Control.AlignmentMode Alinhamento dos filhos.
 function BoxContainer:setAlignment(alignment)
+    local old = self._alignment
+
     self._alignment = alignment
-    self:_queueUpdateChildrenLayout()
+
+    if self._alignment ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define se a organização dos filhos é vertical ou não. Por padrão `enabled` é `true`.
@@ -70,15 +75,25 @@ function BoxContainer:setVertical(enabled)
         enabled = true
     end
 
+    local old = self._vertical
+
     self._vertical = enabled
-    self:_queueUpdateChildrenLayout()
+
+    if self._vertical ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define a separação entre os filhos.
 --- @param separation number Separação em pixels.
 function BoxContainer:setSeparation(separation)
+    local old = self._separation
+
     self._separation = math.max(0, separation)
-    self:_queueUpdateChildrenLayout()
+
+    if self._separation ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --#endregion

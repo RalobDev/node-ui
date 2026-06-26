@@ -62,8 +62,14 @@ end
 --- @param side NodeUI.Control.Side Lado da margem.
 --- @param margin number Margem do lado.
 function MarginContainer:setMargin(side, margin)
-    self["_margin_" .. side:lower()] = margin
-    self:_updateChildrenLayout()
+    local margin_key = "_margin_" .. side:lower()
+    local old = self[margin_key]
+
+    self[margin_key] = margin
+
+    if self[margin_key] ~= old then
+        self:_updateChildrenLayout()
+    end
 end
 
 --#endregion

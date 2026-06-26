@@ -71,8 +71,13 @@ end
 --- Define o **`NodeUI.AspectRatioContainer.StretchMode`**, que é a maneira como os filhos são escalonados.
 --- @param stretch_mode NodeUI.AspectRatioContainer.StretchMode Modo de escalonamento.
 function AspectRatioContainer:setStretchMode(stretch_mode)
+    local old = self._stretch_mode
+
     self._stretch_mode = stretch_mode
-    self:_queueUpdateChildrenLayout()
+
+    if self._stretch_mode ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define o **`NodeUI.Control.AlignmentMode`** aplicado aos filhos.
@@ -80,8 +85,13 @@ end
 --- @param alignment_mode NodeUI.Control.AlignmentMode Modo de alinhamento.
 function AspectRatioContainer:setAlignmentMode(axis, alignment_mode)
     local alignment_axis = "_" .. axis:lower() .. "_alignment_mode"
+    local old = self[alignment_axis]
+
     self[alignment_axis] = alignment_mode
-    self:_queueUpdateChildrenLayout()
+
+    if self[alignment_axis] ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --#endregion

@@ -68,34 +68,54 @@ end
 --- Define o **`NodeUI.Control.AlignmentMode`** dos filhos.
 --- @param alignment NodeUI.Control.AlignmentMode Alinhamento dos filhos.
 function FlowContainer:setAlignment(alignment)
+    local old = self._alignment
+
     self._alignment = alignment
-    self:_queueUpdateChildrenLayout()
+
+    if self._alignment ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define se a organização dos filhos é vertical ou não. Por padrão `enabled` é `true`.
 --- @param enabled? boolean Se é para organizar verticalmente.
 function FlowContainer:setVertical(enabled)
-    if enabled == nil then
-        enabled = true
-    end
+    enabled = enabled == nil and true or false
+
+    local old = self._vertical
 
     self._vertical = enabled
-    self:_queueUpdateChildrenLayout()
+
+    if self._vertical ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define o **`NodeUI.FlowContainer.LastWrapAlignmentMode`** dos filhos da última linha ou coluna.
 --- @param alignment NodeUI.FlowContainer.LastWrapAlignmentMode Alinhamento dos filhos.
 function FlowContainer:setLastWrapAlignment(alignment)
+    local old = self._last_wrap_alignment
+
     self._last_wrap_alignment = alignment
-    self:_queueUpdateChildrenLayout()
+
+    if self._last_wrap_alignment ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define a separação entre os filhos.
 --- @param axis NodeUI.Control.Axis Eixo da separação.
 --- @param separation number Separação em pixels.
 function FlowContainer:setSeparation(axis, separation)
-    self[string.format("_%s_separation", axis:lower())] = math.max(0, separation)
-    self:_queueUpdateChildrenLayout()
+    local separation_key = string.format("_%s_separation", axis:lower())
+
+    local old = self[separation_key]
+
+    self[separation_key] = math.max(0, separation)
+
+    if self[separation_key] ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --#endregion

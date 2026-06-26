@@ -62,8 +62,13 @@ function CenterContainer:setUseTopLeft(enabled)
         enabled = true
     end
 
+    local old = self._use_top_left
+
     self._use_top_left = enabled
-    self:_queueUpdateChildrenLayout()
+
+    if self._use_top_left ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --#endregion

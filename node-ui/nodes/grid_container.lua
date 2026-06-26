@@ -63,16 +63,27 @@ end
 --- Define a quantidade de colunas do grid.
 --- @param columns number Quantidade de colunas.
 function GridContainer:setColumns(columns)
+    local old = self._columns
+
     self._columns = math.max(columns, 1)
-    self:_queueUpdateChildrenLayout()
+
+    if self._columns ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --- Define a separação entre os filhos.
 --- @param axis NodeUI.Control.Axis Eixo da separação.
 --- @param separation number Separação em pixels.
 function GridContainer:setSeparation(axis, separation)
-    self[string.format("_%s_separation", axis:lower())] = math.max(0, separation)
-    self:_queueUpdateChildrenLayout()
+    local separation_key = string.format("_%s_separation", axis:lower())
+    local old = self[separation_key]
+
+    self[separation_key] = math.max(0, separation)
+
+    if self[separation_key] ~= old then
+        self:_queueUpdateChildrenLayout()
+    end
 end
 
 --#endregion
