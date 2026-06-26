@@ -220,7 +220,7 @@ function Control:_draw()
 		return
 	end
 
-	love.graphics.push("all")
+	local prev_scissor_x, prev_scissor_y, prev_scissor_w, prev_scissor_h = love.graphics.getScissor()
 
 	-- Aplica o recorte de tela para área do Control.
 	if self._clip_content then
@@ -235,7 +235,7 @@ function Control:_draw()
 		child:_draw()
 	end
 
-	love.graphics.pop()
+	love.graphics.setScissor(prev_scissor_x, prev_scissor_y, prev_scissor_w, prev_scissor_h)
 end
 
 --#endregion
@@ -811,13 +811,13 @@ function Control:_drawDebug()
 		return
 	end
 
-	love.graphics.push("all")
-
+	local r, g, b, a = love.graphics.getColor()
 	love.graphics.setColor(self:hasMouseFocus() and { 1, 1, 0 } or { 0, 1, 0 })
 
 	self:_onDrawDebug()
 
 	-- Aplica o recorte de tela para área do Control.
+	local prev_scissor_x, prev_scissor_y, prev_scissor_w, prev_scissor_h = love.graphics.getScissor()
 	if self._clip_content then
 		love.graphics.setScissor(self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 	end
@@ -826,7 +826,8 @@ function Control:_drawDebug()
 		child:_drawDebug()
 	end
 
-	love.graphics.pop()
+	love.graphics.setScissor(prev_scissor_x, prev_scissor_y, prev_scissor_w, prev_scissor_h)
+	love.graphics.setColor(r, g, b, a)
 end
 
 --- Atualiza a posição e dimensões do **Control** de acordo com suas âncoras e offsets.

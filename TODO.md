@@ -2,4 +2,4 @@
 - [ ] Adicionar suporte à scroll no TextBlock.
 - [x] Adicionar checagem de old em setters críticos.
 - [x] Remover o método de emissão dos nós e recursos e deixar o sinal protegido ao invés de privado.
-- [ ] Substituir todos os `love.graphics.push("all")` por armazenar o estado gráfico (mais eficiente em muitas draw calls).
+- [x] Substituir todos os `love.graphics.push("all")` por armazenar o estado gráfico (mais eficiente em muitas draw calls).

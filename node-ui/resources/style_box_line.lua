@@ -323,7 +323,8 @@ function StyleBoxLine:_onDraw(x, y, width, height)
         end_y = begin_y
     end
 
-    love.graphics.push("all")
+    local r, g, b, a = love.graphics.getColor()
+    local prev_line_width = love.graphics.getLineWidth()
 
     love.graphics.setColor(self._color)
     love.graphics.setLineWidth(self._thickness)
@@ -357,7 +358,8 @@ function StyleBoxLine:_onDraw(x, y, width, height)
         end
     end
 
-    love.graphics.pop()
+    love.graphics.setLineWidth(prev_line_width)
+    love.graphics.setColor(r, g, b, a)
 end
 
 --#endregion

@@ -470,7 +470,9 @@ function TextBlock:_onDraw()
 
     love.graphics.setCanvas(default_canvas)
 
-    love.graphics.push("all")
+    local r, g, b, a = love.graphics.getColor()
+    local prev_shader = love.graphics.getShader()
+
     love.graphics.setColor(self._text_settings:getFontColor())
     love.graphics.setShader(OUTLINE_SHADOW_COLOR)
 
@@ -485,7 +487,8 @@ function TextBlock:_onDraw()
 
     love.graphics.draw(self._text_canvas, self:_getTextCanvasPosition())
 
-    love.graphics.pop()
+    love.graphics.setShader(prev_shader)
+    love.graphics.setColor(r, g, b, a)
 end
 
 --- Chamado quando um botão do mouse é pressionado.
