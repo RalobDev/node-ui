@@ -51,17 +51,4 @@ end
 --#endregion
 
 
---#region Protected
-
---- Emite o `signal`, chamando todos os seus métodos.
---- @protected
---- @param signal NodeUI.Resource.Signals Nome do sinal.
---- @param ... any Retornos do sinal.
-function Resource:_emit(signal, ...)
-    self._signal:emit(signal, ...)
-end
-
---#endregion
-
-
 return Resource

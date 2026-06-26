@@ -160,7 +160,7 @@ local function setControlMouseFocus(control, enabled)
     local has_focus = control_mouse_focus == control
 
     if had_focus ~= has_focus then
-        control:_emit("MOUSE_FOCUS_CHANGED", has_focus) --- @diagnostic disable-line: invisible
+        control._signal:emit("MOUSE_FOCUS_CHANGED", has_focus) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -335,7 +335,7 @@ end
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousepressed(x, y, button, istouch, presses)
     if control_mouse_focus then
-        control_mouse_focus:_emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+        control_mouse_focus._signal:emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
         control_mouse_pressed = control_mouse_focus
     end
 end
@@ -348,7 +348,7 @@ end
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousereleased(x, y, button, istouch, presses)
     if control_mouse_pressed then
-        control_mouse_pressed:_emit("MOUSE_RELEASED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+        control_mouse_pressed._signal:emit("MOUSE_RELEASED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -360,7 +360,7 @@ end
 --- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
 function NodeUI.mousemoved(x, y, dx, dy, istouch)
     if control_mouse_focus then
-        control_mouse_focus:_emit("MOUSE_MOVED", x, y, dx, dy, istouch) --- @diagnostic disable-line: invisible
+        control_mouse_focus._signal:emit("MOUSE_MOVED", x, y, dx, dy, istouch) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -369,7 +369,7 @@ end
 --- @param y number Quanto se moveu ao longo do eixo-y.
 function NodeUI.wheelmoved(x, y)
     if control_mouse_focus then
-        control_mouse_focus:_emit("WHEEL_MOVED", x, y) --- @diagnostic disable-line: invisible
+        control_mouse_focus._signal:emit("WHEEL_MOVED", x, y) --- @diagnostic disable-line: invisible
     end
 end
 

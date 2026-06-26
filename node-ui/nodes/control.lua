@@ -34,7 +34,7 @@ local Signal = require(ROOT .. ".resources.signal") --- @type NodeUI.Signal
 --- @field private _layout NodeUI.Control.Layout
 --- @field private _visible boolean
 --- @field private _mouse_filter NodeUI.Control.MouseFilter
---- @field private _signal NodeUI.Signal
+--- @field protected _signal NodeUI.Signal
 --- @field private _is_internal_child boolean
 --- @field private _clip_content boolean
 local Control = Class:extend("Control")
@@ -562,14 +562,6 @@ end
 --- @protected
 function Control:_queueUpdateLayout()
 	self._queued_for_update_layout = true
-end
-
---- Emite o `signal`, chamando todos os seus métodos.
---- @protected
---- @param signal NodeUI.Control.Signals Nome do sinal.
---- @param ... any Retornos do sinal.
-function Control:_emit(signal, ...)
-	self._signal:emit(signal, ...)
 end
 
 --#endregion

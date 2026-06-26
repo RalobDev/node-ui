@@ -102,7 +102,7 @@ function StyleBoxFlat:setFillColor(color)
             or self._fill_color[3] ~= old[3]
             or self._fill_color[4] ~= old[4]
         ) then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -114,7 +114,7 @@ function StyleBoxFlat:setDrawCenter(enabled)
     self._draw_center = enabled
 
     if self._draw_center ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -126,7 +126,7 @@ function StyleBoxFlat:setSkewX(x)
     self._skew_x = x
 
     if self._skew_x ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -138,7 +138,7 @@ function StyleBoxFlat:setSkewX(y)
     self._skew_y = y
 
     if self._skew_y ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -152,7 +152,7 @@ function StyleBoxFlat:setSkew(x, y)
     self._skew_y = y
 
     if old_x ~= self._skew_x or old_y ~= self._skew_y then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -164,7 +164,7 @@ function StyleBoxFlat:setBorderSize(size)
     self._border_size = math.max(size, 0)
 
     if self._border_size ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -186,7 +186,7 @@ function StyleBoxFlat:setBorderColor(color)
             or self._border_color[3] ~= old[3]
             or self._border_color[4] ~= old[4]
         ) then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -198,7 +198,7 @@ function StyleBoxFlat:setBorderBlend(enabled)
     self._border_blend = enabled
 
     if self._border_blend ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -212,7 +212,7 @@ function StyleBoxFlat:setCornerRadius(corner, radius)
     self[corner_key] = math.max(radius, 0)
 
     if self[corner_key] ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -226,7 +226,7 @@ function StyleBoxFlat:setExpandMargin(side, expand)
     self[margin_key] = math.max(expand, 0)
 
     if self[margin_key] ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -248,7 +248,7 @@ function StyleBoxFlat:setShadowColor(color)
             or self._shadow_color[3] ~= old[3]
             or self._shadow_color[4] ~= old[4]
         ) then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -260,7 +260,7 @@ function StyleBoxFlat:setShadowSize(size)
     self._shadow_size = math.max(size, 0)
 
     if self._shadow_size ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -272,7 +272,7 @@ function StyleBoxFlat:setShadowBlur(blur)
     self._shadow_blur = math.max(blur, 0)
 
     if self._shadow_blur ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -284,7 +284,7 @@ function StyleBoxFlat:setShadowOffsetX(x)
     self._shadow_offset_x = x
 
     if self._shadow_offset_x ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -295,7 +295,7 @@ function StyleBoxFlat:setShadowOffsetY(y)
     self._shadow_offset_y = y
 
     if self._shadow_offset_y ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -309,7 +309,7 @@ function StyleBoxFlat:setShadowOffset(x, y)
     self._shadow_offset_y = y
 
     if self._shadow_offset_x ~= old_x or self._shadow_offset_y ~= old_y then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 

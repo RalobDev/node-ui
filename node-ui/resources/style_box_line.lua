@@ -147,7 +147,7 @@ function StyleBoxLine:setColor(color)
             or self._color[3] ~= old[3]
             or self._color[4] ~= old[4]
         ) then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -159,7 +159,7 @@ function StyleBoxLine:setGrowBegin(grow)
     self._grow_begin = grow
 
     if self._grow_begin ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -171,7 +171,7 @@ function StyleBoxLine:setGrowEnd(grow)
     self._grow_end = grow
 
     if self._grow_end ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -183,7 +183,7 @@ function StyleBoxLine:setThickness(thickness)
     self._thickness = math.max(thickness, 0)
 
     if self._thickness ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -195,7 +195,7 @@ function StyleBoxLine:setEdge(side)
     self._side = side
 
     if self._side ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -207,7 +207,7 @@ function StyleBoxLine:setCapBegin(cap)
     self._cap_begin = cap
 
     if self._cap_begin ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -219,7 +219,7 @@ function StyleBoxLine:setCapEnd(cap)
     self._cap_end = cap
 
     if self._cap_end ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 

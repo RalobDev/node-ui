@@ -161,7 +161,7 @@ function StyleBoxTexture:setTexture(texture)
     self._texture = texture
 
     if self._texture ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -175,7 +175,7 @@ function StyleBoxTexture:setTextureMargin(side, margin)
     self[margin_key] = math.max(margin, 0)
 
     if self[margin_key] ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -189,7 +189,7 @@ function StyleBoxTexture:setExpandMargin(side, expand)
     self[expand_key] = math.max(expand, 0)
 
     if self[expand_key] ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -204,7 +204,7 @@ function StyleBoxTexture:setStretch(axis, stretch)
     self[stretch_key] = stretch
 
     if self[stretch_key] ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -216,7 +216,7 @@ function StyleBoxTexture:setSubRegionX(x)
     self._sub_region_x = x
 
     if self._sub_region_x ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -228,7 +228,7 @@ function StyleBoxTexture:setSubRegionY(y)
     self._sub_region_y = y
 
     if self._sub_region_y ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -241,7 +241,7 @@ function StyleBoxTexture:setSubRegionPosition(x, y)
     self._sub_region_x, self._sub_region_y = x, y
 
     if self._sub_region_x ~= old_x or self._sub_region_y ~= old_y then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -253,7 +253,7 @@ function StyleBoxTexture:setSubRegionWidth(width)
     self._sub_region_width = width
 
     if self._sub_region_width ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -265,7 +265,7 @@ function StyleBoxTexture:setSubRegionHeight(height)
     self._sub_region_height = height
 
     if self._sub_region_height ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -278,7 +278,7 @@ function StyleBoxTexture:setSubRegionDimensions(width, height)
     self._sub_region_width, self._sub_region_height = width, height
 
     if self._sub_region_width ~= old_width or self._sub_region_height ~= old_height then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -300,7 +300,7 @@ function StyleBoxTexture:setColor(color)
             or self._color[3] ~= old[3]
             or self._color[4] ~= old[4]
         ) then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
@@ -312,7 +312,7 @@ function StyleBoxTexture:setDrawCenter(enabled)
     self._draw_center = enabled
 
     if self._draw_center ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 

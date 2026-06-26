@@ -236,7 +236,7 @@ function TextSettings:setLineSeparation(separation)
     self._line_separation = separation
 
     if self._line_separation ~= old then
-        self:_emit("CHANGED")
+        self._signal:emit("CHANGED")
     end
 end
 
