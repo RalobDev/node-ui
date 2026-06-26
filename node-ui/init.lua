@@ -1,5 +1,9 @@
 local ROOT = ... --- @type string
 
+if ROOT:match("%.([^%.]*)$") == "init" then
+    error('Cannot load the library using "init.lua". Please require the library from the "node-ui" directory instead.', 2)
+end
+
 --- O **NodeUI** é o módulo principal da biblioteca, responsável por gerenciar os controles da interface, processar eventos de entrada e
 --- coordenar a atualização e renderização da UI.
 ---
@@ -93,7 +97,7 @@ end
 --- Carrega todos os nós da biblioteca.
 --- @param dir? string Caminho do diretório e subdiretórios com todos os nós.
 local function requireNodes(dir)
-    dir = dir or ROOT .. "/nodes/"
+    dir = dir or ROOT:gsub("%.", "/") .. "/nodes/"
 
     for _, file in ipairs(getFilesAt(dir)) do
         local node_name = toClassName(file)

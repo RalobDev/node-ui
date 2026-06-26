@@ -1,4 +1,6 @@
-local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")         --- @type string
+local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$") --- @type string
+
+print(ROOT)
 
 local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleBox
 
@@ -26,7 +28,7 @@ local StyleBox = require(ROOT .. ".resources.style_box") --- @type NodeUI.StyleB
 --- @field private _shadow_offset_y number
 local StyleBoxFlat = StyleBox:extend("StyleBoxFlat")
 
-local rectangle_shader = love.graphics.newShader(ROOT .. "/shaders/rectangle_shader.glsl")
+local rectangle_shader = love.graphics.newShader(ROOT:gsub("%.", "/") .. "/shaders/rectangle_shader.glsl")
 
 
 --#region Local

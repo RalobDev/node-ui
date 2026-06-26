@@ -25,7 +25,9 @@ local utf8 = require("utf8")
 local TextBlock = Control:extend("TextBlock")
 
 
-local OUTLINE_SHADOW_COLOR = love.graphics.newShader(ROOT:match("(.+)%.") .. "/shaders/outline_shadow.glsl")
+local OUTLINE_SHADOW_COLOR = love.graphics.newShader(
+    ROOT:match("(.+)%."):gsub("%.", "/") .. "/shaders/outline_shadow.glsl"
+)
 
 
 --#region Public
