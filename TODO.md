@@ -1,0 +1,5 @@
+- [ ] Criar ScrollContainer;
+- [ ] Adicionar suporte à scroll no TextBlock.
+- [ ] Adicionar checagem de old em setters críticos.
+- [ ] Remover o método de emissão dos nós e recursos e deixar o sinal protegido ao invés de privado.
+- [ ] Substituir todos os `love.graphics.push("all")` por armazenar o estado gráfico (mais eficiente em muitas draw calls).
