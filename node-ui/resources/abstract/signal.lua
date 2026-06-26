@@ -1,6 +1,6 @@
-local ROOT = (...):match("^(.*)%.%w+%.%w+$") --- @type string
+local ROOT = (...):match("^(.*)%."):match("^(.*)%."):match("^(.*)%.") --- @type string
 
-local Class = require(ROOT .. ".class")      --- @type Class
+local Class = require(ROOT .. ".class")                               --- @type Class
 
 --- @class NodeUI.Signal: Class
 --- @field private _signal_connections table<string, NodeUI.Signal.Connection>

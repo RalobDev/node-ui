@@ -1,7 +1,7 @@
-local ROOT = (...):match("^(.*)%.")                                               --- @type string
+local ROOT = (...):match("^(.*)%.")                                                         --- @type string
 
-local Control = require(ROOT .. ".control")                                       --- @type NodeUI.Control
-local StyleBoxFlat = require(ROOT:match("(.+)%.") .. ".resources.style_box_flat") --- @type NodeUI.StyleBox
+local Control = require(ROOT .. ".control")                                                 --- @type NodeUI.Control
+local StyleBoxFlat = require(ROOT:match("(.+)%.") .. ".resources.style-box.style_box_flat") --- @type NodeUI.StyleBox
 
 --- Um **`Control`** que exibe uma **`StyleBox`**.
 --- @class NodeUI.Panel: NodeUI.Control

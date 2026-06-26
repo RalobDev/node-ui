@@ -1,6 +1,6 @@
-local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")        --- @type string
+local ROOT = (...):match("^(.*)%.[^.]+%.[^.]+$")                 --- @type string
 
-local Resource = require(ROOT .. ".resources.resource") --- @type NodeUI.Resource
+local Resource = require(ROOT .. ".resources.abstract.resource") --- @type NodeUI.Resource
 
 --- Representa as configurações de texto de um **`NodeUI.TextBlock`**.
 --- @class NodeUI.TextSettings: NodeUI.Resource

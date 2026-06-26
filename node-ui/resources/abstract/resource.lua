@@ -1,7 +1,7 @@
-local ROOT = (...):match("^(.*)%.%w+%.%w+$") --- @type string
+local ROOT = (...):match("^(.*)%."):match("^(.*)%."):match("^(.*)%.") --- @type string
 
-local Class = require(ROOT .. ".class")      --- @type Class
-local Signal = require(ROOT .. ".resources.signal")
+local Class = require(ROOT .. ".class")                               --- @type Class
+local Signal = require(ROOT .. ".resources.abstract.signal")
 
 --- Classe base para todos os recursos dos nós.
 ---

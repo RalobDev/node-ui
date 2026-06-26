@@ -1,6 +1,6 @@
-local ROOT = (...):match("^(.*)%.")         --- @type string
+local ROOT = (...):match("^(.*)%.")                         --- @type string
 
-local Control = require(ROOT .. ".control") --- @type NodeUI.Control
+local Control = require(ROOT:match("(.+)%.") .. ".control") --- @type NodeUI.Control
 
 --- **Container** é um tipo de **`Control`** responsável por agrupar outros nós e gerenciar
 --- o layout e atualização dos seus filhos dentro da hierarquia do **`NodeUI`**.

@@ -78,7 +78,7 @@ local function getFilesAt(dir)
     local files = {} --- @type string[]
 
     for _, path in ipairs(love.filesystem.getDirectoryItems(dir)) do
-        local full_path = dir .. path
+        local full_path = dir .. "/" .. path
         local info = love.filesystem.getInfo(full_path)
         local type = info and info.type or ""
 
@@ -97,7 +97,7 @@ end
 --- Carrega todos os nós da biblioteca.
 --- @param dir? string Caminho do diretório e subdiretórios com todos os nós.
 local function requireNodes(dir)
-    dir = dir or ROOT:gsub("%.", "/") .. "/nodes/"
+    dir = dir or ROOT:gsub("%.", "/") .. "/nodes"
 
     for _, file in ipairs(getFilesAt(dir)) do
         local node_name = toClassName(file)
@@ -110,7 +110,7 @@ end
 --- Carrega todos os recursos da biblioteca.
 --- @param dir? string Caminho do diretório e subdiretórios com todos os recursos.
 local function requireResources(dir)
-    dir = dir or ROOT .. "/resources/"
+    dir = dir or ROOT .. "/resources"
 
     NodeUI.Resources = {} --- @diagnostic disable-line: missing-fields
 
