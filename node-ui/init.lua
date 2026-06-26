@@ -39,6 +39,7 @@ local base_mouse_position_sended_loops = 0
 local control_mouse_focus   --- @type NodeUI.Control|nil
 local control_mouse_pressed --- @type NodeUI.Control|nil
 
+
 --#region Local
 
 --- Converte um caminho para nome de classe.
@@ -100,10 +101,12 @@ local function requireNodes(dir)
     dir = dir or ROOT:gsub("%.", "/") .. "/nodes"
 
     for _, file in ipairs(getFilesAt(dir)) do
-        local node_name = toClassName(file)
-        --- @diagnostic disable-next-line: need-check-nil
-        NodeUI[node_name] = require(toModulePath(file))
-        NodeUI[node_name]._node_ui = NodeUI
+        if file:match("^(.*)/"):match("([^/]+)$") ~= "abstract" then
+            local node_name = toClassName(file)
+            --- @diagnostic disable-next-line: need-check-nil
+            NodeUI[node_name] = require(toModulePath(file))
+            NodeUI[node_name]._node_ui = NodeUI
+        end
     end
 end
 
@@ -115,9 +118,11 @@ local function requireResources(dir)
     NodeUI.Resources = {} --- @diagnostic disable-line: missing-fields
 
     for _, file in ipairs(getFilesAt(dir)) do
-        local resource_name = toClassName(file)
-        --- @diagnostic disable-next-line: need-check-nil
-        NodeUI.Resources[resource_name] = require(toModulePath(file))
+        if file:match("^(.*)/"):match("([^/]+)$") ~= "abstract" then
+            local resource_name = toClassName(file)
+            --- @diagnostic disable-next-line: need-check-nil
+            NodeUI.Resources[resource_name] = require(toModulePath(file))
+        end
     end
 end
 
