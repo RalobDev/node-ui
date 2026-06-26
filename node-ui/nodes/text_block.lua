@@ -484,16 +484,6 @@ function TextBlock:_onDraw()
     love.graphics.draw(self._text_canvas, self:_getTextCanvasPosition())
 
     love.graphics.pop()
-
-    love.graphics.setColor(1, 0, 0)
-    love.graphics.rectangle(
-        "line",
-        math.floor(self._layout_x - safe_size / 2),
-        math.floor(self._layout_y - safe_size / 2),
-        self._text_canvas:getWidth(),
-        self._text_canvas:getHeight()
-    )
-    love.graphics.setColor(1, 1, 1)
 end
 
 --- Chamado quando um botão do mouse é pressionado.
