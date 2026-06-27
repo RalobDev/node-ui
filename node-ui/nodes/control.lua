@@ -84,6 +84,7 @@ function Control:new(x, y, width, height, is_minimum)
 	obj:connect("MOUSE_RELEASED", "_onMousereleased", obj)
 	obj:connect("MOUSE_MOVED", "_onMousemoved", obj)
 	obj:connect("WHEEL_MOVED", "_onWheelMoved", obj)
+	obj:connect("MOUSE_FOCUS_CHANGED", "_onMouseFocusChanged", obj)
 
 	obj:setMinimumDimensions(
 		is_minimum and width or 0,
