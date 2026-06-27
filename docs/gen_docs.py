@@ -258,7 +258,7 @@ def write_code_classes(code_classes: list[CodeClass]) -> None:
 # Escreve o arquivo da code_class do tipo NODE em path.
 def write_code_class(code_class: CodeClass, path: Path) -> None:
     # Escreve a linha de heranças.
-    def write_inheritance(file: Markdown, title: str, inheritances: list[str]) -> None:
+    def write_inheritance(file: Markdown, title: str, separator: str, inheritances: list[str]) -> None:
         if not inheritances:
             return None
 
@@ -270,7 +270,7 @@ def write_code_class(code_class: CodeClass, path: Path) -> None:
             else:
                 formatted_inheritances.append(create_link_reference(inheritance, to_snake(inheritance)))
 
-        file.line(f"**{title}:** " + " **→** ".join(formatted_inheritances))
+        file.line(f"**{title}:** " + separator.join(formatted_inheritances))
         file.blank()
 
     file: Markdown = Markdown(f"{path}/index.md")
@@ -281,8 +281,8 @@ def write_code_class(code_class: CodeClass, path: Path) -> None:
     file.line(f"# {code_class.base_name}")
     file.blank()
 
-    write_inheritance(file, "Inherits", code_class.inherits)
-    write_inheritance(file, "Inherited By", code_class.inherited_by)
+    write_inheritance(file, "Inherits", "**→**", code_class.inherits)
+    write_inheritance(file, "Inherited By", ",", code_class.inherited_by)
     write_doc_details(file, code_class.brief, code_class.description)
     write_methods_table(file, code_class.methods)
     write_methods(file, code_class.methods)
