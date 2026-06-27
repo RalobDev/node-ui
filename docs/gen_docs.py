@@ -9,6 +9,7 @@ _references_points: list[str] = []
 
 # O tipo de uma CodeClass.
 class CodeClassType(Enum):
+    CORE = auto()
     NODE = auto()
     RESOURCE = auto()
     ALIAS = auto()
@@ -107,6 +108,7 @@ DOCS_API_PATH: Path = Path(f"{DOCS_SOURCE_PATH}/api")
 def main() -> None:
     code_classes: list[CodeClass] = []
 
+    code_classes.extend(get_code_classes(Path(f"{LIBRARY_PATH}/init.lua"), CodeClassType.CORE, True))
     code_classes.extend(get_code_classes(ABSTRACT_CLASSES_PATH, CodeClassType.RESOURCE))
     code_classes.extend(get_code_classes(NODES_PATH, CodeClassType.NODE))
     code_classes.extend(get_code_classes(RESOURCES_PATH, CodeClassType.RESOURCE))
@@ -114,10 +116,13 @@ def main() -> None:
 
     code_classes.sort(key=lambda obj: obj.name) # Organiza as CodeClass por ordem alfabética.
 
-
     resolve_inheritance(code_classes)
     write_docs(code_classes)
     resolve_files_references()
+
+    for c in code_classes:
+        pass
+        # print(c.name)
 
     print("Documentation Generated!")
 
@@ -134,18 +139,25 @@ def write_docs(code_classes: list[CodeClass]) -> None:
 
 
 # Retorna todas as CodeClass dos arquivos em path.
-def get_code_classes(path: Path, class_type: CodeClassType) -> list[CodeClass]:
+def get_code_classes(path: Path, class_type: CodeClassType, is_single_file: bool = False) -> list[CodeClass]:
     code_classes: list[CodeClass] = []
 
-    # Procura todos os arquivos em path.
-    for file in path.rglob("*.lua"):
-        if file.is_file():
-            if class_type == CodeClassType.ALIAS:
-                code_classes.extend(parse_code_alias_file(file))
-            else:
-                code_class: CodeClass = parse_code_class_file(file, class_type)
-                if code_class:
-                    code_classes.append(code_class)
+    def add_code_class(file: Path):
+        if class_type == CodeClassType.ALIAS:
+            code_classes.extend(parse_code_alias_file(file))
+        else:
+            code_class: CodeClass = parse_code_class_file(file, class_type)
+            if code_class:
+                code_classes.append(code_class)
+
+    # Procura todos os arquivos em path caso não seja um único arquivo.
+    if is_single_file:
+        if path.exists():
+            add_code_class(path)
+    else:
+        for file in path.rglob("*.lua"):
+            if file.is_file():
+                add_code_class(file)
 
     return code_classes
 
@@ -167,11 +179,14 @@ def resolve_files_references() -> str:
 
 # Escreve o arquivo de referência de classes.
 def write_classes_reference(code_classes: list[CodeClass]) -> None:
+    core_classes: list[CodeClass] = []
     node_classes: list[CodeClass] = []
     resource_classes: list[CodeClass] = []
     alias_classes: list[CodeClass] = []
 
     for code_class in code_classes:
+        if code_class.type == CodeClassType.CORE:
+            core_classes.append(code_class)
         if code_class.type == CodeClassType.NODE:
             node_classes.append(code_class)
         elif code_class.type == CodeClassType.RESOURCE:
@@ -195,7 +210,9 @@ def write_classes_reference(code_classes: list[CodeClass]) -> None:
                 continue
 
             dir: str = None
-            if code_class.type == CodeClassType.NODE:
+            if code_class.type == CodeClassType.CORE:
+                dir = "core"
+            elif code_class.type == CodeClassType.NODE:
                 dir = "nodes"
             elif code_class.type == CodeClassType.RESOURCE:
                 dir = "resources"
@@ -217,6 +234,7 @@ def write_classes_reference(code_classes: list[CodeClass]) -> None:
     file.line("# Referência de Classes")
     file.blank()
 
+    write_toctree("Core", file, core_classes)
     write_toctree("Nodes", file, node_classes)
     write_toctree("Resources", file, resource_classes)
     write_toctree("Types", file, alias_classes)
@@ -226,18 +244,20 @@ def write_classes_reference(code_classes: list[CodeClass]) -> None:
 
 # Escreve o arquivo de todas as CodeClass em code_classes.
 def write_code_classes(code_classes: list[CodeClass]) -> None:
+    core_path: Path = Path(f"{DOCS_API_PATH}/core")
     nodes_path: Path = Path(f"{DOCS_API_PATH}/nodes")
     resources_path: Path = Path(f"{DOCS_API_PATH}/resources")
     types_path: Path = Path(f"{DOCS_API_PATH}/types")
 
     # Cria os diretórios para cada tipo de CodeClass.
-    for path in [nodes_path, resources_path, types_path]:
+    for path in [core_path, nodes_path, resources_path, types_path]:
         path.mkdir()
 
     for code_class in code_classes:
 
         path: Path = None
-        if code_class.type == CodeClassType.NODE: path = nodes_path
+        if code_class.type == CodeClassType.CORE: path = core_path
+        elif code_class.type == CodeClassType.NODE: path = nodes_path
         elif code_class.type == CodeClassType.RESOURCE: path = resources_path
         elif code_class.type == CodeClassType.ALIAS: path = types_path
 
@@ -247,12 +267,11 @@ def write_code_classes(code_classes: list[CodeClass]) -> None:
             path = Path(f"{path}/{to_snake(code_class.name)}")
             path.mkdir()
 
-        if code_class.type == CodeClassType.NODE:
-            write_code_class(code_class, path)
-        elif code_class.type == CodeClassType.RESOURCE:
-            write_code_class(code_class, path)
-        elif code_class.type == CodeClassType.ALIAS:
+
+        if code_class.type == CodeClassType.ALIAS:
             write_alias_class(code_class)
+        else:
+            write_code_class(code_class, path)
 
 
 # Escreve o arquivo da code_class do tipo NODE em path.
@@ -604,15 +623,18 @@ def parse_general_docs_details(lines: list[str], start_line: int) -> tuple[list[
 
 # Em uma linha começada com "--- @class", extrai o nome da classe e seu super.
 def extract_class_line(line: str) -> tuple[str, str]:
-    pattern: str = r"---\s*@class\s+([A-Za-z_][\w\.]*)\s*:\s*([A-Za-z_][\w\.]*)"
+    # A parte do ':' e do super_name agora está dentro de (?: ... )? para torná-la opcional
+    pattern: str = r"---\s*@class\s+([A-Za-z_][\w\.]*)(?:\s*:\s*([A-Za-z_][\w\.]*))?"
     match = re.search(pattern, line)
 
     if match:
         class_name = match.group(1) or ""
+        # group(2) retornará None se a superclasse não existir na string, então o 'or ""' garante que seja uma string vazia
         super_name = match.group(2) or ""
 
         # Ignora o super com nome "Class", pois é uma classe interna da biblioteca e não deve estar visível na documentação.
-        if super_name == "Class": super_name = ""
+        if super_name == "Class":
+            super_name = ""
 
         return class_name, super_name
 
