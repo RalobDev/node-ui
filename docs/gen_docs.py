@@ -282,7 +282,7 @@ def write_code_class(code_class: CodeClass, path: Path) -> None:
     file.blank()
 
     write_inheritance(file, "Inherits", "**→**", code_class.inherits)
-    write_inheritance(file, "Inherited By", ",", code_class.inherited_by)
+    write_inheritance(file, "Inherited By", ", ", code_class.inherited_by)
     write_doc_details(file, code_class.brief, code_class.description)
     write_methods_table(file, code_class.methods)
     write_methods(file, code_class.methods)
