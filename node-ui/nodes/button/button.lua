@@ -109,7 +109,7 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado **`NodeUI.Button.Signals** do **Button**.
+--- Cria uma conexão em determinado **`NodeUI.Button.Signals`** do **Button**.
 --- @param signal NodeUI.Button.Signals Nome do sinal.
 --- @param method string|function           Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                     Objeto dono do método.
