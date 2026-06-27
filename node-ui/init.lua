@@ -15,6 +15,7 @@ end
 --- @class NodeUI
 --- @field AspectRatioContainer NodeUI.AspectRatioContainer Referência ao **NodeUI.AspectRatioContainer**.
 --- @field BoxContainer NodeUI.BoxContainer                 Referência ao **NodeUI.BoxContainer**.
+--- @field Button NodeUI.Button                             Referência ao **NodeUI.Button**.
 --- @field CenterContainer NodeUI.CenterContainer           Referência ao **NodeUI.CenterContainer**.
 --- @field ColorRect NodeUI.ColorRect                       Referência ao **NodeUI.ColorRect**.
 --- @field Container NodeUI.Container                       Referência ao **NodeUI.Container**.

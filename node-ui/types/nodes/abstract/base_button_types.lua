@@ -1,0 +1,20 @@
+--- Lista de sinais emitidos por um **`BaseButton`**.
+--- @alias NodeUI.BaseButton.Signals
+--- | NodeUI.Control.Signals
+--- | "PRESSED"     Emitido quando o botão é pressionado. | `fun()`
+--- | "BUTTON_DOWN" Emitido quando o botão começa a ser pressionado. | `fun()`
+--- | "BUTTON_UP"   Emitido quando o botão para ser ser pressionado. | `fun()`
+--- | "TOGGLED"     Emitido quando o botão é alterado entre pressionado e não. | `fun(toggled_on: bool)`
+
+--- Maneira como o **`BaseButton`** é ativado.
+--- @alias NodeUI.BaseButton.ActionMode
+--- | "PRESS"   Ativado ao pressionar o botão.
+--- | "RELEASE" Ativado ao soltar o botão.
+
+--- Quais botões do mouse são usados para ativar o **`BaseButton`**.
+--- @alias NodeUI.BaseButton.ButtonMask
+--- | "MOUSE_LEFT"
+--- | "MOUSE_RIGHT"
+--- | "MOUSE_MIDDLE"
+--- | "MOUSE_XBUTTON_1"
+--- | "MOUSE_XBUTTON_2"
