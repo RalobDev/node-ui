@@ -5,6 +5,7 @@ local StyleBoxFlat = require(ROOT .. ".resources.style-box.style_box_flat") --- 
 local Panel = require(ROOT .. ".nodes.panel")                               --- @type NodeUI.Panel
 local TextBlock = require(ROOT .. ".nodes.text_block")                      --- @type NodeUI.TextBlock
 
+--- Um botão padrão que pode exibir um texto e uma **`StyleBox`**.
 --- @class NodeUI.Button: NodeUI.BaseButton
 --- @field private _styleboxes table<NodeUI.Button.State, NodeUI.StyleBox>
 --- @field private _text_colors table<NodeUI.Button.State, number[]>
@@ -245,6 +246,7 @@ function Button:_onUpdate(dt)
 end
 
 --- Chamado durante o desenho de um filho do **Control**.
+--- @protected
 --- @param child NodeUI.Control
 function Button:_onDrawChild(child)
     local can_draw = true

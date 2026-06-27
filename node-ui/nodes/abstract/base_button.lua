@@ -2,6 +2,7 @@ local ROOT = (...):match("^(.*)%."):match("^(.*)%."):match("^(.*)%.")
 
 local Control = require(ROOT .. ".nodes.control") --- @type NodeUI.Control
 
+--- Classe base para todos os tipos de botões.
 --- @class NodeUI.BaseButton: NodeUI.Control
 --- @field private _is_pressed boolean
 --- @field private _pressed_masks NodeUI.BaseButton.ButtonMask[]
@@ -82,7 +83,7 @@ end
 
 --#region Override
 
---- Cria uma conexão em determinado **`NodeUI.BaseButton.Signals** do **BaseButton**.
+--- Cria uma conexão em determinado **`NodeUI.BaseButton.Signals`** do **BaseButton**.
 --- @param signal NodeUI.BaseButton.Signals Nome do sinal.
 --- @param method string|function           Nome do método ou método chamado ao sinal ser emitido.
 --- @param owner table?                     Objeto dono do método.

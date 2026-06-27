@@ -600,6 +600,7 @@ function Control:_onUpdate(dt) end
 function Control:_onDraw() end
 
 --- Chamado durante o desenho de um filho do **Control**.
+--- @protected
 --- @param child NodeUI.Control
 function Control:_onDrawChild(child)
 	child:_draw()
