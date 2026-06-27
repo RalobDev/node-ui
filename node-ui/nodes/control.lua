@@ -233,7 +233,7 @@ function Control:_draw()
 
 	-- Chama o desenho dos filhos do Control.
 	for _, child in ipairs(self._children) do
-		child:_draw()
+		self:_onDrawChild(child)
 	end
 
 	love.graphics.setScissor(prev_scissor_x, prev_scissor_y, prev_scissor_w, prev_scissor_h)
@@ -598,6 +598,12 @@ function Control:_onUpdate(dt) end
 --- Chamado durante o desenho do **Control**.
 --- @protected
 function Control:_onDraw() end
+
+--- Chamado durante o desenho de um filho do **Control**.
+--- @param child NodeUI.Control
+function Control:_onDrawChild(child)
+	child:_draw()
+end
 
 --- Chamado durante a depuração do **Control**.
 ---
