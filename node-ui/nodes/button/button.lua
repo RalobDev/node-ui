@@ -4,7 +4,7 @@ local BaseButton = require(ROOT .. ".nodes.abstract.base_button")           --- 
 local StyleBoxFlat = require(ROOT .. ".resources.style-box.style_box_flat") --- @type NodeUI.StyleBoxFlat
 local Panel = require(ROOT .. ".nodes.panel")                               --- @type NodeUI.Panel
 local TextBlock = require(ROOT .. ".nodes.text_block")                      --- @type NodeUI.TextBlock
-local Palette = require(ROOT .. ".palette")                                 --- @type NodeUI.Palette
+local Palette = require(ROOT .. ".core.palette")                            --- @type NodeUI.Palette
 
 --- Um botão padrão que pode exibir um texto e uma **`StyleBox`**.
 --- @class NodeUI.Button: NodeUI.BaseButton

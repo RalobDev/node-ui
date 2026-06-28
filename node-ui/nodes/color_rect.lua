@@ -1,7 +1,7 @@
 local ROOT = (...):match("^(.*)%."):match("^(.*)%.") --- @type string
 
 local Control = require(ROOT .. ".nodes.control")    --- @type NodeUI.Control
-local Palette = require(ROOT .. ".palette")          --- @type NodeUI.Palette
+local Palette = require(ROOT .. ".core.palette")     --- @type NodeUI.Palette
 
 --- Desenha um retângulo preenchido com uma cor sólida.
 --- @class NodeUI.ColorRect: NodeUI.Control

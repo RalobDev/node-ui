@@ -22,29 +22,25 @@ do
     Palette._colors["DISABLED"]      = "#70616D"
 end
 
-
 --#region Public
 
 --- Converte um código hexadecimal em RGBA.
 --- @nodiscard
---- @param hex string Código hex.
---- @return number r  Red.
---- @return number g  Green.
---- @return number b  Blue.
---- @return number a  Alpha.
+--- @param hex string
+--- @return number? r, number? g, number? b, number? a
 function Palette:hexToRGBA(hex)
     if type(hex) ~= "string" then
-        return 1, 1, 1, 1
+        return nil, nil, nil, nil
     end
 
     hex = hex:gsub("^#", "")
 
     if not hex:match("^[%x]+$") then
-        return 1, 1, 1, 1
+        return nil, nil, nil, nil
     end
 
     if #hex ~= 6 and #hex ~= 8 then
-        return 1, 1, 1, 1
+        return nil, nil, nil, nil
     end
 
     local r = tonumber(hex:sub(1, 2), 16)
