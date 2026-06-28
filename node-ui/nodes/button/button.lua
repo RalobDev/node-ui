@@ -33,8 +33,8 @@ function Button:new(x, y, width, height, is_minimum)
     obj._styleboxes = {}
     obj._text_colors = {}
     obj._text_outline_colors = {}
-    obj._panel = obj:addChild(Panel:new(0, 0, 0, 0))
-    obj._text_block = obj:addChild(TextBlock:new(0, 0, 0, 0))
+    obj._panel = obj:addChild(Panel:new(0, 0, 0, 0), true)
+    obj._text_block = obj:addChild(TextBlock:new(0, 0, 0, 0), true)
 
     obj:_setup()
 
@@ -284,20 +284,16 @@ function Button:_setup()
 
     -- Cria o Panel que vai exibir as styleboxes.
     do
-        local panel = self:addChild(Panel:new(0, 0, 0, 0), true)
+        local panel = self._panel
         panel:setLayout("FULL_RECT")
         panel:setStyleBox(self._styleboxes["NORMAL"])
-
-        self._panel = panel
     end
 
     -- Cria o TextBlock que vai exibir o texto do botão.
     do
-        local text_block = self:addChild(TextBlock:new(0, 0, 0, 0), true)
+        local text_block = self._text_block
         text_block:setLayout("FULL_RECT")
         text_block:setAlignment("BOTH", "CENTER")
-
-        self._text_block = text_block
     end
 
     self:setMouseFilter("STOP")
