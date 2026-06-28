@@ -527,8 +527,13 @@ end
 --- Chamado durante a atualização do layout do **Control**.
 --- @protected
 function TextBlock:_onUpdateLayout()
+    local old_width = self._layout_width
+
     Control._onUpdateLayout(self)
-    self:_queueParseText()
+
+    if self._layout_width ~= old_width then
+        self:_queueParseText()
+    end
 end
 
 --#endregion
