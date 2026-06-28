@@ -172,6 +172,19 @@ function BaseButton:setDisabled(disabled)
     end
 end
 
+--- Define se deve manter o pressionado quando o mouse não estiver sobre o botão.
+--- @param enabled? boolean Se deve manter pressionado.
+function BaseButton:setKeepPressedOutside(enabled)
+    enabled = enabled == nil and true or enabled --- @cast enabled boolean
+    local old = self._keep_pressed_outside
+
+    self._keep_pressed_outside = enabled
+
+    if self._keep_pressed_outside ~= old then
+        self:_resetState()
+    end
+end
+
 --#endregion
 
 
@@ -197,6 +210,13 @@ end
 --- @return boolean enabled Se o modo de alterar está ativado.
 function BaseButton:getToggledMode()
     return self._toggled_mode
+end
+
+--- Retorna se deve manter o pressionado quando o mouse não estiver sobre o botão.
+--- @nodiscard
+--- @return boolean enabled Se deve manter pressionado.
+function BaseButton:getKeepPressedOutside()
+    return self._keep_pressed_outside
 end
 
 --#endregion
