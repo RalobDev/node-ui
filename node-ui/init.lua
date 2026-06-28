@@ -387,37 +387,62 @@ end
 --- Define a posição x base dos **`Control`** na raiz.
 --- @param value number Nova posição x.
 function NodeUI.setBaseX(value)
+    local old = base_x
+
     base_x = value
-    callRootControlMethod("_queueUpdateLayout")
+
+    if base_x ~= old then
+        callRootControlMethod("_queueUpdateLayout")
+    end
 end
 
 --- Define a posição y base dos **`Control`** na raiz.
 --- @param value number Nova posição no y.
 function NodeUI.setBaseY(value)
+    local old = base_y
+
     base_y = value
-    callRootControlMethod("_queueUpdateLayout")
+
+    if base_y ~= old then
+        callRootControlMethod("_queueUpdateLayout")
+    end
 end
 
 --- Define a posição base dos **`Control`**.
 --- @param x number Nova posição x.
 --- @param y number Nova posição y.
 function NodeUI.setBasePosition(x, y)
+    local old_x, old_y = base_x, base_y
+
     base_x, base_y = x, y
-    callRootControlMethod("_queueUpdateLayout")
+
+    if base_x ~= old_x or base_y ~= old_y then
+        callRootControlMethod("_queueUpdateLayout")
+    end
 end
 
 --- Define o comprimento base dos **`Control`** na raiz.
 --- @param value number Novo comprimento.
 function NodeUI.setBaseWidth(value)
+    local old = base_width
+
     base_width = value
-    callRootControlMethod("_queueUpdateLayout")
+
+    if base_width ~= old then
+        callRootControlMethod("_queueUpdateLayout")
+    end
 end
 
 --- Define a altura base dos **`Control`** na raiz.
 --- @param value number Nova altura.
 function NodeUI.setBaseHeight(value)
+    local old = base_height
+
     base_height = value
-    callRootControlMethod("_queueUpdateLayout")
+
+    if base_height ~= old then
+        callRootControlMethod("_queueUpdateLayout")
+    end
 end
 
 --- Define a dimensão base dos **`Control`** na raiz.
