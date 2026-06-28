@@ -109,6 +109,7 @@ def main() -> None:
     code_classes: list[CodeClass] = []
 
     code_classes.extend(get_code_classes(Path(f"{LIBRARY_PATH}/init.lua"), CodeClassType.CORE, True))
+    code_classes.extend(get_code_classes(Path(f"{LIBRARY_PATH}/palette.lua"), CodeClassType.CORE, True))
     code_classes.extend(get_code_classes(ABSTRACT_CLASSES_PATH, CodeClassType.RESOURCE))
     code_classes.extend(get_code_classes(NODES_PATH, CodeClassType.NODE))
     code_classes.extend(get_code_classes(RESOURCES_PATH, CodeClassType.RESOURCE))
