@@ -29,70 +29,13 @@ local Button = BaseButton:extend("Button")
 function Button:new(x, y, width, height, is_minimum)
     local obj = BaseButton.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.Button
 
-    do
-        local normal_stylebox = StyleBoxFlat:new()
-        local hover_stylebox = StyleBoxFlat:new()
-        local pressed_stylebox = StyleBoxFlat:new()
-        local disabled_stylebox = StyleBoxFlat:new()
+    obj._styleboxes = {}
+    obj._text_colors = {}
+    obj._text_outline_colors = {}
+    obj._panel = obj:addChild(Panel:new(0, 0, 0, 0))
+    obj._text_block = obj:addChild(TextBlock:new(0, 0, 0, 0))
 
-        normal_stylebox:setFillColor({ 0.5, 0.5, 0.5 })
-        hover_stylebox:setFillColor({ 0.7, 0.7, 0.7 })
-        pressed_stylebox:setFillColor({ 0.3, 0.3, 0.3 })
-        disabled_stylebox:setFillColor({ 0.1, 0.1, 0.1 })
-
-        obj._styleboxes = {
-            NORMAL = normal_stylebox,
-            HOVER = hover_stylebox,
-            HOVER_PRESSED = pressed_stylebox,
-            PRESSED = pressed_stylebox,
-            DISABLED = disabled_stylebox,
-        }
-
-        for _, stylebox in pairs(obj._styleboxes) do
-            --- @cast stylebox NodeUI.StyleBoxFlat
-            stylebox:setCornerRadius("TOP_LEFT", 12)
-            stylebox:setCornerRadius("TOP_RIGHT", 12)
-            stylebox:setCornerRadius("BOTTOM_LEFT", 12)
-            stylebox:setCornerRadius("BOTTOM_RIGHT", 12)
-        end
-    end
-
-    obj._text_colors = {
-        NORMAL = { 1, 1, 1, 1 },
-        HOVER = { 1, 1, 1, 1 },
-        HOVER_PRESSED = { 1, 1, 1, 1 },
-        PRESSED = { 1, 1, 1, 1 },
-        DISABLED = { 0.5, 0.5, 0.5, 1 },
-    }
-
-    obj._text_outline_colors = {
-        NORMAL = { 0, 0, 0, 1 },
-        HOVER = { 0, 0, 0, 1 },
-        HOVER_PRESSED = { 0, 0, 0, 1 },
-        PRESSED = { 0, 0, 0, 1 },
-        DISABLED = { 0, 0, 0, 1 },
-    }
-
-    do
-        local panel = obj:addChild(Panel:new(0, 0, 0, 0), true)
-        panel:setLayout("FULL_RECT")
-        panel:setStyleBox(obj._styleboxes["NORMAL"])
-
-        obj._panel = panel
-    end
-
-    do
-        local text_block = obj:addChild(TextBlock:new(0, 0, 0, 0), true)
-        text_block:setLayout("FULL_RECT")
-        text_block:setAlignment("HORIZONTAL", "CENTER")
-        text_block:setAlignment("VERTICAL", "CENTER")
-
-        text_block:setText("Button")
-
-        obj._text_block = text_block
-    end
-
-    obj:setMouseFilter("STOP")
+    obj:_setup()
 
     return obj
 end
@@ -301,5 +244,66 @@ end
 
 --#endregion
 
+
+--#region Private
+
+--- Configura o **Button**.
+--- @private
+function Button:_setup()
+    --- @type NodeUI.Button.State[]
+    local states = { "NORMAL", "HOVER", "HOVER_PRESSED", "PRESSED", "DISABLED" }
+
+    for _, state in ipairs(states) do
+        -- StyleBox
+        local stylebox = StyleBoxFlat:new()
+        stylebox:setCornerRadius({ "TOP_LEFT", "TOP_RIGHT", "BOTTOM_LEFT", "BOTTOM_RIGHT" }, 12)
+        self._styleboxes[state] = stylebox
+
+        -- Text Color
+        if state == "DISABLED" then
+            self._text_colors[state] = { 0.5, 0.5, 0.5, 1 }
+        else
+            self._text_colors[state] = { 1, 1, 1, 1 }
+        end
+
+        -- Text Outline Color
+        self._text_outline_colors[state] = { 0, 0, 0, 1 }
+    end
+
+    -- Define a cor de preenchimento das styleboxes.
+    do
+        local styleboxes = self._styleboxes
+        --- @cast styleboxes table<NodeUI.Button.State, NodeUI.StyleBoxFlat>
+
+        styleboxes["NORMAL"]:setFillColor({ 0.5, 0.5, 0.5 })
+        styleboxes["HOVER"]:setFillColor({ 0.7, 0.7, 0.7 })
+        styleboxes["PRESSED"]:setFillColor({ 0.3, 0.3, 0.3 })
+        styleboxes["DISABLED"]:setFillColor({ 0.1, 0.1, 0.1 })
+    end
+
+    -- Cria o Panel que vai exibir as styleboxes.
+    do
+        local panel = self:addChild(Panel:new(0, 0, 0, 0), true)
+        panel:setLayout("FULL_RECT")
+        panel:setStyleBox(self._styleboxes["NORMAL"])
+
+        self._panel = panel
+    end
+
+    -- Cria o TextBlock que vai exibir o texto do botão.
+    do
+        local text_block = self:addChild(TextBlock:new(0, 0, 0, 0), true)
+        text_block:setLayout("FULL_RECT")
+        text_block:setAlignment("BOTH", "CENTER")
+
+        text_block:setText("Button")
+
+        self._text_block = text_block
+    end
+
+    self:setMouseFilter("STOP")
+end
+
+--#endregion
 
 return Button
