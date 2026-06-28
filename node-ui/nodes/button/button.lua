@@ -55,16 +55,16 @@ end
 
 --- Cria uma conexão em determinado **`NodeUI.Button.Signals`** do **Button**.
 --- @param signal NodeUI.Button.Signals Nome do sinal.
---- @param method string|function           Nome do método ou método chamado ao sinal ser emitido.
---- @param owner table?                     Objeto dono do método.
+--- @param method string|function       Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                 Objeto dono do método.
 function Button:connect(signal, method, owner)
     self._signal:connect(signal, method, owner)
 end
 
 --- Remove a conexão de um **`NodeUI.Button.Signals`** do **Button**.
 --- @param signal NodeUI.Button.Signals Nome do sinal.
---- @param method string|function           Nome do método ou método chamado ao sinal ser emitido.
---- @param owner table?                     Objeto dono do método.
+--- @param method string|function       Nome do método ou método chamado ao sinal ser emitido.
+--- @param owner table?                 Objeto dono do método.
 function Button:disconnect(signal, method, owner)
     self._signal:disconnect(signal, method, owner)
 end
