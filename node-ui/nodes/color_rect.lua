@@ -1,6 +1,7 @@
 local ROOT = (...):match("^(.*)%.")         --- @type string
 
 local Control = require(ROOT .. ".control") --- @type NodeUI.Control
+local Palette = require(ROOT .. ".palette") --- @type NodeUI.Palette
 
 --- Desenha um retângulo preenchido com uma cor sólida.
 --- @class NodeUI.ColorRect: NodeUI.Control
@@ -21,7 +22,7 @@ local ColorRect = Control:extend("ColorRect")
 function ColorRect:new(x, y, width, height, is_minimum)
     local obj = Control.new(self, x, y, width, height, is_minimum) --- @cast obj NodeUI.ColorRect
 
-    obj._color = { 1, 1, 1, 1 }
+    obj._color = Palette:get("SURFACE")
 
     return obj
 end

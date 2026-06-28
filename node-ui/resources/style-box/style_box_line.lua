@@ -1,6 +1,7 @@
 local ROOT = (...):match("^(.*)%."):match("^(.*)%."):match("^(.*)%.") --- @type string
 
 local StyleBox = require(ROOT .. ".resources.abstract.style_box")     --- @type NodeUI.StyleBox
+local Palette = require(ROOT .. ".palette")                           --- @type NodeUI.Palette
 
 --- Uma **StyleBox** que exibe uma única linha.
 --- @class NodeUI.StyleBoxLine: NodeUI.StyleBox
@@ -113,7 +114,7 @@ end
 function StyleBoxLine:new()
     local obj = StyleBox.new(self) --- @cast obj NodeUI.StyleBoxLine
 
-    obj._color = { 0, 0, 0, 1 }
+    obj._color = Palette:get("BORDER")
     obj._grow_begin = 0
     obj._grow_end = 0
     obj._thickness = 1

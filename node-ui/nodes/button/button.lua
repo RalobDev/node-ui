@@ -4,6 +4,7 @@ local BaseButton = require(ROOT .. ".nodes.abstract.base_button")           --- 
 local StyleBoxFlat = require(ROOT .. ".resources.style-box.style_box_flat") --- @type NodeUI.StyleBoxFlat
 local Panel = require(ROOT .. ".nodes.panel")                               --- @type NodeUI.Panel
 local TextBlock = require(ROOT .. ".nodes.text_block")                      --- @type NodeUI.TextBlock
+local Palette = require(ROOT .. ".palette")                                 --- @type NodeUI.Palette
 
 --- Um botão padrão que pode exibir um texto e uma **`StyleBox`**.
 --- @class NodeUI.Button: NodeUI.BaseButton
@@ -261,13 +262,13 @@ function Button:_setup()
 
         -- Text Color
         if state == "DISABLED" then
-            self._text_colors[state] = { 0.5, 0.5, 0.5, 1 }
+            self._text_colors[state] = Palette:get("DISABLED_TEXT")
         else
-            self._text_colors[state] = { 1, 1, 1, 1 }
+            self._text_colors[state] = Palette:get("TEXT")
         end
 
         -- Text Outline Color
-        self._text_outline_colors[state] = { 0, 0, 0, 1 }
+        self._text_outline_colors[state] = Palette:get("TEXT_OUTLINE")
     end
 
     -- Define a cor de preenchimento das styleboxes.
@@ -275,10 +276,10 @@ function Button:_setup()
         local styleboxes = self._styleboxes
         --- @cast styleboxes table<NodeUI.Button.State, NodeUI.StyleBoxFlat>
 
-        styleboxes["NORMAL"]:setFillColor({ 0.5, 0.5, 0.5 })
-        styleboxes["HOVER"]:setFillColor({ 0.7, 0.7, 0.7 })
-        styleboxes["PRESSED"]:setFillColor({ 0.3, 0.3, 0.3 })
-        styleboxes["DISABLED"]:setFillColor({ 0.1, 0.1, 0.1 })
+        styleboxes["HOVER"]:setFillColor(Palette:get("HOVER"))
+        styleboxes["PRESSED"]:setFillColor(Palette:get("PRESSED"))
+        styleboxes["HOVER_PRESSED"]:setFillColor(Palette:get("HOVER_PRESSED"))
+        styleboxes["DISABLED"]:setFillColor(Palette:get("DISABLED"))
     end
 
     -- Cria o Panel que vai exibir as styleboxes.

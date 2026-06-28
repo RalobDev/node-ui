@@ -1,6 +1,7 @@
 local ROOT = (...):match("^(.*)%."):match("^(.*)%."):match("^(.*)%.") --- @type string
 
 local StyleBox = require(ROOT .. ".resources.abstract.style_box")     --- @type NodeUI.StyleBox
+local Palette = require(ROOT .. ".palette")                           --- @type NodeUI.Palette
 
 --- Uma **StyleBox** que exibe um retângulo altamente customizável.
 --- @class NodeUI.StyleBoxFlat: NodeUI.StyleBox
@@ -53,12 +54,12 @@ end
 function StyleBoxFlat:new()
     local obj = StyleBox.new(self) --- @cast obj NodeUI.StyleBoxFlat
 
-    obj._fill_color = { 0.6, 0.6, 0.6, 1.0 }
+    obj._fill_color = Palette:get("SURFACE")
     obj._draw_center = true
     obj._skew_x = 0
     obj._skew_y = 0
     obj._border_size = 0
-    obj._border_color = { 0.8, 0.8, 0.8, 1.0 }
+    obj._border_color = Palette:get("BORDER")
     obj._border_blend = false
     obj._corner_radius_top_left = 0
     obj._corner_radius_top_right = 0
@@ -68,7 +69,7 @@ function StyleBoxFlat:new()
     obj._expand_margin_right = 0
     obj._expand_margin_top = 0
     obj._expand_margin_bottom = 0
-    obj._shadow_color = { 0.0, 0.0, 0.0, 0.6 }
+    obj._shadow_color = Palette:get("SHADOW")
     obj._shadow_size = 0
     obj._shadow_blur = 5
     obj._shadow_offset_x = 0
