@@ -296,8 +296,6 @@ function Button:_setup()
         text_block:setLayout("FULL_RECT")
         text_block:setAlignment("BOTH", "CENTER")
 
-        text_block:setText("Button")
-
         self._text_block = text_block
     end
 
