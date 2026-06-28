@@ -7,7 +7,7 @@ local Palette = {
 
 do
     Palette._colors["BACKGROUND"]    = "#1D171A"
-    Palette._colors["SURFACE"]       = "#271F24"
+    Palette._colors["SURFACE"]       = "#513948"
     Palette._colors["BORDER"]        = "#41343C"
     Palette._colors["SHADOW"]        = "#0A0507"
     Palette._colors["TEXT"]          = "#F9FAFB"
@@ -15,9 +15,9 @@ do
     Palette._colors["DISABLED_TEXT"] = "#6E5D67"
     Palette._colors["TEXT_OUTLINE"]  = "#120D10"
     Palette._colors["ACCENT"]        = "#D83177"
-    Palette._colors["HOVER"]         = "#382B32"
+    Palette._colors["HOVER"]         = "#5c4752"
     Palette._colors["HOVER_PRESSED"] = "#7D3155"
-    Palette._colors["PRESSED"]       = "#5C4653"
+    Palette._colors["PRESSED"]       = "#452b3a"
     Palette._colors["HIGHLIGHT"]     = "#FFD7A6"
     Palette._colors["DISABLED"]      = "#70616D"
 end
