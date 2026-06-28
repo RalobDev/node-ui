@@ -76,6 +76,12 @@ end
 --- @param axis NodeUI.Control.Axis Eixo da separação.
 --- @param separation number Separação em pixels.
 function GridContainer:setSeparation(axis, separation)
+    if axis == "BOTH" then
+        self:setSeparation("HORIZONTAL", separation)
+        self:setSeparation("VERTICAL", separation)
+        return
+    end
+
     local separation_key = string.format("_%s_separation", axis:lower())
     local old = self[separation_key]
 

@@ -4,6 +4,7 @@
 
 --- Estados de um **`Button`**.
 --- @alias NodeUI.Button.State
+--- | "ALL"
 --- | "NORMAL"
 --- | "PRESSED"
 --- | "HOVER"

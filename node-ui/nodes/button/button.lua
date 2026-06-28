@@ -131,9 +131,22 @@ end
 --#region Setter
 
 --- Define a **`StyleBox`** do **`NodeUI.Button.State`**.
---- @param state NodeUI.Button.State Estado da stylebox.
---- @param stylebox NodeUI.StyleBox  StyleBox do estado.
+--- @param state NodeUI.Button.State|NodeUI.Button.State[] Estado da stylebox.
+--- @param stylebox NodeUI.StyleBox                        StyleBox do estado.
 function Button:setStyleBox(state, stylebox)
+    if type(state) == "table" then
+        for _, v in ipairs(state) do
+            self:setStyleBox(v, stylebox)
+        end
+        return
+    elseif state == "ALL" then
+        self:setStyleBox(
+            { "NORMAL", "PRESSED", "HOVER", "HOVER_PRESSED", "DISABLED" },
+            stylebox
+        )
+        return
+    end
+
     self._styleboxes[state] = stylebox
 end
 
@@ -151,16 +164,42 @@ function Button:setFlat(enabled)
 end
 
 --- Define a cor do texto de determinado **`NodeUI.Button.State`**.
---- @param state NodeUI.Button.State Estado da cor.
---- @param color number[]            Cor do estado.
+--- @param state NodeUI.Button.State|NodeUI.Button.State[] Estado da cor.
+--- @param color number[]                                  Cor do estado.
 function Button:setTextColor(state, color)
+    if type(state) == "table" then
+        for _, v in ipairs(state) do
+            self:setTextColor(v, color)
+        end
+        return
+    elseif state == "ALL" then
+        self:setTextColor(
+            { "NORMAL", "PRESSED", "HOVER", "HOVER_PRESSED", "DISABLED" },
+            color
+        )
+        return
+    end
+
     self._text_colors[state] = color
 end
 
 --- Define a cor do outline do texto de determinado **`NodeUI.Button.State`**.
---- @param state NodeUI.Button.State Estado da cor do outline.
---- @param color number[]            Cor do outline do estado.
-function Button:setTextColor(state, color)
+--- @param state NodeUI.Button.State|NodeUI.Button.State[] Estado da cor do outline.
+--- @param color number[]                                  Cor do outline do estado.
+function Button:setOutlineTextColor(state, color)
+    if type(state) == "table" then
+        for _, v in ipairs(state) do
+            self:setOutlineTextColor(v, color)
+        end
+        return
+    elseif state == "ALL" then
+        self:setOutlineTextColor(
+            { "NORMAL", "PRESSED", "HOVER", "HOVER_PRESSED", "DISABLED" },
+            color
+        )
+        return
+    end
+
     self._text_outline_colors[state] = color
 end
 

@@ -13,6 +13,7 @@
 
 --- Quais botões do mouse são usados para ativar o **`BaseButton`**.
 --- @alias NodeUI.BaseButton.ButtonMask
+--- | "ALL"
 --- | "MOUSE_LEFT"
 --- | "MOUSE_RIGHT"
 --- | "MOUSE_MIDDLE"

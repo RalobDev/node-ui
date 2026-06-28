@@ -59,9 +59,22 @@ end
 --#region Setter
 
 --- Define a margem de um lado do **MarginContainer**.
---- @param side NodeUI.Control.Side Lado da margem.
---- @param margin number Margem do lado.
+--- @param side NodeUI.Control.Side|NodeUI.Control.Side[] Lado da margem.
+--- @param margin number                                Margem do lado.
 function MarginContainer:setMargin(side, margin)
+    if type(side) == "table" then
+        for _, v in ipairs(side) do
+            self:setMargin(v, margin)
+        end
+        return
+    elseif side == "ALL" then
+        self:setMargin(
+            { "LEFT", "RIGHT", "TOP", "BOTTOM" },
+            margin
+        )
+        return
+    end
+
     local margin_key = "_margin_" .. side:lower()
     local old = self[margin_key]
 

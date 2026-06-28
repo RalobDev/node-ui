@@ -117,9 +117,22 @@ function BaseButton:setActionMode(action_mode)
 end
 
 --- Define se a **`NodeUI.BaseButton.ButtonMask`** está ativada.
---- @param mask NodeUI.BaseButton.ButtonMask Máscara do botão.
---- @param enabled? boolean                  Se a máscara está ativada.
+--- @param mask NodeUI.BaseButton.ButtonMask|NodeUI.BaseButton.ButtonMask[] Máscara do botão.
+--- @param enabled? boolean                                                 Se a máscara está ativada.
 function BaseButton:setButtonMask(mask, enabled)
+    if type(mask) == "table" then
+        for _, v in ipairs(mask) do
+            self:setButtonMask(v, enabled)
+        end
+        return
+    elseif mask == "ALL" then
+        self:setButtonMask(
+            { "MOUSE_LEFT", "MOUSE_RIGHT", "MOUSE_MIDDLE", "MOUSE_XBUTTON_1", "MOUSE_XBUTTON_2" },
+            enabled
+        )
+        return
+    end
+
     if enabled == nil then enabled = true end
 
     local old = self._button_mask[mask]

@@ -54,12 +54,28 @@ end
 --#region Setter
 
 --- Define o caminho da fonte da **`NodeUI.TextSettings.FontVariant`**.
---- @param variant NodeUI.TextSettings.FontVariant # Variante da fonte.
---- @param font_path string                        # Caminho da fonte.
---- @param font_size? number                       # Tamanho da fonte.
---- @param hinting? love.HintingMode               # Modo da fonte.
---- @param dpiscale? number                        # Desensidade por pixel.
+--- @param variant NodeUI.TextSettings.FontVariant|NodeUI.TextSettings.FontVariant[] Variante da fonte.
+--- @param font_path string                                                          Caminho da fonte.
+--- @param font_size? number                                                         Tamanho da fonte.
+--- @param hinting? love.HintingMode                                                 Modo da fonte.
+--- @param dpiscale? number                                                          Desensidade por pixel.
 function TextSettings:setFont(variant, font_path, font_size, hinting, dpiscale)
+    if type(variant) == "table" then
+        for _, v in ipairs(variant) do
+            self:setFont(v, font_path, font_size, hinting, dpiscale)
+        end
+        return
+    elseif variant == "ALL" then
+        self:setFont(
+            { "NORMAL", "BOLD", "ITALIC", "BOLD_ITALIC", "MONO" },
+            font_path,
+            font_size,
+            hinting,
+            dpiscale
+        )
+        return
+    end
+
     local variant_key = "_" .. variant:lower() .. "_font_data"
     local font_data = self[variant_key] --- @type NodeUI.TextSettings.FontData
 
@@ -85,9 +101,22 @@ function TextSettings:setFont(variant, font_path, font_size, hinting, dpiscale)
 end
 
 --- Define o tamanho da fonte da **`NodeUI.TextSettings.FontVariant`**.
---- @param variant NodeUI.TextSettings.FontVariant # Variante da fonte.
---- @param size number                             # Tamanho da fonte.
+--- @param variant NodeUI.TextSettings.FontVariant|NodeUI.TextSettings.FontVariant[] Variante da fonte.
+--- @param size number                                                               Tamanho da fonte.
 function TextSettings:setFontSize(variant, size)
+    if type(variant) == "table" then
+        for _, v in ipairs(variant) do
+            self:setFontSize(v, size)
+        end
+        return
+    elseif variant == "ALL" then
+        self:setFontSize(
+            { "NORMAL", "BOLD", "ITALIC", "BOLD_ITALIC", "MONO" },
+            size
+        )
+        return
+    end
+
     local variant_key = "_" .. variant:lower() .. "_font_data"
     local old = self[variant_key].size
 

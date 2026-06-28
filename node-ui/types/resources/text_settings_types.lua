@@ -3,6 +3,7 @@
 --- | NodeUI.Resource.Signals
 
 --- @alias NodeUI.TextSettings.FontVariant
+--- | "ALL"
 --- | "NORMAL"
 --- | "BOLD"
 --- | "ITALIC"

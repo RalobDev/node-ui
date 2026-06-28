@@ -84,6 +84,12 @@ end
 --- @param axis NodeUI.Control.Axis                    Eixo do alinhamento.
 --- @param alignment_mode NodeUI.Control.AlignmentMode Modo de alinhamento.
 function AspectRatioContainer:setAlignmentMode(axis, alignment_mode)
+    if axis == "BOTH" then
+        self:setAlignmentMode("HORIZONTAL", alignment_mode)
+        self:setAlignmentMode("VERTICAL", alignment_mode)
+        return
+    end
+
     local alignment_axis = "_" .. axis:lower() .. "_alignment_mode"
     local old = self[alignment_axis]
 

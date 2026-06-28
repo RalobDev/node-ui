@@ -136,6 +136,12 @@ end
 --- @param axis NodeUI.Control.Axis                 Eixo do alinhamento.
 --- @param alignment NodeUI.TextBlock.AlignmentMode Alinhamento das linhas.
 function TextBlock:setAlignment(axis, alignment)
+    if axis == "BOTH" then
+        self:setAlignment("HORIZONTAL", alignment)
+        self:setAlignment("VERTICAL", alignment)
+        return
+    end
+
     local alignment_key = "_" .. axis:lower() .. "_alignment"
     self[alignment_key] = alignment
 end

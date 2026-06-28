@@ -201,9 +201,22 @@ function StyleBoxFlat:setBorderBlend(enabled)
 end
 
 --- Define o raio de um canto.
---- @param corner NodeUI.Control.Corner Canto do raio.
---- @param radius number                Raio do canto.
+--- @param corner NodeUI.Control.Corner|NodeUI.Control.Corner[] Canto do raio.
+--- @param radius number                                        Raio do canto.
 function StyleBoxFlat:setCornerRadius(corner, radius)
+    if type(corner) == "table" then
+        for _, v in ipairs(corner) do
+            self:setCornerRadius(v, radius)
+        end
+        return
+    elseif corner == "ALL" then
+        self:setCornerRadius(
+            { "TOP_LEFT", "TOP_RIGHT", "BOTTOM_LEFT", "BOTTOM_RIGHT" },
+            radius
+        )
+        return
+    end
+
     local corner_key = "_corner_radius_" .. corner:lower()
     local old = self[corner_key]
 
@@ -215,9 +228,22 @@ function StyleBoxFlat:setCornerRadius(corner, radius)
 end
 
 --- Define a expansão da margem de determinado lado.
---- @param side NodeUI.Control.Side Lado da expansão de margem.
---- @param expand number            Valor da expansão de margem.
+--- @param side NodeUI.Control.Side|NodeUI.Control.Side[] Lado da expansão de margem.
+--- @param expand number                                  Valor da expansão de margem.
 function StyleBoxFlat:setExpandMargin(side, expand)
+    if type(side) == "table" then
+        for _, v in ipairs(side) do
+            self:setExpandMargin(v, expand)
+        end
+        return
+    elseif side == "ALL" then
+        self:setExpandMargin(
+            { "LEFT", "RIGHT", "TOP", "BOTTOM" },
+            expand
+        )
+        return
+    end
+
     local margin_key = "_expand_margin_" .. side:lower()
     local old = self[margin_key]
 

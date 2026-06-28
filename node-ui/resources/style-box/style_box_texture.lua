@@ -166,9 +166,22 @@ function StyleBoxTexture:setTexture(texture)
 end
 
 --- Define a margem de um lado da textura.
---- @param side NodeUI.Control.Side Lado da margem.
---- @param margin number            Margem do lado.
+--- @param side NodeUI.Control.Side|NodeUI.Control.Side[] Lado da margem.
+--- @param margin number                                Margem do lado.
 function StyleBoxTexture:setTextureMargin(side, margin)
+    if type(side) == "table" then
+        for _, v in ipairs(side) do
+            self:setTextureMargin(v, margin)
+        end
+        return
+    elseif side == "ALL" then
+        self:setTextureMargin(
+            { "LEFT", "RIGHT", "TOP", "BOTTOM" },
+            margin
+        )
+        return
+    end
+
     local margin_key = "_texture_margin_" .. side:lower()
     local old = self[margin_key]
 
@@ -180,9 +193,22 @@ function StyleBoxTexture:setTextureMargin(side, margin)
 end
 
 --- Define a expanção de um lado.
---- @param side NodeUI.Control.Side Lado da expansão.
---- @param expand number            Expansão do lado.
+--- @param side NodeUI.Control.Side|NodeUI.Control.Side[] Lado da expansão.
+--- @param expand number                                Expansão do lado.
 function StyleBoxTexture:setExpandMargin(side, expand)
+    if type(side) == "table" then
+        for _, v in ipairs(side) do
+            self:setExpandMargin(v, expand)
+        end
+        return
+    elseif side == "ALL" then
+        self:setExpandMargin(
+            { "LEFT", "RIGHT", "TOP", "BOTTOM" },
+            expand
+        )
+        return
+    end
+
     local expand_key = "_expand_margin_" .. side:lower()
     local old = self[expand_key]
 
@@ -198,6 +224,12 @@ end
 --- @param axis NodeUI.Control.Axis                       Eixo do stretch.
 --- @param stretch NodeUI.StyleBoxTexture.AxisStretchMode Stretch do eixo.
 function StyleBoxTexture:setStretch(axis, stretch)
+    if axis == "BOTH" then
+        self:setStretch("HORIZONTAL", stretch)
+        self:setStretch("VERTICAL", stretch)
+        return
+    end
+
     local stretch_key = "_axis_stretch_" .. axis:lower()
     local old = self[stretch_key]
 

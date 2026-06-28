@@ -48,6 +48,7 @@
 
 --- Eixo horizontal ou vertical.
 --- @alias NodeUI.Control.Axis
+--- | "BOTH"
 --- | "HORIZONTAL"
 --- | "VERTICAL"
 
@@ -61,6 +62,7 @@
 
 --- Representa os lados de um retângulo.
 --- @alias NodeUI.Control.Side
+--- | "ALL"
 --- | "LEFT"
 --- | "RIGHT"
 --- | "TOP"
@@ -68,6 +70,7 @@
 
 --- Representa as principais direções.
 --- @alias NodeUI.Control.Direction
+--- | "ALL"
 --- | "LEFT"
 --- | "RIGHT"
 --- | "UP"
@@ -75,6 +78,7 @@
 
 --- Representa os cantos de um retângulo.
 --- @alias NodeUI.Control.Corner
+--- | "ALL"
 --- | "TOP_LEFT"
 --- | "TOP_RIGHT"
 --- | "BOTTOM_LEFT"

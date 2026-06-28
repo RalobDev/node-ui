@@ -390,6 +390,12 @@ end
 --- @param axis NodeUI.Control.Axis Eixo da size flags.
 --- @param size_flags NodeUI.Control.SizeFlags Size flags aplicada ao `axis`.
 function Control:setSizeFlags(axis, size_flags)
+	if axis == "BOTH" then
+		self:setSizeFlags("HORIZONTAL", size_flags)
+		self:setSizeFlags("VERTICAL", size_flags)
+		return
+	end
+
 	local size_flags_key = "_size_flags_" .. axis:lower()
 	local old = self[size_flags_key]
 
