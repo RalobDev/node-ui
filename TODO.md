@@ -7,5 +7,5 @@
 - [ ] Adicionar TextureRect.
 - [ ] Adicionar suporte a ícone no Button.
 - [ ] Adicionar suporte a shortcut no ButtonBase.
-- [ ] Trocar `_onMouseFocusChanged()` por `_onChangedHover()`.
-- [ ] Remover conexão geral de `_onMouseFocusChanged()` no Control.
+- [x] Trocar `_onMouseFocusChanged()` por `_onChangedHover()`.
+- [x] Remover conexão geral de `_onMouseFocusChanged()` no Control.

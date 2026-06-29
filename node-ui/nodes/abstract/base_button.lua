@@ -61,6 +61,8 @@ function BaseButton:new(x, y, width, height, is_minimum)
     obj._button_mask = { MOUSE_LEFT = true }
     obj._toggled_mode = false
 
+    obj:connect("CHANGED_HOVER", "_onChangedHover", obj)
+
     return obj
 end
 
@@ -260,7 +262,7 @@ end
 --- Chamado quando o foco do mouse do **Control** muda.
 --- @protected
 --- @param focused boolean Se está focado pelo mouse.
-function BaseButton:_onMouseFocusChanged(focused)
+function BaseButton:_onChangedHover(focused)
     if not focused and not self._keep_pressed_outside and not self._toggled_mode then
         self:_forcePressed(false)
     end

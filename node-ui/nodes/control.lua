@@ -91,8 +91,6 @@ function Control:new(x, y, width, height, is_minimum)
 	obj._is_internal_child = false
 	obj._clip_content = false
 
-	obj:connect("CHANGED_HOVER", "_onMouseFocusChanged", obj)
-
 	obj:setMinimumDimensions(
 		is_minimum and width or 0,
 		is_minimum and height or 0
@@ -950,7 +948,7 @@ end
 --- @protected
 --- @param focused boolean Se está focado pelo mouse.
 --- @diagnostic disable-next-line: unused-local
-function Control:_onMouseFocusChanged(focused) end
+function Control:_onChangedHover(focused) end
 
 --#endregion
 
