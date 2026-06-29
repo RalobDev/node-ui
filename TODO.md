@@ -3,7 +3,7 @@
 - [x] Adicionar checagem de old em setters críticos.
 - [x] Remover o método de emissão dos nós e recursos e deixar o sinal protegido ao invés de privado.
 - [x] Substituir todos os `love.graphics.push("all")` por armazenar o estado gráfico (mais eficiente em muitas draw calls).
-- [ ] Adicionar a class NodeUI na geração automática das docs.
+- [x] Adicionar a class NodeUI na geração automática das docs.
 - [ ] Adicionar TextureRect.
 - [ ] Adicionar suporte a ícone no Button.
 - [ ] Adicionar suporte a shortcut no ButtonBase.

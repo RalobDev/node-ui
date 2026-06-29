@@ -1,7 +1,8 @@
-local ROOT = (...):match("^(.*)%.")                                              --- @type string
+local ROOT = (...):match("^(.*)%."):match("^(.*)%.")             --- @type string
 
-local Control = require(ROOT .. ".control")                                      --- @type NodeUI.Control
-local TextSettings = require(ROOT:match("(.+)%.") .. ".resources.text_settings") --- @type NodeUI.TextSettings
+local Control = require(ROOT .. ".nodes.control")                --- @type NodeUI.Control
+local TextSettings = require(ROOT .. ".resources.text_settings") --- @type NodeUI.TextSettings
+local Palette = require(ROOT .. ".core.palette")                 --- @type NodeUI.Palette
 
 local utf8 = require("utf8")
 
@@ -25,9 +26,7 @@ local utf8 = require("utf8")
 local TextBlock = Control:extend("TextBlock")
 
 
-local OUTLINE_SHADOW_COLOR = love.graphics.newShader(
-    ROOT:match("(.+)%."):gsub("%.", "/") .. "/shaders/outline_shadow.glsl"
-)
+local OUTLINE_SHADOW_COLOR = love.graphics.newShader(ROOT .. "/shaders/outline_shadow.glsl")
 
 
 --#region Public
@@ -824,33 +823,6 @@ function TextBlock:_parseBBCode(characters)
         return pcall(love.image.newImageData, path)
     end
 
-    --- Converte um código hexadecimal em RGBA.
-    --- @nodiscard
-    --- @param hex string
-    --- @return number? r, number? g, number? b, number? a
-    local function hexToRGBA(hex)
-        if type(hex) ~= "string" then
-            return nil, nil, nil, nil
-        end
-
-        hex = hex:gsub("^#", "")
-
-        if not hex:match("^[%x]+$") then
-            return nil, nil, nil, nil
-        end
-
-        if #hex ~= 6 and #hex ~= 8 then
-            return nil, nil, nil, nil
-        end
-
-        local r = tonumber(hex:sub(1, 2), 16)
-        local g = tonumber(hex:sub(3, 4), 16)
-        local b = tonumber(hex:sub(5, 6), 16)
-        local a = #hex == 8 and tonumber(hex:sub(7, 8), 16) or 255
-
-        return r / 255, g / 255, b / 255, a / 255
-    end
-
     local parsed_characters = {} --- @type NodeUI.TextBlock.Character[]
 
     -- STATES
@@ -935,10 +907,8 @@ function TextBlock:_parseBBCode(characters)
                 valid = true
             elseif tag == "color" or tag == "bgcolor" or tag == "fgcolor" then
                 if opened then
-                    local r, g, b, a = hexToRGBA(tag_value)
-                    if r then
-                        active_colors[tag] = { r, g, b, a }
-                    end
+                    local r, g, b, a = Palette:hexToRGBA(tag_value)
+                    active_colors[tag] = { r, g, b, a }
                 else
                     active_colors[tag] = nil
                 end

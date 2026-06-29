@@ -27,20 +27,23 @@ end
 --- Converte um código hexadecimal em RGBA.
 --- @nodiscard
 --- @param hex string
---- @return number? r, number? g, number? b, number? a
+--- @return number r Red.
+--- @return number g Green.
+--- @return number b Blue.
+--- @return number a Alpha.
 function Palette:hexToRGBA(hex)
     if type(hex) ~= "string" then
-        return nil, nil, nil, nil
+        return 1, 1, 1, 1
     end
 
     hex = hex:gsub("^#", "")
 
     if not hex:match("^[%x]+$") then
-        return nil, nil, nil, nil
+        return 1, 1, 1, 1
     end
 
     if #hex ~= 6 and #hex ~= 8 then
-        return nil, nil, nil, nil
+        return 1, 1, 1, 1
     end
 
     local r = tonumber(hex:sub(1, 2), 16)
