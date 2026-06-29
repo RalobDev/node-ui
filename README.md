@@ -51,6 +51,14 @@ function love.draw()
     NodeUI.drawDebug() -- Opcional
 end
 
+function love.keypressed(key, scancode, isrepeat)
+    NodeUI.keypressed(key, scancode, isrepeat)
+end
+
+function love.keyreleased(key, scancode)
+    NodeUI.keyreleased(key, scancode)
+end
+
 function love.mousepressed(x, y, button, istouch, presses)
     NodeUI.mousepressed(x, y, button, istouch, presses)
 end

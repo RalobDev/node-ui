@@ -332,6 +332,19 @@ function NodeUI.draw()
     callRootControlMethod("_draw")
 end
 
+--- Lida com o pressionar de teclas do teclado.
+--- @param key love.KeyConstant
+--- @param scancode love.Scancode
+--- @param isrepeat boolean
+--- @diagnostic disable-next-line: unused-local
+function NodeUI.keypressed(key, scancode, isrepeat) end
+
+--- Lida com o soltar de teclas do teclado.
+--- @param key love.KeyConstant
+--- @param scancode love.Scancode
+--- @diagnostic disable-next-line: unused-local
+function NodeUI.keyreleased(key, scancode) end
+
 --- Lida com o pressionar de um botão do mouse.
 --- @param x number        Posição x do mouse, em pixels.
 --- @param y number        Posição y do mouse, em pixels.
