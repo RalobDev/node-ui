@@ -639,8 +639,6 @@ function TextBlock:_drawCharacter(character, x, y)
             w = char_width,
             h = height
         }
-
-        love.graphics.rectangle("line", x, url_y, char_width, height)
     end
 end
 
