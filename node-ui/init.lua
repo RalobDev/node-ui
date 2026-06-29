@@ -37,6 +37,7 @@ local base_mouse_x = 0
 local base_mouse_y = 0
 local base_mouse_position_sended = false
 local base_mouse_position_sended_loops = 0
+local focused_control       --- @type NodeUI.Control|nil
 local hovered_control       --- @type NodeUI.Control|nil
 local control_mouse_pressed --- @type NodeUI.Control|nil
 
@@ -337,13 +338,47 @@ end
 --- @param scancode love.Scancode
 --- @param isrepeat boolean
 --- @diagnostic disable-next-line: unused-local
-function NodeUI.keypressed(key, scancode, isrepeat) end
+function NodeUI.keypressed(key, scancode, isrepeat)
+    -- Se não há ninguém focado, não processa navegação.
+    if not focused_control then return end
+
+    local next_control = nil
+
+    -- Lógica de navegação baseada nos vizinhos definidos.
+    if key == "tab" then
+        if love.keyboard.isDown("lshift", "rshift") then
+            next_control = focused_control:getFocusPrevious()
+        else
+            next_control = focused_control:getFocusNext()
+        end
+    elseif key == "left" then
+        next_control = focused_control:getNeighborFocus("LEFT")
+    elseif key == "right" then
+        next_control = focused_control:getNeighborFocus("RIGHT")
+    elseif key == "up" then
+        next_control = focused_control:getNeighborFocus("TOP")
+    elseif key == "down" then
+        next_control = focused_control:getNeighborFocus("BOTTOM")
+    end
+
+    -- Se tentou navegar para um vizinho válido e que suporta navegação por teclado.
+    if next_control and next_control:getFocusModeWithOverride() == "ALL" then
+        next_control:grabFocus()
+        return
+    end
+
+    focused_control:_onKeypressed(key, scancode, isrepeat) --- @diagnostic disable-line: invisible
+end
 
 --- Lida com o soltar de teclas do teclado.
 --- @param key love.KeyConstant
 --- @param scancode love.Scancode
 --- @diagnostic disable-next-line: unused-local
-function NodeUI.keyreleased(key, scancode) end
+function NodeUI.keyreleased(key, scancode, isrepeat)
+    if focused_control then
+        focused_control:_onKeyreleased(key, scancode) --- @diagnostic disable-line: invisible
+    end
+end
 
 --- Lida com o pressionar de um botão do mouse.
 --- @param x number        Posição x do mouse, em pixels.
@@ -353,8 +388,17 @@ function NodeUI.keyreleased(key, scancode) end
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousepressed(x, y, button, istouch, presses)
     if hovered_control then
+        -- Tenta puxar o foco se o controle permitir cliques.
+        local focus_mode = hovered_control:getFocusModeWithOverride()
+        if focus_mode == "CLICK" or focus_mode == "ALL" then
+            NodeUI._setFocus(hovered_control)
+        end
+
         hovered_control._signal:emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
         control_mouse_pressed = hovered_control
+    else
+        -- Clicou fora de qualquer controle focável, limpa o foco.
+        NodeUI._setFocus(nil)
     end
 end
 
@@ -565,6 +609,43 @@ end
 --- @param control NodeUI.Control Control a ser adicionado.
 function NodeUI._addRootControl(control)
     root_controls[#root_controls + 1] = control
+end
+
+--#endregion
+
+
+--#region Private Setter
+
+--- Define o **Control** que possui o foco do teclado.
+--- @private
+--- @param control NodeUI.Control?
+function NodeUI._setFocus(control)
+    if focused_control == control then return end
+
+    if focused_control then
+        -- Emite sinal e avisa o controle antigo que ele perdeu o foco.
+        focused_control._signal:emit("FOCUS_EXITED") --- @diagnostic disable-line: invisible
+    end
+
+    focused_control = control
+
+    if focused_control then
+        -- Emite sinal e avisa o novo controle que ele ganhou o foco.
+        focused_control._signal:emit("FOCUS_ENTERED") --- @diagnostic disable-line: invisible
+    end
+end
+
+--#endregion
+
+
+--#region Private Getter
+
+--- Retorna o **Control** atualmente focado.
+--- @nodiscard
+--- @private
+--- @return NodeUI.Control?
+function NodeUI._getFocusedControl()
+    return focused_control
 end
 
 --#endregion

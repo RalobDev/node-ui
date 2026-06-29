@@ -32,13 +32,25 @@
 
 --- Lista de sinais emitidos por um **`Control`**.
 --- @alias NodeUI.Control.Signals
---- | "MOUSE_PRESSED"       Quando um botão do mouse é pressionado. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
---- | "MOUSE_RELEASED"      Quando um botão do mouse é solto. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
---- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control. | `fun(x: number, y: number, dx: number, dy: number, istouch: bool)`
---- | "WHEEL_MOVED"         Quando o scroll do mouse é usado. | `fun(x: number, y: number)`
---- | "CHANGED_HOVER"       Emitido quando o o estado de estar sob o cursor muda. | `fun(hovered: bool)`
---- | "CHILD_ADDED"         Quando um filho é adicionado. | `fun(child: NodeUI.Control)`
---- | "CHILD_REMOVED"       Quando um filho é removido. | `fun(child: NodeUI.Control)`
+--- | "MOUSE_PRESSED"  Emitido quando um botão do mouse é pressionado. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
+--- | "MOUSE_RELEASED" Emitido quando um botão do mouse é solto. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
+--- | "MOUSE_MOVED"    Emitido quando o mouse se move sobre o Control. | `fun(x: number, y: number, dx: number, dy: number, istouch: bool)`
+--- | "WHEEL_MOVED"    Emitido quando o scroll do mouse é usado. | `fun(x: number, y: number)`
+--- | "CHANGED_HOVER"  Emitido quando o o estado de estar sob o cursor muda. | `fun(hovered: bool)`
+--- | "CHILD_ADDED"    Emitido quando um filho é adicionado. | `fun(child: NodeUI.Control)`
+--- | "CHILD_REMOVED"  Emitido quando um filho é removido. | `fun(child: NodeUI.Control)`
+--- | "FOCUS_ENTERED"  Emitido quando recebe o foco. | `fun()`
+--- | "FOCUS_EXITED"  Emitido quando perde o foco. | `fun()`
+
+--- @alias NodeUI.Control.FocusMode
+--- | "NONE"  O nó não consegue agarrar o foco.
+--- | "CLICK" O nó apenas agarra o foco com o clique do mouse.
+--- | "ALL"   O nó consegue agarrar o foco com o clique do mouse, setas, e tab.
+
+--- @alias NodeUI.Control.FocusBehavior
+--- | "INHERITED" Herda do parent. Se não tiver, é o mesmo que `ENABLED`.
+--- | "DISABLED"  Evita que o nó seja focado.
+--- | "ENABLED"   Permite que o nó seja focado a depenser do **`NodeUI.Control.FocusMode`**.
 
 --- Modo de alinhamento de algum elemento.
 --- @alias NodeUI.Control.AlignmentMode

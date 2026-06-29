@@ -34,6 +34,14 @@ local Signal = require(ROOT .. ".resources.abstract.signal") --- @type NodeUI.Si
 --- @field private _layout NodeUI.Control.Layout
 --- @field private _visible boolean
 --- @field private _mouse_filter NodeUI.Control.MouseFilter
+--- @field private _focus_mode NodeUI.Control.FocusMode
+--- @field private _focus_behavior_recursive NodeUI.Control.FocusBehavior
+--- @field private _focus_next? NodeUI.Control
+--- @field private _focus_previous? NodeUI.Control
+--- @field private _neighbor_left? NodeUI.Control
+--- @field private _neighbor_right? NodeUI.Control
+--- @field private _neighbor_top? NodeUI.Control
+--- @field private _neighbor_bottom? NodeUI.Control
 --- @field protected _signal NodeUI.Signal
 --- @field private _is_internal_child boolean
 --- @field private _clip_content boolean
@@ -75,6 +83,9 @@ function Control:new(x, y, width, height, is_minimum)
 	obj._visible = true
 
 	obj._mouse_filter = "PASS"
+
+	obj._focus_mode = "NONE"
+	obj._focus_behavior_recursive = "INHERITED"
 
 	obj._signal = Signal:new()
 	obj._is_internal_child = false
@@ -182,6 +193,18 @@ end
 --- @return boolean focused Se o cursor está sobre.
 function Control:isHovered()
 	return self._node_ui.getControlMouseFocus() == self
+end
+
+--- Solicita que este nó receba o foco do teclado/input.
+function Control:grabFocus()
+	self._node_ui._setFocus(self) --- @diagnostic disable-line: invisible
+end
+
+--- Retorna se este controle é o que detém o foco atualmente.
+--- @nodiscard
+--- @return boolean has_focus Se o nó está focado.
+function Control:hasFocus()
+	return self._node_ui._getFocusedControl() == self --- @diagnostic disable-line: invisible
 end
 
 -- #endregion
@@ -406,6 +429,70 @@ function Control:setSizeFlags(axis, size_flags)
 	end
 end
 
+--- Define o **`NodeUI.Control.FocusMode`**.
+--- @param focus_mode NodeUI.Control.FocusMode Modo do foco.
+function Control:setFocusMode(focus_mode)
+	local old = self._focus_mode
+
+	self._focus_mode = focus_mode
+
+	if self._focus_mode ~= old then
+		-- Se mudou em tempo de execução e este controle está focado, verifica se ainda pode manter o foco.
+		if self:hasFocus() and self:getFocusModeWithOverride() == "NONE" then
+			self._node_ui._setFocus(nil) --- @diagnostic disable-line: invisible
+		end
+	end
+end
+
+--- Define o **`NodeUI.Control.FocusBehavior`**.
+--- @param focus_behavior NodeUI.Control.FocusBehavior Comportamento do foco.
+function Control:setFocusBehaviorRecursive(focus_behavior)
+	local old = self._focus_behavior_recursive
+
+	self._focus_behavior_recursive = focus_behavior
+
+	if self._focus_behavior_recursive ~= old then
+		-- Quando a recursividade muda, o controle atual ou seus filhos podem perder o foco.
+		local current_focus = self._node_ui._getFocusedControl() --- @diagnostic disable-line: invisible
+
+		if current_focus then
+			-- Verifica se o controle focado é 'self' ou algum de seus descendentes.
+			local parent = current_focus --- @type NodeUI.Control?
+			while parent do
+				if parent == self then
+					-- Se o 'self' ou um filho dele tem o foco, reavaliamos o modo.
+					-- Se agora for NONE, soltamos o foco.
+					if current_focus:getFocusModeWithOverride() == "NONE" then
+						self._node_ui._setFocus(nil) --- @diagnostic disable-line: invisible
+					end
+					break
+				end
+				parent = parent:getParent()
+			end
+		end
+	end
+end
+
+--- Define o próximo **Control** a receber foco.
+--- @param focus_next NodeUI.Control|nil Próximo nó a receber foco.
+function Control:setFocusNext(focus_next)
+	self._focus_next = focus_next
+end
+
+--- Define **Control** anterior a receber foco.
+--- @param focus_previous NodeUI.Control|nil Nó anterior a receber foco.
+function Control:setFocusPrevious(focus_previous)
+	self._focus_previous = focus_previous
+end
+
+--- Define o **Control** vizinho do **`NodeUI.Control.Side`** a receber foco.
+--- @param side NodeUI.Control.Side
+--- @param neighbor NodeUI.Control|nil
+function Control:setNeighborFocus(side, neighbor)
+	local neighbor_key = "_neighbor_" .. side:lower()
+	self[neighbor_key] = neighbor
+end
+
 --#endregion
 
 
@@ -560,6 +647,67 @@ function Control:getSizeFlags(axis)
 	return self["_size_flags_" .. axis:lower()]
 end
 
+--- Retorna o **`NodeUI.Control.FocusMode`** real do **Control**, respeitando a herança do parent.
+--- @nodiscard
+--- @return NodeUI.Control.FocusMode focus_mode Modo de foco real.
+function Control:getFocusModeWithOverride()
+	if self._focus_behavior_recursive == "DISABLED" then
+		return "NONE"
+	elseif self._focus_behavior_recursive == "ENABLED" then
+		return self._focus_mode
+	end
+
+	-- Se for INHERITED, sobe a árvore procurando quem quebra a herança.
+	local current_parent = self._parent
+	while current_parent do
+		if current_parent._focus_behavior_recursive == "DISABLED" then
+			return "NONE"
+		elseif current_parent._focus_behavior_recursive == "ENABLED" then
+			return self._focus_mode
+		end
+		current_parent = current_parent:getParent()
+	end
+
+	-- Se chegou na raiz e ninguém alterou, INHERITED age como ENABLED.
+	return self._focus_mode
+end
+
+--- Retorna o **`NodeUI.Control.FocusMode`**.
+--- @nodiscard
+--- @return NodeUI.Control.FocusMode focus_mode Modo do foco.
+function Control:getFocusMode()
+	return self._focus_mode
+end
+
+--- Retorna o **`NodeUI.Control.FocusBehavior`**.
+--- @nodiscard
+--- @return NodeUI.Control.FocusBehavior focus_behavior Comportamento do foco.
+function Control:getFocusBehaviorRecursive()
+	return self._focus_behavior_recursive
+end
+
+--- Define o próximo **Control** a receber foco.
+--- @return NodeUI.Control|nil focus_next Próximo nó a receber foco.
+function Control:getFocusNext()
+	return self._focus_next
+end
+
+--- Retorna **Control** anterior a receber foco.
+--- @nodiscard
+--- @return NodeUI.Control|nil focus_previous Nó anterior a receber foco.
+function Control:getFocusPrevious()
+	return self._focus_previous
+end
+
+--- Retorna o **Control** vizinho do **`NodeUI.Control.Side`** a receber foco.
+--- @nodiscard
+--- @param side NodeUI.Control.Side
+--- @return NodeUI.Control|nil neighbor
+function Control:getNeighborFocus(side)
+	local neighbor_key = "_neighbor_" .. side:lower()
+	return self[neighbor_key]
+end
+
 --#endregion
 
 
@@ -620,6 +768,21 @@ end
 function Control:_onDrawDebug()
 	love.graphics.rectangle("line", self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 end
+
+--- Lida com o pressionar de teclas do teclado.
+--- @protected
+--- @param key love.KeyConstant
+--- @param scancode love.Scancode
+--- @param isrepeat boolean
+--- @diagnostic disable-next-line: unused-local
+function Control:_onKeypressed(key, scancode, isrepeat) end
+
+--- Lida com o soltar de teclas do teclado.
+--- @protected
+--- @param key love.KeyConstant
+--- @param scancode love.Scancode
+--- @diagnostic disable-next-line: unused-local
+function Control:_onKeyreleased(key, scancode) end
 
 --- Chamado quando um botão do mouse é pressionado.
 --- @protected
@@ -826,7 +989,9 @@ function Control:_drawDebug()
 	end
 
 	local r, g, b, a = love.graphics.getColor()
+	local default_line_width = love.graphics.getLineWidth()
 	love.graphics.setColor(self:isHovered() and { 1, 1, 0 } or { 0, 1, 0 })
+	love.graphics.setLineWidth(self:hasFocus() and default_line_width * 6 or default_line_width)
 
 	self:_onDrawDebug()
 
@@ -841,6 +1006,7 @@ function Control:_drawDebug()
 	end
 
 	love.graphics.setScissor(prev_scissor_x, prev_scissor_y, prev_scissor_w, prev_scissor_h)
+	love.graphics.setLineWidth(default_line_width)
 	love.graphics.setColor(r, g, b, a)
 end
 
