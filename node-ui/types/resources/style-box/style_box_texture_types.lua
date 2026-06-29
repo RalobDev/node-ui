@@ -2,6 +2,7 @@
 --- @alias NodeUI.StyleBoxTexture.Signals
 --- | NodeUI.StyleBox.Signals
 
+
 --- Maneira com a textura será exibida horizontal ou verticalmente na **`StyleBoxTexture`**.
 --- @alias NodeUI.StyleBoxTexture.AxisStretchMode
 --- | "STRETCH"  Distorce a textura.

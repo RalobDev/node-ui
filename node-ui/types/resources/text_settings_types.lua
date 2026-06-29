@@ -2,6 +2,7 @@
 --- @alias NodeUI.TextSettings.Signals
 --- | NodeUI.Resource.Signals
 
+
 --- @alias NodeUI.TextSettings.FontVariant
 --- | "ALL"
 --- | "NORMAL"
@@ -9,6 +10,7 @@
 --- | "ITALIC"
 --- | "BOLD_ITALIC"
 --- | "MONO"
+
 
 --- @class NodeUI.TextSettings.FontData
 --- @field font love.Font

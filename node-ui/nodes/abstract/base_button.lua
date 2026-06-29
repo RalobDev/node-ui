@@ -227,7 +227,6 @@ end
 --- Lida com um **InputEvent**.
 --- @protected
 --- @param event NodeUI.InputEvent
---- @diagnostic disable-next-line: unused-local
 function BaseButton:_onInput(event)
     if self._disabled then return end
 

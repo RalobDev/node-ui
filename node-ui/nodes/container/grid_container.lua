@@ -14,6 +14,7 @@ local Container = require(ROOT .. ".container") --- @type NodeUI.Container
 --- @field private _vertical_separation number
 local GridContainer = Container:extend("GridContainer")
 
+
 --#region Public
 
 --- Cria um novo **GridContainer**.
@@ -246,5 +247,6 @@ function GridContainer:_wrapChildren()
 end
 
 --#endregion
+
 
 return GridContainer

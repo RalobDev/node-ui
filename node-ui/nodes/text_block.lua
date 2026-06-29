@@ -500,7 +500,6 @@ end
 --- Lida com um **InputEvent**.
 --- @protected
 --- @param event NodeUI.InputEvent
---- @diagnostic disable-next-line: unused-local
 function TextBlock:_onInput(event)
     if self:_eventIs(event, "INPUT_EVENT_MOUSE_BUTTON") then
         --- @cast event NodeUI.InputEventMouseButton

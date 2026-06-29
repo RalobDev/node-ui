@@ -2,6 +2,7 @@
 --- @alias NodeUI.Button.Signals
 --- | NodeUI.BaseButton.Signals
 
+
 --- Estados de um **`Button`**.
 --- @alias NodeUI.Button.State
 --- | "ALL"

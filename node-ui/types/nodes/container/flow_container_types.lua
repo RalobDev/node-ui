@@ -2,6 +2,7 @@
 --- @alias NodeUI.FlowContainer.Signals
 --- | NodeUI.Container.Signals
 
+
 --- Maneira como as linhas ou colunas do **`FlowContainer`** se alinham.
 --- @alias NodeUI.FlowContainer.LastWrapAlignmentMode
 --- | NodeUI.Control.AlignmentMode

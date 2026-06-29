@@ -2,6 +2,7 @@
 --- @alias NodeUI.StyleBoxLine.Signals
 --- | NodeUI.StyleBox.Signals
 
+
 --- Tipos de limites de uma linha na **`StyleBoxLine`**.
 --- @alias NodeUI.StyleBoxLine.CapStyle
 --- | "BUTT"           Corta no limite.

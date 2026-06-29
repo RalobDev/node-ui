@@ -24,11 +24,13 @@
 --- | "FULL_RECT"
 --- | "CUSTOM"
 
+
 --- Define como eventos de mouse são propagados para o **`Control`**.
 --- @alias NodeUI.Control.MouseFilter
 --- | "STOP"   Consome o evento e impede propagação.
 --- | "PASS"   Permite propagação após processar o evento.
 --- | "IGNORE" Ignora o evento completamente.
+
 
 --- Lista de sinais emitidos por um **`Control`**.
 --- @alias NodeUI.Control.Signals
@@ -38,15 +40,18 @@
 --- | "FOCUS_ENTERED"  Emitido quando recebe o foco. | `fun()`
 --- | "FOCUS_EXITED"  Emitido quando perde o foco. | `fun()`
 
+
 --- @alias NodeUI.Control.FocusMode
 --- | "NONE"  O nó não consegue agarrar o foco.
 --- | "CLICK" O nó apenas agarra o foco com o clique do mouse.
 --- | "ALL"   O nó consegue agarrar o foco com o clique do mouse, setas, e tab.
 
+
 --- @alias NodeUI.Control.FocusBehavior
 --- | "INHERITED" Herda do parent. Se não tiver, é o mesmo que `ENABLED`.
 --- | "DISABLED"  Evita que o nó seja focado.
 --- | "ENABLED"   Permite que o nó seja focado a depenser do **`NodeUI.Control.FocusMode`**.
+
 
 --- Modo de alinhamento de algum elemento.
 --- @alias NodeUI.Control.AlignmentMode
@@ -54,11 +59,13 @@
 --- | "CENTER" Alinhado ao meio.
 --- | "END"    Alinhado ao fim.
 
+
 --- Eixo horizontal ou vertical.
 --- @alias NodeUI.Control.Axis
 --- | "BOTH"
 --- | "HORIZONTAL"
 --- | "VERTICAL"
+
 
 --- Define como o **`Control`** ocupa o espaço disponível em um **`Container`**.
 --- @alias NodeUI.Control.SizeFlags
@@ -68,6 +75,7 @@
 --- | "SHRINK_CENTER" Mantém o tamanho mínimo e centraliza.
 --- | "SHRINK_END"    Mantém o tamanho mínimo e alinha no fim.
 
+
 --- Representa os lados de um retângulo.
 --- @alias NodeUI.Control.Side
 --- | "ALL"
@@ -76,6 +84,7 @@
 --- | "TOP"
 --- | "BOTTOM"
 
+
 --- Representa as principais direções.
 --- @alias NodeUI.Control.Direction
 --- | "ALL"
@@ -83,6 +92,7 @@
 --- | "RIGHT"
 --- | "UP"
 --- | "DOWN"
+
 
 --- Representa os cantos de um retângulo.
 --- @alias NodeUI.Control.Corner

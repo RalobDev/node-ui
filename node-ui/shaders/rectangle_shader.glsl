@@ -78,14 +78,9 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords)
     float blurHalf  = max(shadowBlur, 1e-4);
     float shadowRaw = 1.0 - smoothstep(-blurHalf, blurHalf, dShadow);
 
-    // --- CORREÇÃO: recorte da sombra baseado na opacidade efetiva do fill ---
-    // Quando drawFill=false: recorta totalmente (buraco no centro)
-    // Quando drawFill=true e fill transparente: recorta proporcionalmente ao alpha
-    // Quando drawFill=true e fill opaco: sombra fica escondida sob o shape
     float fillOpacity = drawFill ? fillColor.a : 0.0;
     float shadowMask  = shadowRaw * mix(1.0 - outerMask, 1.0, fillOpacity);
 
-    // --- Shape em Premultiplied Alpha ---
     vec4 pmShadow = toPMA(shadowColor) * shadowMask;
     vec4 pmFill   = toPMA(fillColor);
     vec4 pmBorder = toPMA(vec4(borderColor.rgb, borderColor.a * borderAlpha));
@@ -100,11 +95,9 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords)
             pmShape = mix(pmFill, pmBorder, ringMask) * outerMask;
         }
     } else {
-        // Sem fill: só a borda (ring)
         pmShape = pmBorder * ringMask;
     }
 
-    // Compositing: Shape SOBRE Sombra (fórmula PMA)
     vec4 finalPMA = pmShape + pmShadow * (1.0 - pmShape.a);
 
     vec4 finalColor = toStraight(finalPMA);

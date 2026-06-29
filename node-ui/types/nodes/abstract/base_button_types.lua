@@ -6,10 +6,12 @@
 --- | "BUTTON_UP"   Emitido quando o botão para ser ser pressionado. | `fun()`
 --- | "TOGGLED"     Emitido quando o botão é alterado entre pressionado e não. | `fun(toggled_on: bool)`
 
+
 --- Maneira como o **`BaseButton`** é ativado.
 --- @alias NodeUI.BaseButton.ActionMode
 --- | "PRESS"   Ativado ao pressionar o botão.
 --- | "RELEASE" Ativado ao soltar o botão.
+
 
 --- Quais botões do mouse são usados para ativar o **`BaseButton`**.
 --- @alias NodeUI.BaseButton.ButtonMask

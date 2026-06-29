@@ -2,6 +2,7 @@
 --- @alias NodeUI.AspectRatioContainer.Signals
 --- | NodeUI.Container.Signals
 
+
 --- Maneira como os filhos do **`AspectRatioContainer`** são escalonados.
 --- @alias NodeUI.AspectRatioContainer.StretchMode
 --- | "STRETCH_WIDTH"  Escala para o comprimento.
