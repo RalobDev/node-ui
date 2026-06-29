@@ -114,7 +114,7 @@ Os nós possuem um sistema de sinais simples, porém poderoso.
 
 Quando um sinal é emitido, todos os callbacks conectados a ele são executados automaticamente. Os sinais disponíveis podem ser consultados na documentação de cada nó na [Referência de Classes](docs/api/class_reference.md).
 
-Vamos supor que desejamos saber quando um nó ganha ou perde o foco do mouse. Para isso, conectamos um callback ao sinal `MOUSE_FOCUS_CHANGED`.
+Vamos supor que desejamos saber quando um nó ganha ou perde o foco do mouse. Para isso, conectamos um callback ao sinal `CHANGED_HOVER`.
 
 ### Callback sem dono
 
@@ -127,12 +127,12 @@ local callback = function(focused)
     print(focused)
 end
 
-control:connect("MOUSE_FOCUS_CHANGED", callback)
+control:connect("CHANGED_HOVER", callback)
 
 -- Se control receber o foco do mouse:
 -- Output: true
 
-control:disconnect("MOUSE_FOCUS_CHANGED", callback)
+control:disconnect("CHANGED_HOVER", callback)
 ```
 
 ### Callback com dono
@@ -151,7 +151,7 @@ local owner = {
 }
 
 control:connect(
-    "MOUSE_FOCUS_CHANGED",
+    "CHANGED_HOVER",
     "on_mouse_focus_changed",
     owner
 )
@@ -160,7 +160,7 @@ control:connect(
 -- Output: "Anything" true
 
 control:disconnect(
-    "MOUSE_FOCUS_CHANGED",
+    "CHANGED_HOVER",
     "on_mouse_focus_changed",
     owner
 )

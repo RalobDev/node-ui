@@ -37,7 +37,7 @@ local base_mouse_x = 0
 local base_mouse_y = 0
 local base_mouse_position_sended = false
 local base_mouse_position_sended_loops = 0
-local control_mouse_focus   --- @type NodeUI.Control|nil
+local hovered_control       --- @type NodeUI.Control|nil
 local control_mouse_pressed --- @type NodeUI.Control|nil
 
 
@@ -151,43 +151,42 @@ local function deleteTree(root)
     end
 end
 
---- Define o foco do mouse do **Control**.
+--- Define se o **Control** está sob o cursor do mouse.
 --- @param control NodeUI.Control
---- @param enabled boolean Se `true`, ativa o foco do mouse.
-local function setControlMouseFocus(control, enabled)
-    local had_focus = control_mouse_focus == control
+--- @param enabled boolean Se `true`, está sob o mouse.
+local function setControlHovered(control, enabled)
+    local had_hovered = hovered_control == control
 
     if enabled then
-        control_mouse_focus = control
-    elseif had_focus then
-        control_mouse_focus = nil
+        hovered_control = control
+    elseif had_hovered then
+        hovered_control = nil
     end
 
-    local has_focus = control_mouse_focus == control
+    local has_hovered = hovered_control == control
 
-    if had_focus ~= has_focus then
-        control._signal:emit("MOUSE_FOCUS_CHANGED", has_focus) --- @diagnostic disable-line: invisible
+    if had_hovered ~= has_hovered then
+        control._signal:emit("CHANGED_HOVER", has_hovered) --- @diagnostic disable-line: invisible
     end
 end
 
---- Limpa o foco do mouse da árvore de nós.
+--- Limpa o estado de estar sob o mouse da `root`.
 --- @param root NodeUI.Control     Raiz da árvore de **Control**.
 --- @param exclude? NodeUI.Control **Control** que será excluido da limpeza.
-local function clearTreeMouseFocus(root, exclude)
+local function clearHoveredTree(root, exclude)
     if root ~= exclude then
-        setControlMouseFocus(root, false)
+        setControlHovered(root, false)
     end
 
     for _, child in ipairs(root:getChildren(true)) do
-        clearTreeMouseFocus(child, exclude)
+        clearHoveredTree(child, exclude)
     end
 end
 
-
---- Encontra o foco do mouse na árvore de nós. Caso não exista retorna `nil`.
+--- Encontra que nó está sob o cursor na árvore de nós. Caso não exista retorna `nil`.
 --- @param root NodeUI.Control      Raiz da árvore de **Control**.
---- @return NodeUI.Control? focused **Control** com o foco do mouse.
-local function findTreeMouseFocus(root)
+--- @return NodeUI.Control? hovered **Control** que está sob o mouse.
+local function findHoveredTree(root)
     if not root:isVisible() then
         return nil
     end
@@ -220,10 +219,10 @@ local function findTreeMouseFocus(root)
         local children = root:getChildren(true)
         for i = #children, 1, -1 do
             local child = children[i]
-            local focused = findTreeMouseFocus(child)
+            local hovered = findHoveredTree(child)
 
-            if focused then
-                return focused
+            if hovered then
+                return hovered
             end
         end
 
@@ -235,17 +234,17 @@ end
 
 --- Atualiza o foco do mouse na árvore de nós. Se existir, retorna o **Control** com o foco do mouse.
 --- @param root NodeUI.Control      Raiz da árvore de **Control**.
---- @return NodeUI.Control? focused **Control** com o foco do mouse.
-local function updateTreeMouseFocus(root)
-    local focused = findTreeMouseFocus(root)
+--- @return NodeUI.Control? focused **Control** que está sob o mouse.
+local function updateHoveredTree(root)
+    local hovered = findHoveredTree(root)
 
-    clearTreeMouseFocus(root, focused)
+    clearHoveredTree(root, hovered)
 
-    if focused then
-        setControlMouseFocus(focused, true)
+    if hovered then
+        setControlHovered(hovered, true)
     end
 
-    return focused
+    return hovered
 end
 
 --#endregion
@@ -316,13 +315,13 @@ function NodeUI.update(dt)
             local root_control = root_controls[i]
 
             if not focus_caught then
-                local focused = updateTreeMouseFocus(root_control)
+                local focused = updateHoveredTree(root_control)
                 if focused then
                     focus_caught = true
                 end
             else
                 -- Se um root acima já pegou o mouse, limpa os que estão embaixo.
-                clearTreeMouseFocus(root_control)
+                clearHoveredTree(root_control)
             end
         end
     end
@@ -340,9 +339,9 @@ end
 --- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousepressed(x, y, button, istouch, presses)
-    if control_mouse_focus then
-        control_mouse_focus._signal:emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
-        control_mouse_pressed = control_mouse_focus
+    if hovered_control then
+        hovered_control._signal:emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+        control_mouse_pressed = hovered_control
     end
 end
 
@@ -365,8 +364,8 @@ end
 --- @param dy number       Quanto se moveu ao longo do eixo-y.
 --- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
 function NodeUI.mousemoved(x, y, dx, dy, istouch)
-    if control_mouse_focus then
-        control_mouse_focus._signal:emit("MOUSE_MOVED", x, y, dx, dy, istouch) --- @diagnostic disable-line: invisible
+    if hovered_control then
+        hovered_control._signal:emit("MOUSE_MOVED", x, y, dx, dy, istouch) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -374,8 +373,8 @@ end
 --- @param x number Quanto se moveu ao longo do eixo-x.
 --- @param y number Quanto se moveu ao longo do eixo-y.
 function NodeUI.wheelmoved(x, y)
-    if control_mouse_focus then
-        control_mouse_focus._signal:emit("WHEEL_MOVED", x, y) --- @diagnostic disable-line: invisible
+    if hovered_control then
+        hovered_control._signal:emit("WHEEL_MOVED", x, y) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -474,7 +473,7 @@ end
 --- @nodiscard
 --- @return NodeUI.Control? mouse_focus_control **Control** que possui o foco do mouse.
 function NodeUI.getControlMouseFocus()
-    return control_mouse_focus
+    return hovered_control
 end
 
 --- Retorna a posição horizontal base dos **`Control`** na raiz.

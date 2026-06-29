@@ -84,7 +84,7 @@ function Control:new(x, y, width, height, is_minimum)
 	obj:connect("MOUSE_RELEASED", "_onMousereleased", obj)
 	obj:connect("MOUSE_MOVED", "_onMousemoved", obj)
 	obj:connect("WHEEL_MOVED", "_onWheelMoved", obj)
-	obj:connect("MOUSE_FOCUS_CHANGED", "_onMouseFocusChanged", obj)
+	obj:connect("CHANGED_HOVER", "_onMouseFocusChanged", obj)
 
 	obj:setMinimumDimensions(
 		is_minimum and width or 0,
@@ -177,10 +177,10 @@ function Control:disconnect(signal, method, owner)
 	self._signal:disconnect(signal, method, owner)
 end
 
---- Retorna se o **Control** possui o foco do mouse.
+--- Retorna se o cursor do mouse está sobre o **Control**.
 --- @nodiscard
---- @return boolean focused Se o **Control** possui o foco do mouse.
-function Control:hasMouseFocus()
+--- @return boolean focused Se o cursor está sobre.
+function Control:isHovered()
 	return self._node_ui.getControlMouseFocus() == self
 end
 
@@ -826,7 +826,7 @@ function Control:_drawDebug()
 	end
 
 	local r, g, b, a = love.graphics.getColor()
-	love.graphics.setColor(self:hasMouseFocus() and { 1, 1, 0 } or { 0, 1, 0 })
+	love.graphics.setColor(self:isHovered() and { 1, 1, 0 } or { 0, 1, 0 })
 
 	self:_onDrawDebug()
 

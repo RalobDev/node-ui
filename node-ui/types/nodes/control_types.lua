@@ -36,7 +36,7 @@
 --- | "MOUSE_RELEASED"      Quando um botão do mouse é solto. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
 --- | "MOUSE_MOVED"         Quando o mouse se move sobre o Control. | `fun(x: number, y: number, dx: number, dy: number, istouch: bool)`
 --- | "WHEEL_MOVED"         Quando o scroll do mouse é usado. | `fun(x: number, y: number)`
---- | "MOUSE_FOCUS_CHANGED" Quando o foco de mouse entra ou sai. | `fun(focused: bool)`
+--- | "CHANGED_HOVER"       Emitido quando o o estado de estar sob o cursor muda. | `fun(hovered: bool)`
 --- | "CHILD_ADDED"         Quando um filho é adicionado. | `fun(child: NodeUI.Control)`
 --- | "CHILD_REMOVED"       Quando um filho é removido. | `fun(child: NodeUI.Control)`
 

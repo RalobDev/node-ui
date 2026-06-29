@@ -211,11 +211,11 @@ function Button:_onUpdate(dt)
 
     if self:isDisabled() then
         state = "DISABLED"
-    elseif self:isPressed() and self:hasMouseFocus() then
+    elseif self:isPressed() and self:isHovered() then
         state = "HOVER_PRESSED"
     elseif self:isPressed() then
         state = "PRESSED"
-    elseif self:hasMouseFocus() then
+    elseif self:isHovered() then
         state = "HOVER"
     else
         state = "NORMAL"
