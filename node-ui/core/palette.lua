@@ -26,7 +26,7 @@ end
 
 --- Converte um código hexadecimal em RGBA.
 --- @nodiscard
---- @param hex string
+--- @param hex string Código hexadecimal.
 --- @return number r Red.
 --- @return number g Green.
 --- @return number b Blue.
