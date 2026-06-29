@@ -9,3 +9,6 @@
 - [ ] Adicionar suporte a shortcut no ButtonBase.
 - [x] Trocar `_onMouseFocusChanged()` por `_onChangedHover()`.
 - [x] Remover conexão geral de `_onMouseFocusChanged()` no Control.
+- [ ] Adicionar suporte a alterar o cursor.
+- [ ] Adicionar love.keypressed e love.keyreleased no main.
+- [ ] Padrozina a busca do ROOT.

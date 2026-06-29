@@ -1,0 +1,5 @@
+--- Lista de sinais emitidos por um **`Range`**.
+--- @alias NodeUI.Range.Signals
+--- | NodeUI.Control.Signals
+--- | "CHANGED"       Emitido quando o valor mínimo, valor máximo e step é alterado. | `fun()`
+--- | "VALUE_CHANGED" Emitido quando o valor é alterado. | `fun(value: number)`

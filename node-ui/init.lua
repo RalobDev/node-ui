@@ -24,6 +24,7 @@ end
 --- @field GridContainer NodeUI.GridContainer               Referência ao **NodeUI.GridContainer**.
 --- @field MarginContainer NodeUI.MarginContainer           Referência ao **NodeUI.MarginContainer**.
 --- @field Panel NodeUI.Panel                               Referência ao **NodeUI.Panel**.
+--- @field ScrollBar NodeUI.ScrollBar                       Referência ao **NodeUI.ScrollBar**.
 --- @field TextBlock NodeUI.TextBlock                       Referência ao **NodeUI.TextBlock**.
 --- @field Resources NodeUI.Resources                       Referência a todos os recursos.
 local NodeUI = {}
