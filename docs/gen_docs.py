@@ -91,6 +91,7 @@ class Markdown():
 #region Constants
 
 LIBRARY_PATH: Path = Path("node-ui")
+CORE_CLASSES_PATH: Path = Path(f"{LIBRARY_PATH}/core")
 ABSTRACT_CLASSES_PATH: Path = Path(f"{LIBRARY_PATH}/abstract")
 NODES_PATH: Path = Path(f"{LIBRARY_PATH}/nodes")
 RESOURCES_PATH: Path = Path(f"{LIBRARY_PATH}/resources")
@@ -109,7 +110,7 @@ def main() -> None:
     code_classes: list[CodeClass] = []
 
     code_classes.extend(get_code_classes(Path(f"{LIBRARY_PATH}/init.lua"), CodeClassType.CORE, True))
-    code_classes.extend(get_code_classes(Path(f"{LIBRARY_PATH}/palette.lua"), CodeClassType.CORE, True))
+    code_classes.extend(get_code_classes(CORE_CLASSES_PATH, CodeClassType.CORE))
     code_classes.extend(get_code_classes(ABSTRACT_CLASSES_PATH, CodeClassType.RESOURCE))
     code_classes.extend(get_code_classes(NODES_PATH, CodeClassType.NODE))
     code_classes.extend(get_code_classes(RESOURCES_PATH, CodeClassType.RESOURCE))
@@ -315,7 +316,10 @@ def write_alias_class(code_class: CodeClass) -> None:
     file: Markdown = Markdown(f"{DOCS_API_PATH}/types/{to_snake(code_class.type_owner)}_types.md")
 
     if not file.exists():
-        file.line(f"# {code_class.type_owner.split(".", 1)[1]}")
+        owner: str = code_class.type_owner
+        title: str = owner.split(".", 1)[1] if "." in owner else owner
+
+        file.line(f"# {title}")
         file.blank()
 
     file.line(create_point_reference(to_snake(code_class.name)))
