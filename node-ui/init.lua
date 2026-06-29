@@ -367,16 +367,34 @@ function NodeUI.keypressed(key, scancode, isrepeat)
         return
     end
 
-    focused_control:_onKeypressed(key, scancode, isrepeat) --- @diagnostic disable-line: invisible
+    local event = { --- @type NodeUI.InputEventKey
+        id = "INPUT_EVENT_KEY",
+        pressed = true,
+        accepted = false,
+        key = key,
+        scancode = scancode,
+        isrepeat = isrepeat
+    }
+
+    focused_control:_receiveEvent(event) --- @diagnostic disable-line: invisible
 end
 
 --- Lida com o soltar de teclas do teclado.
 --- @param key love.KeyConstant
 --- @param scancode love.Scancode
 --- @diagnostic disable-next-line: unused-local
-function NodeUI.keyreleased(key, scancode, isrepeat)
+function NodeUI.keyreleased(key, scancode)
     if focused_control then
-        focused_control:_onKeyreleased(key, scancode) --- @diagnostic disable-line: invisible
+        local event = { --- @type NodeUI.InputEventKey
+            id = "INPUT_EVENT_KEY",
+            pressed = false,
+            accepted = false,
+            key = key,
+            scancode = scancode,
+            isrepeat = false
+        }
+
+        focused_control:_receiveEvent(event) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -394,7 +412,18 @@ function NodeUI.mousepressed(x, y, button, istouch, presses)
             NodeUI._setFocus(hovered_control)
         end
 
-        hovered_control._signal:emit("MOUSE_PRESSED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+        local event = { --- @type NodeUI.InputEventMouseButton
+            id = "INPUT_EVENT_MOUSE_BUTTON",
+            pressed = true,
+            accepted = false,
+            x = x,
+            y = y,
+            istouch = istouch,
+            button = button,
+            presses = presses
+        }
+
+        hovered_control:_receiveEvent(event) --- @diagnostic disable-line: invisible
         control_mouse_pressed = hovered_control
     else
         -- Clicou fora de qualquer controle focável, limpa o foco.
@@ -410,7 +439,18 @@ end
 --- @param presses number  O número de pressionamentos.
 function NodeUI.mousereleased(x, y, button, istouch, presses)
     if control_mouse_pressed then
-        control_mouse_pressed._signal:emit("MOUSE_RELEASED", x, y, button, istouch, presses) --- @diagnostic disable-line: invisible
+        local event = { --- @type NodeUI.InputEventMouseButton
+            id = "INPUT_EVENT_MOUSE_BUTTON",
+            pressed = false,
+            accepted = false,
+            x = x,
+            y = y,
+            istouch = istouch,
+            button = button,
+            presses = presses
+        }
+
+        control_mouse_pressed:_receiveEvent(event) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -422,7 +462,18 @@ end
 --- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
 function NodeUI.mousemoved(x, y, dx, dy, istouch)
     if hovered_control then
-        hovered_control._signal:emit("MOUSE_MOVED", x, y, dx, dy, istouch) --- @diagnostic disable-line: invisible
+        local event = { --- @type NodeUI.InputEventMouseMotion
+            id = "INPUT_EVENT_MOUSE_MOTION",
+            pressed = true,
+            accepted = false,
+            x = x,
+            y = y,
+            istouch = istouch,
+            dx = dx,
+            dy = dy
+        }
+
+        hovered_control:_receiveEvent(event) --- @diagnostic disable-line: invisible
     end
 end
 
@@ -431,7 +482,15 @@ end
 --- @param y number Quanto se moveu ao longo do eixo-y.
 function NodeUI.wheelmoved(x, y)
     if hovered_control then
-        hovered_control._signal:emit("WHEEL_MOVED", x, y) --- @diagnostic disable-line: invisible
+        local event = { --- @type NodeUI.InputEventWheelMoved
+            id = "INPUT_EVENT_WHEEL_MOVED",
+            pressed = true,
+            accepted = false,
+            x = x,
+            y = y
+        }
+
+        hovered_control:_receiveEvent(event) --- @diagnostic disable-line: invisible
     end
 end
 

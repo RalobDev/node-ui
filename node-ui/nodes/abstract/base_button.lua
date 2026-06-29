@@ -224,47 +224,37 @@ end
 
 --#region Protected Callback
 
---- Chamado quando um botão do mouse é pressionado.
+--- Lida com um **InputEvent**.
 --- @protected
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi pressionado.
---- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
+--- @param event NodeUI.InputEvent
 --- @diagnostic disable-next-line: unused-local
-function BaseButton:_onMousepressed(x, y, button, istouch, presses)
+function BaseButton:_onInput(event)
     if self._disabled then return end
 
-    local pressed_successfully, is_primary = self:_press(button)
+    if self:_acceptEvent(event, "INPUT_EVENT_MOUSE_BUTTON") then
+        --- @cast event NodeUI.InputEventMouseButton
 
-    -- Adicionada verificação do is_primary
-    if pressed_successfully and is_primary and self._action_mode == "PRESS" then
-        if self._toggled_mode then
-            self:_forcePressed(not self._is_pressed)
+        if event.pressed then
+            local pressed_successfully, is_primary = self:_press(event.button)
+
+            -- Adicionada verificação do is_primary
+            if pressed_successfully and is_primary and self._action_mode == "PRESS" then
+                if self._toggled_mode then
+                    self:_forcePressed(not self._is_pressed)
+                end
+                self._signal:emit("PRESSED")
+            end
+        else
+            local unpressed_successfully, is_primary = self:_unpress(event.button)
+
+            -- Adicionada verificação do is_primary
+            if unpressed_successfully and is_primary and self._action_mode == "RELEASE" then
+                if self._toggled_mode then
+                    self:_forcePressed(not self._is_pressed)
+                end
+                self._signal:emit("PRESSED")
+            end
         end
-        self._signal:emit("PRESSED")
-    end
-end
-
---- Chamado quando um botão do mouse é solto.
---- @protected
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi solto.
---- @param istouch boolean `true` se o soltar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
---- @diagnostic disable-next-line: unused-local
-function BaseButton:_onMousereleased(x, y, button, istouch, presses)
-    if self._disabled then return end
-
-    local unpressed_successfully, is_primary = self:_unpress(button)
-
-    -- Adicionada verificação do is_primary
-    if unpressed_successfully and is_primary and self._action_mode == "RELEASE" then
-        if self._toggled_mode then
-            self:_forcePressed(not self._is_pressed)
-        end
-        self._signal:emit("PRESSED")
     end
 end
 

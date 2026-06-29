@@ -32,10 +32,6 @@
 
 --- Lista de sinais emitidos por um **`Control`**.
 --- @alias NodeUI.Control.Signals
---- | "MOUSE_PRESSED"  Emitido quando um botão do mouse é pressionado. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
---- | "MOUSE_RELEASED" Emitido quando um botão do mouse é solto. | `fun(x: number, y: number, button: number, istouch: bool, presses: int)`
---- | "MOUSE_MOVED"    Emitido quando o mouse se move sobre o Control. | `fun(x: number, y: number, dx: number, dy: number, istouch: bool)`
---- | "WHEEL_MOVED"    Emitido quando o scroll do mouse é usado. | `fun(x: number, y: number)`
 --- | "CHANGED_HOVER"  Emitido quando o o estado de estar sob o cursor muda. | `fun(hovered: bool)`
 --- | "CHILD_ADDED"    Emitido quando um filho é adicionado. | `fun(child: NodeUI.Control)`
 --- | "CHILD_REMOVED"  Emitido quando um filho é removido. | `fun(child: NodeUI.Control)`

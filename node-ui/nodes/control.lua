@@ -91,10 +91,6 @@ function Control:new(x, y, width, height, is_minimum)
 	obj._is_internal_child = false
 	obj._clip_content = false
 
-	obj:connect("MOUSE_PRESSED", "_onMousepressed", obj)
-	obj:connect("MOUSE_RELEASED", "_onMousereleased", obj)
-	obj:connect("MOUSE_MOVED", "_onMousemoved", obj)
-	obj:connect("WHEEL_MOVED", "_onWheelMoved", obj)
 	obj:connect("CHANGED_HOVER", "_onMouseFocusChanged", obj)
 
 	obj:setMinimumDimensions(
@@ -719,6 +715,32 @@ function Control:_queueUpdateLayout()
 	self._queued_for_update_layout = true
 end
 
+--- Retorna se o id do `event` corresponde a determinado **NodeUI.InputEvent.IDs**.
+--- @nodiscard
+--- @protected
+--- @param event NodeUI.InputEvent
+--- @param id NodeUI.InputEvent.IDs
+--- @return boolean event_is Se o id corresponde ao event.
+function Control:_eventIs(event, id)
+	return event.id == id
+end
+
+--- Aceita um **InputEvent**. Caso seja passado um `conditional_id`, o evento só será aceito se o id corresponder.
+--- @protected
+--- @param event NodeUI.InputEvent
+--- @param conditional_id? NodeUI.InputEvent.IDs
+--- @return boolean accepted
+function Control:_acceptEvent(event, conditional_id)
+	local can_accept = true
+
+	if conditional_id ~= nil and event.id ~= conditional_id then
+		can_accept = false
+	end
+
+	event.accepted = can_accept
+	return can_accept
+end
+
 --#endregion
 
 
@@ -769,57 +791,11 @@ function Control:_onDrawDebug()
 	love.graphics.rectangle("line", self._layout_x, self._layout_y, self._layout_width, self._layout_height)
 end
 
---- Lida com o pressionar de teclas do teclado.
+--- Lida com um **InputEvent**.
 --- @protected
---- @param key love.KeyConstant
---- @param scancode love.Scancode
---- @param isrepeat boolean
+--- @param event NodeUI.InputEvent
 --- @diagnostic disable-next-line: unused-local
-function Control:_onKeypressed(key, scancode, isrepeat) end
-
---- Lida com o soltar de teclas do teclado.
---- @protected
---- @param key love.KeyConstant
---- @param scancode love.Scancode
---- @diagnostic disable-next-line: unused-local
-function Control:_onKeyreleased(key, scancode) end
-
---- Chamado quando um botão do mouse é pressionado.
---- @protected
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi pressionado.
---- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
---- @diagnostic disable-next-line: unused-local
-function Control:_onMousepressed(x, y, button, istouch, presses) end
-
---- Chamado quando um botão do mouse é solto.
---- @protected
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi solto.
---- @param istouch boolean `true` se o soltar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
---- @diagnostic disable-next-line: unused-local
-function Control:_onMousereleased(x, y, button, istouch, presses) end
-
---- Chamado quando o mouse é movido.
---- @protected
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param dx number       Quanto se moveu ao longo do eixo-x.
---- @param dy number       Quanto se moveu ao longo do eixo-y.
---- @param istouch boolean `true` se o movimento do mouse é originado de uma touchscreen.
---- @diagnostic disable-next-line: unused-local
-function Control:_onMousemoved(x, y, dx, dy, istouch) end
-
---- Chamado quando a roda do mouse é movida.
---- @private
---- @param x number Quanto se moveu ao longo do eixo-x.
---- @param y number Quanto se moveu ao longo do eixo-y.
---- @diagnostic disable-next-line: unused-local
-function Control:_onWheelMoved(x, y) end
+function Control:_onInput(event) end
 
 --- Chamado durante a atualização do layout do **Control**.
 --- @protected
@@ -1044,6 +1020,17 @@ function Control:_updateLayout()
 		for _, child in ipairs(self._children) do
 			child:_queueUpdateLayout()
 		end
+	end
+end
+
+--- Recebe um **InputEvent** e repassa para seu parente caso ele não seja aceito.
+--- @private
+--- @param event NodeUI.InputEvent
+function Control:_receiveEvent(event)
+	self:_onInput(event)
+
+	if not event.accepted and self._parent then
+		self._parent:_receiveEvent(event)
 	end
 end
 
