@@ -19,6 +19,21 @@ function love.draw()
 	NodeUI.drawDebug()
 end
 
+--- Lida com o pressionar de teclas do teclado.
+--- @param key love.KeyConstant
+--- @param scancode love.Scancode
+--- @param isrepeat boolean
+function love.keypressed(key, scancode, isrepeat)
+	NodeUI.keypressed(key, scancode, isrepeat)
+end
+
+--- Lida com o soltar de teclas do teclado.
+--- @param key love.KeyConstant
+--- @param scancode love.Scancode
+function love.keyreleased(key, scancode)
+	NodeUI.keyreleased(key, scancode)
+end
+
 --- Lida com o pressionar do mouse.
 --- @param x number
 --- @param y number

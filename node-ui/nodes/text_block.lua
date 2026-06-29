@@ -497,29 +497,35 @@ function TextBlock:_onDraw()
     love.graphics.setColor(r, g, b, a)
 end
 
---- Chamado quando um botão do mouse é pressionado.
+--- Lida com um **InputEvent**.
 --- @protected
---- @param x number        Posição x do mouse, em pixels.
---- @param y number        Posição y do mouse, em pixels.
---- @param button number   O index do botão que foi pressionado.
---- @param istouch boolean `true` se o pressionar do botão do mouse é originado de uma touchscreen.
---- @param presses number  O número de pressionamentos.
+--- @param event NodeUI.InputEvent
 --- @diagnostic disable-next-line: unused-local
-function TextBlock:_onMousepressed(x, y, button, istouch, presses)
-    for _, url_character in ipairs(self._url_characters) do
-        local canvas_x, canvas_y = self:_getTextCanvasPosition()
-        local char_x = canvas_x + url_character.x
-        local char_y = canvas_y + url_character.y
+function TextBlock:_onInput(event)
+    if self:_eventIs(event, "INPUT_EVENT_MOUSE_BUTTON") then
+        --- @cast event NodeUI.InputEventMouseButton
 
-        local is_inside = (
-            x >= char_x
-            and y >= char_y
-            and x <= char_x + url_character.w
-            and y <= char_y + url_character.h
-        )
+        if not event.pressed then return end
 
-        if is_inside then
-            love.system.openURL(url_character.char.url)
+        for _, url_character in ipairs(self._url_characters) do
+            local x, y = event.x, event.y
+            local canvas_x, canvas_y = self:_getTextCanvasPosition()
+            local char_x = canvas_x + url_character.x
+            local char_y = canvas_y + url_character.y
+
+            local is_inside = (
+                x >= char_x
+                and y >= char_y
+                and x <= char_x + url_character.w
+                and y <= char_y + url_character.h
+            )
+
+            if is_inside then
+                self:_acceptEvent(event)
+
+                love.system.openURL(url_character.char.url)
+                break
+            end
         end
     end
 end
